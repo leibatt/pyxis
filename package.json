@@ -1,0 +1,9 @@
+{
+  "name": "formalizing-vis-tasks",
+  "version": "0.0.1",
+  "description": "executable framework for defining visualization tasks",
+  "main": "index.js",
+  "repository": "git@github.com:leibatt/formalizing-vis-tasks.git",
+  "author": "Leilani Battle <leibatt@gmail.com>",
+  "license": "MIT"
+}
