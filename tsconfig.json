@@ -9,7 +9,8 @@
     "declaration": true,
     "noImplicitAny": true,
     "suppressImplicitAnyIndexErrors": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "resolveJsonModule": true
   },
   "files": ["src/index.ts"],
   "include": ["src/**/*.ts", "test/**/*.ts"],
