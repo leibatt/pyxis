@@ -1,39 +1,50 @@
-import {Record,Attribute,ValueType} from './dataset';
+import {BaseDataset,Record,Attribute,ValueType} from './dataset';
 
-export enum RelationshipType {
-  Interesting = 1,
-  Related,
-  Influences
-}
+// the range of insights to be covered in this theory work
+// clustering, correlation, causal, outliers/exclusion
+export type InsightType = "cluster" | "correlation" | "causal" | "exclusion";
 
-export interface RelationshipModel {
-  inputAttributes?: Attribute[];
-  outputAttributes?: Attribute[];
+// used to define the required parameters for determining a meaningful data
+// relationship
+export interface RelationshipModelInterface {
+  name: string; // name of the model
+  inputAttributes?: Attribute[]; // inputs used to predict output relationship
+  outputAttribute?: Attribute; // output to be predicted
+
+  // if the relationship involves multiple datasets, explains how to
+  // consolidate them into one for training
+  join(datasets: BaseDataset[]): BaseDataset;
+
+  // if needed, train the model first with the given training set
   train(trainingSet: Record[]): void;
-  predict(record: Record): ValueType;
+
+  // for the given record, predict the output attribute value using the input
+  // attributes. One record should be provided for each relevant dataset involved.
+  predict(records: Record[]): ValueType;
 }
 
-// this group of records is meaningful/interesting somehow
-export class Cluster {
-  records: Record[];
-  relationship: RelationshipModel;
+// at the base level, an insight represents some relationshp within one or more datasets
+export interface BaseInsightInterface {
+  name: string;
+  insightType: InsightType;
+  description?: string;
 
-  constructor(records: Record[], relationship: RelationshipModel) {
-    this.records = records;
-    this.relationship = relationship;
-  }
+  datasets: BaseDataset[];
+  relationshipModel: RelationshipModelInterface;
 }
 
-// clustering, correlation, outliers
+// more complex insights FINISH THOUGHT
+export interface InsightInterface {
+  name: string;
+  insightType: InsightType;
+  description?: string;
 
-//
-// TODO: create this class 
-// specify clusters here somehow, how are they defined? Are they
-// manually separated? Denoted by a particular attribute or set of
-// attributes?
-// export class ClustersRelationship {
-// 
-// }
+  //parent insights
+  dependsOn?: (InsightInterface | BaseInsightInterface)[];
+  // peer insights, insights may be grouped together in a collection
+  associatedWith?: (InsightInterface | BaseInsightInterface)[];
+  contributesTo?: (InsightInterface | BaseInsightInterface)[];
+}
 
 // there seems to be a relationship across this group of records, defined by
 // the given set of attributes

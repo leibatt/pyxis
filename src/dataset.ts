@@ -1,5 +1,10 @@
 
-export type AttributeType = "nominal" | "ordinal" | "quantitative" | "temporal";
+export enum AttributeType {
+  nominal = "nominal",
+  ordinal = "ordinal",
+  quantitative = "quantitative",
+  temporal = "temporal"
+}
 
 export interface Attribute {
   name: string;
@@ -12,13 +17,15 @@ export type ValueType = string | boolean | number;
 export class Record {
   attributes: Attribute[];
   values: ValueType[];
+  id: number;
 
-  constructor(attributes: Attribute[],values: ValueType[]) {
+  constructor(attributes: Attribute[],values: ValueType[],id: number) {
     if(attributes.length !== values.length) {
       throw new Error('Error creating new Record: attribute and value arrays are not the same length.');
     }
     this.attributes = attributes;
     this.values = values;
+    this.id = id;
   }
 
   getValueByName(name: string): ValueType {
@@ -38,7 +45,7 @@ export class Record {
 
 }
 
-export interface DatasetInterface {
+export interface BaseDataset {
   name: string;
   records: Record[];
   compareCoverage(otherRecords: Record[]): { overlap: Record[], percentCoverage: number };
@@ -47,7 +54,7 @@ export interface DatasetInterface {
 // holds a collection of records
 // want to compare them for coverage
 /*
-export class Dataset implements DatasetInterface {
+export class Dataset implements BaseDataset {
   constructor(name: string, records: Record[]) {
     this.name = name;
     this.records = records;
