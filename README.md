@@ -5,4 +5,4 @@ to install dependencies use `yarn`
 
 to build the codebase use `yarn build`
 
-to run tests and do linting use `yarn test` (but there are no tests right now)
+to run tests and do linting use `yarn test`
