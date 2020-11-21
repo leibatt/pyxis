@@ -9,7 +9,7 @@
   "scripts": {
     "clean": "rm -rf build",
     "build": "tsc",
-    "test": "jest --passWithNoTests && yarn lint",
+    "test": "jest --collectCoverage=true && yarn lint",
     "lint": "eslint ."
   },
   "dependencies": {
