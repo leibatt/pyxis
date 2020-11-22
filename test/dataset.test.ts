@@ -1,8 +1,8 @@
-import {BaseDataset,Record,AttributeType,Attribute,ValueType} from '../src/dataset';
+import {BaseDataset,DataRecord,AttributeType,Attribute,ValueType} from '../src/dataset';
 
 describe('dataset.ts tests', () => {
   describe('Attribute', () => {
-    it('Attribute works', () => {
+    test('Attribute works', () => {
       const isAttribute = (attribute: Attribute): boolean => { return true };
       const a = {
         name: "test",
