@@ -30,4 +30,26 @@ describe('dataset.ts tests', () => {
       expect(isDataRecord(d)).toBeTruthy();
     });
   });
+  describe('Dataset', () => {
+    test('Dataset constructor works', () => {
+      const isDataset = (d: Dataset): boolean => { return true };
+      const records: DataRecord[] = [
+        {
+          attributes: [
+            {
+              name: "a",
+              attributeType: AttributeType.nominal
+            }
+          ],
+          values: ["test"],
+          id: 1
+        }
+      ];
+      const d: Dataset = {
+        name: "test",
+        records: records
+      };
+      expect(isDataset(d)).toBeTruthy();
+    });
+  });
 });

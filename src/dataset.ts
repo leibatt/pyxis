@@ -21,13 +21,14 @@ export interface DataRecord {
   attributes: Attribute[]; // the attributes stored in this record
   values: ValueType[]; // the values stored in this record, one per attribute
   id: number; // unique identifier for this record
+  hash?: () => string;
 }
 
 // data tuple
 export class BaseDataRecord implements DataRecord {
-  attributes: Attribute[]; // the attributes stored in this record
-  values: ValueType[]; // the values stored in this record, one per attribute
-  id: number; // unique identifier for this record
+  attributes: Attribute[];
+  values: ValueType[];
+  id: number;
 
   constructor(attributes: Attribute[],values: ValueType[],id: number) {
     if(attributes.length !== values.length) {
@@ -63,25 +64,50 @@ export class BaseDataRecord implements DataRecord {
 export interface Dataset {
   name: string;
   records: DataRecord[];
-  compareCoverage(otherDataRecords: DataRecord[]): { overlap: DataRecord[], percentCoverage: number };
+  sources?: Dataset[]; // which datasets were used to create this one?
+  // does this dataset overlap with the other dataset?
+  compareCoverage?: (otherDataset: Dataset) => { overlap: Dataset, percentOverlap: Record<string, number> };
+  subsumes?: (otherDataset: Dataset) => boolean; // does this dataset subsume the other dataset?
 }
 
 // holds a collection of records
 // want to compare them for coverage
-/*
 export class BaseDataset implements Dataset {
+  name: string;
+  records: DataRecord[];
+  sources?: Dataset[];
+
   constructor(name: string, records: DataRecord[]) {
     this.name = name;
     this.records = records;
   }
 
-  compareCoverage(otherDataRecords: DataRecord[]): { overlap: DataRecord[], percentCoverage: number } {
-    // TODO: fill this in
+  // does this dataset fully cover the other dataset?
+  subsumes(otherDataset: Dataset): boolean {
+    const {overlap,percentOverlap} = this.compareCoverage(otherDataset);
+    return overlap.records.length === otherDataset.records.length;
+  }
+
+  // are there overlapping records between this dataset and the other dataset?
+  compareCoverage(otherDataset: Dataset): { overlap: Dataset, percentOverlap: Record<string, number> } {
+    const recordMap: Record<string, boolean> = this.records.reduce((acc,r) => { acc[r.hash()] = true; return acc; },{});
+    const overlap: Dataset = {
+      name: "overlap",
+      records: [],
+      sources: [this, otherDataset]
+    };
+    otherDataset.records.forEach((r: DataRecord) => {
+      if(r.hash() in recordMap) {
+        overlap.records.push(r);
+      }
+    });
+    const percentOverlap: Record<string, number> = {};
+    percentOverlap[this.name] = 1.0 * overlap.records.length / this.records.length;
+    percentOverlap[otherDataset.name] = 1.0 * overlap.records.length / otherDataset.records.length;
     return {
-      overlap: [],
-      percentCoverage: 0
+      overlap: overlap,
+      percentOverlap: percentOverlap
     };
   }
 }
-*/
 
