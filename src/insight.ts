@@ -1,4 +1,4 @@
-import {BaseDataset,DataRecord,Attribute,ValueType} from './dataset';
+import {Dataset,DataRecord,Attribute,ValueType} from './dataset';
 
 // the range of insights to be covered in this theory work
 // clustering, correlation, causal, outliers/exclusion

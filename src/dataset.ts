@@ -1,3 +1,4 @@
+import {smartStringify} from './util';
 
 export enum AttributeType {
   nominal = "nominal",
@@ -7,17 +8,26 @@ export enum AttributeType {
 }
 
 export interface Attribute {
-  name: string;
-  attributeType: AttributeType;
+  name: string; // name of the attribute
+  attributeType: AttributeType; // what type of attribute?
+  dependences?: Attribute[]; // does the value of this attribute depend on other attributes?
+  computed?: boolean; // did code generate this attribute?
 }
 
+// types of data values within an attribute
 export type ValueType = string | boolean | number;
 
+export interface DataRecord {
+  attributes: Attribute[]; // the attributes stored in this record
+  values: ValueType[]; // the values stored in this record, one per attribute
+  id: number; // unique identifier for this record
+}
+
 // data tuple
-export class DataRecord {
-  attributes: Attribute[];
-  values: ValueType[];
-  id: number;
+export class BaseDataRecord implements DataRecord {
+  attributes: Attribute[]; // the attributes stored in this record
+  values: ValueType[]; // the values stored in this record, one per attribute
+  id: number; // unique identifier for this record
 
   constructor(attributes: Attribute[],values: ValueType[],id: number) {
     if(attributes.length !== values.length) {
@@ -28,30 +38,29 @@ export class DataRecord {
     this.id = id;
   }
 
+  // retrieve the value for attribute with the given name
   getValueByName(name: string): ValueType {
     const index: number = this.attributes.map(a => a.name).indexOf(name);
     return index >= 0 ? this.values[index] : null;
   }
 
+  // retrieve the value for attribute at the given index
   getValueByIndex(index: number): ValueType {
     return index >= 0 && index < this.attributes.length ? this.values[index] : null;
   }
 
+  // create a string representing this record, for hashing and comparison purposes
   hash(): string {
-    const hashArray: string[] = []; 
-    for(let i = 0; i < this.attributes.length; i++) {
-      const a: Attribute = this.attributes[i];
-      const v: ValueType = this.values[i];
-      hashArray.push(a+",");
-      hashArray.push(v+",");
-      // TODO: finish the hash function.
-    }
-    return "";
+    const rec: Record<string, unknown> = {
+      attributes: this.attributes,
+      values: this.values,
+      id: this.id
+    };
+    return smartStringify(rec);
   }
-
 }
 
-export interface BaseDataset {
+export interface Dataset {
   name: string;
   records: DataRecord[];
   compareCoverage(otherDataRecords: DataRecord[]): { overlap: DataRecord[], percentCoverage: number };
@@ -60,7 +69,7 @@ export interface BaseDataset {
 // holds a collection of records
 // want to compare them for coverage
 /*
-export class Dataset implements BaseDataset {
+export class BaseDataset implements Dataset {
   constructor(name: string, records: DataRecord[]) {
     this.name = name;
     this.records = records;
