@@ -1,4 +1,5 @@
-import {Dataset,DataRecord,AttributeType,Attribute,ValueType} from '../src/dataset';
+import * as carsDataset from '../datasets/cars.json'; // dataset for testing purposes
+import {jsonToDataRecord,Dataset,DataRecord,AttributeType,Attribute,ValueType} from '../src/dataset';
 
 describe('dataset.ts tests', () => {
   describe('Attribute', () => {
@@ -21,13 +22,18 @@ describe('dataset.ts tests', () => {
         }
       ];
       const values: ValueType[] = ["test"];
-      const id = 1;
+      const id = "d";
       const d = {
         attributes: attributes,
         values: values,
         id: id
       };
       expect(isDataRecord(d)).toBeTruthy();
+    });
+    test('can load real data as DataRecord and BaseDataRecord', () => {
+      const or: Record<string, ValueType | null> = carsDataset[0];
+      const dr: DataRecord = jsonToDataRecord(or);
+      expect(dr.attributes).toHaveLength(Object.keys(or).length);
     });
   });
   describe('Dataset', () => {
@@ -42,7 +48,7 @@ describe('dataset.ts tests', () => {
             }
           ],
           values: ["test"],
-          id: 1
+          id: "d"
         }
       ];
       const d: Dataset = {

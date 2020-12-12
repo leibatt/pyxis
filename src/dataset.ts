@@ -1,3 +1,4 @@
+import * as uuid from 'uuid';
 import {smartStringify} from './util';
 
 export enum AttributeType {
@@ -5,6 +6,22 @@ export enum AttributeType {
   ordinal = "ordinal",
   quantitative = "quantitative",
   temporal = "temporal"
+}
+
+// sets attribute type by default, may not get things right for ordinal
+export const AttributeTypeMapping: Record<string, AttributeType | null> = {
+  string: AttributeType.nominal,
+  number: AttributeType.quantitative,
+  bigint: AttributeType.quantitative,
+  boolean: AttributeType.nominal,
+  symbol: null,
+  undefined: null,
+  object: null,
+  function: null
+}
+
+export function getAttributeType(t: string) {
+  return AttributeTypeMapping[t];
 }
 
 export interface Attribute {
@@ -15,22 +32,32 @@ export interface Attribute {
 }
 
 // types of data values within an attribute
-export type ValueType = string | boolean | number;
+export type ValueType = string | boolean | number | bigint;
 
 export interface DataRecord {
   attributes: Attribute[]; // the attributes stored in this record
-  values: ValueType[]; // the values stored in this record, one per attribute
-  id: number; // unique identifier for this record
+  values: (ValueType | null)[]; // the values stored in this record, one per attribute, can be null
+  id: string; // unique identifier for this record
   hash?: () => string;
+}
+
+export function jsonToDataRecord(record: Record<string, ValueType | null>, id: string = null): DataRecord {
+  const attributes: Attribute[] = (Object.keys(record)).map((k) => {
+    return {
+      name: k,
+      attributeType: getAttributeType(typeof record[k])
+    };
+  });
+  return new BaseDataRecord(attributes,attributes.map((a) => record[a.name]), id ? id : uuid.v4());
 }
 
 // data tuple
 export class BaseDataRecord implements DataRecord {
   attributes: Attribute[];
   values: ValueType[];
-  id: number;
+  id: string;
 
-  constructor(attributes: Attribute[],values: ValueType[],id: number) {
+  constructor(attributes: Attribute[],values: ValueType[],id: string) {
     if(attributes.length !== values.length) {
       throw new Error('Error creating new DataRecord: attribute and value arrays are not the same length.');
     }
