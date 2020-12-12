@@ -1,6 +1,13 @@
 import {sortObject, smartStringify} from '../src/util';
 
 describe("#sortObject", () => {
+  test("basic types are returned as-is", () => {
+    const vals: Record<string, unknown>[] = [{d:"c"},{d:1},{d:null},{d:undefined},{d:true}];
+    vals.forEach((v) => {
+      const sortedV = sortObject(v);
+      expect(sortedV).toEqual(v);
+    });
+  });
   test("keys are in sorted order for a flat object", () => {
     const keys = ["c","b","a"];
     const obj = {};

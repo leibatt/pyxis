@@ -41,7 +41,7 @@ export interface DataRecord {
   hash?: () => string;
 }
 
-export function jsonToDataRecord(record: Record<string, ValueType | null>, id: string = null): DataRecord {
+export function jsonToDataRecord(record: Record<string, ValueType | null>, id: string = null): BaseDataRecord {
   const attributes: Attribute[] = (Object.keys(record)).map((k) => {
     return {
       name: k,
@@ -52,7 +52,7 @@ export function jsonToDataRecord(record: Record<string, ValueType | null>, id: s
 }
 
 // assuming the TypeScript JSON import was used to create the JSON object
-export function jsonObjectToDataset(datasetObject: Record<string, ValueType | null>[], name: string = null): Dataset {
+export function jsonObjectToDataset(datasetObject: Record<string, ValueType | null>[], name: string = null): BaseDataset {
   const keys: string[] = Object.keys(datasetObject);
   const records: DataRecord[] = keys.map((k) => jsonToDataRecord(datasetObject[k]));
   return new BaseDataset(name ? name : "dataset-"+uuid.v4(),records);
@@ -118,7 +118,7 @@ export class BaseDataset implements Dataset {
 
   // does this dataset fully cover the other dataset?
   subsumes(otherDataset: Dataset): boolean {
-    const {overlap,percentOverlap} = this.compareCoverage(otherDataset);
+    const {overlap} = this.compareCoverage(otherDataset);
     return overlap.records.length === otherDataset.records.length;
   }
 

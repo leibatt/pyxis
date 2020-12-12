@@ -1,7 +1,7 @@
 
 // creates an object with properties ordered alphabetically
 export function sortObject(obj: Record<string, unknown>): Record<string, unknown> {
-  if(typeof obj !== "object") {
+  if(typeof obj !== "object" || !obj) {
     return obj;
   }
   const res = Object.keys(obj).sort().reduce((acc,k) => { acc[k] = obj[k]; return acc; },{});
