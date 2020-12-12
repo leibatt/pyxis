@@ -20,7 +20,7 @@ export const AttributeTypeMapping: Record<string, AttributeType | null> = {
   function: null
 }
 
-export function getAttributeType(t: string) {
+export function getAttributeType(t: string): AttributeType {
   return AttributeTypeMapping[t];
 }
 
@@ -48,7 +48,14 @@ export function jsonToDataRecord(record: Record<string, ValueType | null>, id: s
       attributeType: getAttributeType(typeof record[k])
     };
   });
-  return new BaseDataRecord(attributes,attributes.map((a) => record[a.name]), id ? id : uuid.v4());
+  return new BaseDataRecord(attributes,attributes.map((a) => record[a.name]), id ? id : "record-"+uuid.v4());
+}
+
+// assuming the TypeScript JSON import was used to create the JSON object
+export function jsonObjectToDataset(datasetObject: Record<string, ValueType | null>[], name: string = null): Dataset {
+  const keys: string[] = Object.keys(datasetObject);
+  const records: DataRecord[] = keys.map((k) => jsonToDataRecord(datasetObject[k]));
+  return new BaseDataset(name ? name : "dataset-"+uuid.v4(),records);
 }
 
 // data tuple

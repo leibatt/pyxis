@@ -1,5 +1,5 @@
 import * as carsDataset from '../datasets/cars.json'; // dataset for testing purposes
-import {jsonToDataRecord,Dataset,DataRecord,AttributeType,Attribute,ValueType} from '../src/dataset';
+import {jsonObjectToDataset,jsonToDataRecord,Dataset,DataRecord,AttributeType,Attribute,ValueType} from '../src/dataset';
 
 describe('dataset.ts tests', () => {
   describe('Attribute', () => {
@@ -34,6 +34,12 @@ describe('dataset.ts tests', () => {
       const or: Record<string, ValueType | null> = carsDataset[0];
       const dr: DataRecord = jsonToDataRecord(or);
       expect(dr.attributes).toHaveLength(Object.keys(or).length);
+      const attributeNames: string[] = dr.attributes.map((a) => a.name);
+      Object.keys(or).forEach((k) => {
+        const i: number = attributeNames.indexOf(k);
+        expect(i >= 0).toBeTruthy();
+        expect(dr.values[i]).toEqual(or[k]);
+      });
     });
   });
   describe('Dataset', () => {
@@ -57,5 +63,9 @@ describe('dataset.ts tests', () => {
       };
       expect(isDataset(d)).toBeTruthy();
     });
+    test('can load full JSON object to Dataset', () => {
+      expect(jsonObjectToDataset(carsDataset,"cars")).toBeTruthy();
+    });
+
   });
 });
