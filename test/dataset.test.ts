@@ -157,6 +157,12 @@ describe('dataset.ts tests', () => {
         const cars2: Dataset = new BaseDataset(cars.name+"2", cars.records.slice(0,5));
         expect(cars1.subsumes(cars2)).toBeTruthy();
       });
+      test('Dataset does not subsume a superset of itself', () => {
+        const cars1: Dataset = new BaseDataset(cars.name+"1", cars.records.slice(0,10));
+        const cars2: Dataset = new BaseDataset(cars.name+"2", cars.records.slice(0,5));
+        expect(cars2.subsumes(cars1)).toBeFalsy();
+      });
+
     });
   });
 });
