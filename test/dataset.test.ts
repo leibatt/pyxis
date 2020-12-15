@@ -4,17 +4,16 @@ import {jsonObjectToDataset,jsonToDataRecord,BaseDataset,Dataset,BaseDataRecord,
 describe('dataset.ts tests', () => {
   describe('Attribute', () => {
     test('#constructor works', () => {
-      const isAttribute = (attribute: Attribute): boolean => { return true };
-      const a = {
+      const attribute: Attribute = {
         name: "test",
         attributeType: AttributeType.nominal
       };
-      expect(isAttribute(a)).toBeTruthy();
+      expect(attribute.name).toEqual("test");
+      expect(attribute.attributeType).toEqual(AttributeType.nominal);
     });
   });
   describe('BaseDataRecord', () => {
     test('#constructor works', () => {
-      const isDataRecord = (d: DataRecord): boolean => { return true };
       const attributes: Attribute[] = [
         {
           name: "a",
@@ -23,12 +22,24 @@ describe('dataset.ts tests', () => {
       ];
       const values: ValueType[] = ["test"];
       const id = "d";
-      const d = {
+      const d: DataRecord = {
         attributes: attributes,
         values: values,
         id: id
       };
-      expect(isDataRecord(d)).toBeTruthy();
+      expect(d.attributes[0].name).toEqual("a");
+      expect(d.values[0]).toEqual("test");
+    });
+    test('#constructor enforces attribute and value array lengths', () => {
+      const attributes: Attribute[] = [
+        {
+          name: "a",
+          attributeType: AttributeType.nominal
+        }
+      ];
+      const values: ValueType[] = ["test","test2"];
+      const id = "d";
+      expect(() => new BaseDataRecord(attributes,values,id)).toThrow(Error);
     });
     test('#jsonToDataRecord can load real data as BaseDataRecord', () => {
       const or: Record<string, ValueType | null> = carsDataset[0];
@@ -41,15 +52,33 @@ describe('dataset.ts tests', () => {
         expect(dr.values[i]).toEqual(or[k]);
       });
     });
-    test('#getValueByName and #getValueByIndex retrieve correct values', () => {
+    test('#getValueByName retrieves correct values', () => {
+      const or: Record<string, ValueType | null> = carsDataset[0];
+      const dr: BaseDataRecord = jsonToDataRecord(or);
+      Object.keys(or).forEach((k) => {
+        expect(dr.getValueByName(k)).toEqual(or[k]);
+      });
+    });
+    test('#getValueByName returns null if invalid input passed', () => {
+      const or: Record<string, ValueType | null> = carsDataset[0];
+      const dr: BaseDataRecord = jsonToDataRecord(or);
+      expect(dr.getValueByName("junk")).toBeNull();
+      expect(dr.getValueByName(null)).toBeNull();
+    });
+    test('#getValueByIndex retrieves correct values', () => {
       const or: Record<string, ValueType | null> = carsDataset[0];
       const dr: BaseDataRecord = jsonToDataRecord(or);
       const attributeNames: string[] = dr.attributes.map((a) => a.name);
       Object.keys(or).forEach((k) => {
         const i: number = attributeNames.indexOf(k);
         expect(dr.getValueByIndex(i)).toEqual(or[k]);
-        expect(dr.getValueByName(k)).toEqual(or[k]);
       });
+    });
+    test('#getValueByIndex returns null if invalid input passed', () => {
+      const or: Record<string, ValueType | null> = carsDataset[0];
+      const dr: BaseDataRecord = jsonToDataRecord(or);
+      expect(dr.getValueByIndex(-1)).toBeNull();
+      expect(dr.getValueByIndex(dr.values.length+1)).toBeNull();
     });
     describe('#hash', () => {
       test('hash for same record should be consistent', () => {
@@ -68,7 +97,6 @@ describe('dataset.ts tests', () => {
   describe('BaseDataset', () => {
     const cars: Dataset = jsonObjectToDataset(carsDataset,"cars");
     test('#constructor works', () => {
-      const isDataset = (d: Dataset): boolean => { return true };
       const records: DataRecord[] = [
         {
           attributes: [
@@ -85,12 +113,24 @@ describe('dataset.ts tests', () => {
         name: "test",
         records: records
       };
-      expect(isDataset(d)).toBeTruthy();
+      expect(d.name).toEqual("test");
+      expect(d.records[0].attributes).toHaveLength(1);
+      expect(d.records[0].values).toHaveLength(1);
+      expect(d.records[0].attributes[0].name).toEqual("a");
+      expect(d.records[0].values[0]).toEqual("test");
     });
     test('#jsonObjectToDataset can load full JSON object to Dataset', () => {
       expect(jsonObjectToDataset(carsDataset,"cars")).toBeTruthy();
+      expect(jsonObjectToDataset(carsDataset)).toBeTruthy();
     });
     describe('#compareCoverage', () => {
+      test('Calculated coverage is 0% for different datasets', () => {
+        const cars1: Dataset = new BaseDataset(cars.name+"1", cars.records.slice(0,10));
+        const cars2: Dataset = new BaseDataset(cars.name+"2", cars.records.slice(10,20));
+        const coverage: { overlap: Dataset, percentOverlap: Record<string, number> } = cars1.compareCoverage(cars2);
+        expect(coverage.percentOverlap["cars1"]).toEqual(0.0);
+        expect(coverage.percentOverlap["cars2"]).toEqual(0.0);
+      });
       test('Calculated coverage is 100% for the same datasets', () => {
         const cars1: Dataset = new BaseDataset(cars.name+"1", cars.records.slice(0,10));
         const cars2: Dataset = new BaseDataset(cars.name+"2", cars.records.slice(0,10));
@@ -105,7 +145,18 @@ describe('dataset.ts tests', () => {
         expect(coverage.percentOverlap["cars1"]).toEqual(0.5);
         expect(coverage.percentOverlap["cars2"]).toEqual(1.0);
       });
-
+    });
+    describe('#subsumes', () => {
+      test('Dataset subsumes equivalent dataset', () => {
+        const cars1: Dataset = new BaseDataset(cars.name+"1", cars.records.slice(0,10));
+        const cars2: Dataset = new BaseDataset(cars.name+"2", cars.records.slice(0,10));
+        expect(cars1.subsumes(cars2)).toBeTruthy();
+      });
+      test('Dataset subsumes a subset of itself', () => {
+        const cars1: Dataset = new BaseDataset(cars.name+"1", cars.records.slice(0,10));
+        const cars2: Dataset = new BaseDataset(cars.name+"2", cars.records.slice(0,5));
+        expect(cars1.subsumes(cars2)).toBeTruthy();
+      });
     });
   });
 });
