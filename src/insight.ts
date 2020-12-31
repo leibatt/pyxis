@@ -7,10 +7,11 @@ import {RelationshipModel} from './relationship';
 export interface Insight {
   name: string;
   description?: string;
+  timestamp: Date; // to keep track of when the insight was created;
 
   relationshipModel: RelationshipModel;
   sourceInsights: Insight[]; // previous insights needed to form this insight
-  targetInsights: Insight[]; // child insights that depend on this insight
+  targetInsights: Insight[]; // later insights that depend on this insight
 
   // used to calculate what percentage of the original data records were used to compute this insight
   // only return the source records used, not all source records

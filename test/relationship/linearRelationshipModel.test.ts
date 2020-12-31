@@ -1,5 +1,5 @@
-import {AttributeType} from '../src/dataset';
-import {LinearRelationshipModel} from '../src/relationship';
+import {AttributeType} from '../../src/dataset';
+import {LinearRelationshipModel} from '../../src/relationship/linearRelationshipModel';
 
 describe('LinearRelationshipModel', () => {
   test('#constructor works', () => {
