@@ -2,7 +2,7 @@
   "compilerOptions": {
     "outDir": "build",
     "target": "es6",
-    "module": "es2015",
+    "module": "commonjs",
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
