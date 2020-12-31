@@ -1,5 +1,5 @@
 import {Dataset,DataRecord} from './dataset';
-import {RelationshipModel} from './relationship';
+import {RelationshipModel} from './relationship/relationshipModel';
 
 // An insight represents some relationship within one or more datasets.
 // However insights may also depend on 

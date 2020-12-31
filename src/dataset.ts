@@ -51,6 +51,14 @@ export function jsonToDataRecord(record: Record<string, ValueType | null>, id: s
   return new BaseDataRecord(attributes,attributes.map((a) => record[a.name]), id ? id : "record-"+uuid.v4());
 }
 
+// turn a given data record into a JSON object
+export function dataRecordToJson(r: BaseDataRecord): Record<string, ValueType | null> {
+  return r.attributes.reduce((acc: Record<string, ValueType | null>, a: Attribute) => {
+    acc[a.name] = r.getValueByName(a.name);
+    return acc;
+  }, {});
+}
+
 // assuming the TypeScript JSON import was used to create the JSON object
 export function jsonObjectToDataset(datasetObject: Record<string, ValueType | null>[], name: string = null): BaseDataset {
   const keys: string[] = Object.keys(datasetObject);

@@ -1,4 +1,4 @@
-import {Dataset,BaseDataRecord,Attribute} from './dataset';
+import {Dataset,BaseDataRecord,Attribute, ValueType} from '../dataset';
 
 // used to define the required parameters for determining a meaningful data
 // relationship
