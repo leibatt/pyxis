@@ -20,7 +20,7 @@ describe('dataset.ts tests', () => {
           attributeType: AttributeType.nominal
         }
       ];
-      const values: ValueType[] = ["test"];
+      const values: Record<string, ValueType | null> = {"a": "test"};
       const id = "d";
       const d: DataRecord = {
         attributes: attributes,
@@ -28,7 +28,7 @@ describe('dataset.ts tests', () => {
         id: id
       };
       expect(d.attributes[0].name).toEqual("a");
-      expect(d.values[0]).toEqual("test");
+      expect(d.values["a"]).toEqual("test");
     });
     test('#constructor enforces attribute and value array lengths', () => {
       const attributes: Attribute[] = [
@@ -37,7 +37,7 @@ describe('dataset.ts tests', () => {
           attributeType: AttributeType.nominal
         }
       ];
-      const values: ValueType[] = ["test","test2"];
+      const values: Record<string, ValueType | null> = {"a": "test", "b": "test2"};
       const id = "d";
       expect(() => new BaseDataRecord(attributes,values,id)).toThrow(Error);
     });
@@ -49,7 +49,7 @@ describe('dataset.ts tests', () => {
       Object.keys(or).forEach((k) => {
         const i: number = attributeNames.indexOf(k);
         expect(i >= 0).toBeTruthy();
-        expect(dr.values[i]).toEqual(or[k]);
+        expect(dr.values[dr.attributes[i].name]).toEqual(or[k]);
       });
     });
     test('#getValueByName retrieves correct values', () => {
@@ -78,7 +78,7 @@ describe('dataset.ts tests', () => {
       const or: Record<string, ValueType | null> = carsDataset[0];
       const dr: BaseDataRecord = jsonToDataRecord(or);
       expect(dr.getValueByIndex(-1)).toBeNull();
-      expect(dr.getValueByIndex(dr.values.length+1)).toBeNull();
+      expect(dr.getValueByIndex(dr.attributes.length+1)).toBeNull();
     });
     describe('#hash', () => {
       test('hash for same record should be consistent', () => {
@@ -105,7 +105,7 @@ describe('dataset.ts tests', () => {
               attributeType: AttributeType.nominal
             }
           ],
-          values: ["test"],
+          values: {"a": "test"},
           id: "d"
         }
       ];
@@ -115,9 +115,9 @@ describe('dataset.ts tests', () => {
       };
       expect(d.name).toEqual("test");
       expect(d.records[0].attributes).toHaveLength(1);
-      expect(d.records[0].values).toHaveLength(1);
+      expect(Object.keys(d.records[0].values)).toHaveLength(1);
       expect(d.records[0].attributes[0].name).toEqual("a");
-      expect(d.records[0].values[0]).toEqual("test");
+      expect(d.records[0].values["a"]).toEqual("test");
     });
     test('#jsonObjectToDataset can load full JSON object to Dataset', () => {
       expect(jsonObjectToDataset(carsDataset,"cars")).toBeTruthy();
