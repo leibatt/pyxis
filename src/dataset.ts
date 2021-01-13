@@ -36,7 +36,7 @@ export type ValueType = string | boolean | number | bigint;
 
 export interface DataRecord {
   attributes: Attribute[]; // the attributes stored in this record
-  values: (ValueType | null)[]; // the values stored in this record, one per attribute, can be null
+  values: Record<string, ValueType | null>; // the values stored in this record, one per attribute, can be null
   id: string; // unique identifier for this record
   hash?: () => string;
 }
@@ -48,15 +48,12 @@ export function jsonToDataRecord(record: Record<string, ValueType | null>, id: s
       attributeType: getAttributeType(typeof record[k])
     };
   });
-  return new BaseDataRecord(attributes,attributes.map((a) => record[a.name]), id ? id : "record-"+uuid.v4());
+  return new BaseDataRecord(attributes,record, id ? id : "record-"+uuid.v4());
 }
 
 // turn a given data record into a JSON object
 export function dataRecordToJson(r: BaseDataRecord): Record<string, ValueType | null> {
-  return r.attributes.reduce((acc: Record<string, ValueType | null>, a: Attribute) => {
-    acc[a.name] = r.getValueByName(a.name);
-    return acc;
-  }, {});
+  return r.values;
 }
 
 // assuming the TypeScript JSON import was used to create the JSON object
@@ -69,11 +66,11 @@ export function jsonObjectToDataset(datasetObject: Record<string, ValueType | nu
 // data tuple
 export class BaseDataRecord implements DataRecord {
   attributes: Attribute[];
-  values: ValueType[];
+  values: Record<string, ValueType | null>;
   id: string;
 
-  constructor(attributes: Attribute[],values: ValueType[],id: string) {
-    if(attributes.length !== values.length) {
+  constructor(attributes: Attribute[],values: Record<string, ValueType | null>,id: string) {
+    if(attributes.length !== Object.keys(values).length) {
       throw new Error('Error creating new DataRecord: attribute and value arrays are not the same length.');
     }
     this.attributes = attributes;
@@ -83,13 +80,11 @@ export class BaseDataRecord implements DataRecord {
 
   // retrieve the value for attribute with the given name
   getValueByName(name: string): ValueType {
-    const index: number = this.attributes.map(a => a.name).indexOf(name);
-    return index >= 0 ? this.values[index] : null;
+    return name in this.values ? this.values[name] : null;
   }
 
-  // retrieve the value for attribute at the given index
   getValueByIndex(index: number): ValueType {
-    return index >= 0 && index < this.attributes.length ? this.values[index] : null;
+    return index >= 0 && index < this.attributes.length ? this.values[this.attributes[index].name] : null;
   }
 
   // create a string representing this record, for hashing and comparison purposes
