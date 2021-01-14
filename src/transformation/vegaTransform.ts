@@ -9,7 +9,7 @@ export interface DataTransformation {
 // given a list of Vega transforms, this function will apply the transforms to
 // the given Dataset and return a new dataset with the transforms applied.
 // The result of the last transform is returned.
-export function executeTransforms(transformation: DataTransformation): BaseDataset {
+export function executeDataTransformation(transformation: DataTransformation): BaseDataset {
   if(transformation.transforms === null || transformation.transforms === undefined
     || transformation.transforms.length === 0) {
     throw new Error("no transforms passed!");
