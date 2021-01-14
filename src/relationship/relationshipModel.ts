@@ -7,14 +7,6 @@ export interface RelationshipModel {
   inputAttributes: Attribute[]; // inputs used to predict output
   outputAttribute: Attribute; // output to be predicted
 
-  // if the relationship involves multiple datasets, explains how to
-  // consolidate them into one for training
-  join?: (datasets: Dataset[]) => Dataset;
-
-  // if the data must be aggregated before assessing the relationship,
-  // explains how to consolidate into aggregated rows for training
-  aggregate?: (dataset: Dataset[]) => Dataset;
-
   // if needed, train the model first with the given training set
   train?: (trainingSet: BaseDataRecord[]) => void;
 
