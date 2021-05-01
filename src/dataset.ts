@@ -39,6 +39,8 @@ export interface DataRecord {
   values: Record<string, ValueType | null>; // the values stored in this record, one per attribute, can be null
   id: string; // unique identifier for this record
   hash?: () => string;
+  getValueByName?: (name: string) => ValueType
+  getValueByIndex?: (index: number) => ValueType
 }
 
 export function jsonToDataRecord(record: Record<string, ValueType | null>, id: string = null): BaseDataRecord {
@@ -71,7 +73,7 @@ export class BaseDataRecord implements DataRecord {
 
   constructor(attributes: Attribute[],values: Record<string, ValueType | null>,id: string) {
     if(attributes.length !== Object.keys(values).length) {
-      throw new Error('Error creating new DataRecord: attribute and value arrays are not the same length.');
+      throw new Error('Error creating new DataRecord: attributes and values are not the same length.');
     }
     this.attributes = attributes;
     this.values = values;

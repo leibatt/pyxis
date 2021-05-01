@@ -26,8 +26,8 @@ export interface Insight {
   // Only return source records if no computation is needed to capture the insight (e.g., if doing filtering only)
   results: () => Dataset; // produces the final results of applying transformation and relationship
 
-  // used to calculate the complexity of this particular insight
-  complexity?: InsightComplexity;
+  // used to calculate and track the complexity of this particular insight
+  complexity?: () => InsightComplexity;
 }
 
 // used to track and evaluate the complexity of derived insights
@@ -38,3 +38,4 @@ export interface InsightComplexity {
   insightCount: () => number; // how many insights were derived in order to form this insight?
   complexityScore: () => number; // what is the final complexity score for this insight?
 }
+
