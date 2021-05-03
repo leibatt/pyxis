@@ -97,17 +97,30 @@ describe('LinearRelationshipModel', () => {
     const res: ValueType = lrm.predict(cars.records[0]);
     expect(res).toEqual(expect.anything());
   });
-  test('#predict throws errors for training data of wrong type', () => {
+  test('#train throws error if training set does note exist', () => {
     const attributes: Attribute[] = [
       {"name":"x", "attributeType": AttributeType.quantitative},
       {"name":"y", "attributeType": AttributeType.quantitative}
     ];
-    const dataRecords: BaseDataRecord[] = [new BaseDataRecord(
-      [
-        {"name":"x", "attributeType": AttributeType.nominal},
-        {"name":"y", "attributeType": AttributeType.quantitative}
-      ],
-      {"x": 0, "y": 0},
+    const lrm: LinearRelationshipModel = new LinearRelationshipModel(
+      "y=x",
+      // input attributes
+      attributes.filter(a => a.name === "x"),
+      // output attribute
+      attributes.filter(a => a.name === "y")[0]
+    );
+    expect(() => { return lrm.train(null) }).toThrow("No training data provided.");
+    expect(() => { return lrm.train(undefined) }).toThrow("No training data provided.");
+    expect(() => { return lrm.train([]) }).toThrow("No training data provided.");
+  });
+  test('#train throws errors for training data of wrong type', () => {
+    const attributes: Attribute[] = [
+      {"name":"x", "attributeType": AttributeType.quantitative},
+      {"name":"y", "attributeType": AttributeType.quantitative}
+    ];
+    let dataRecords: BaseDataRecord[] = [new BaseDataRecord(
+      attributes,
+      {"x": "0", "y": 0},
       "0"
     )];
     const lrm: LinearRelationshipModel = new LinearRelationshipModel(
@@ -118,10 +131,13 @@ describe('LinearRelationshipModel', () => {
       attributes.filter(a => a.name === "y")[0]
     );
     
-    expect(() => { return lrm.train(dataRecords) }).toThrow(Error);
-    dataRecords[0].attributes[0].attributeType = AttributeType.quantitative;
-    dataRecords[0].attributes[1].attributeType = AttributeType.nominal;
-    expect(() => { return lrm.train(dataRecords) }).toThrow(Error);
+    expect(() => { return lrm.train(dataRecords) }).toThrow("input attribute 'x' is not of type 'number'.");
+    dataRecords = [new BaseDataRecord(
+      attributes,
+      {"x": 0, "y": "0"},
+      "0"
+    )];
+    expect(() => { return lrm.train(dataRecords) }).toThrow("output attribute 'y' is not of type 'number'.");
   });
   test('#predict y=x', () => {
     const dataRecords: BaseDataRecord[] = [];
@@ -149,5 +165,36 @@ describe('LinearRelationshipModel', () => {
     lrm.train(dataRecords);
     const res: ValueType = lrm.predict(dataRecords[5]);
     expect(res).toBeCloseTo(5);
+  });
+  test('#predict throws errors for input data of wrong type', () => {
+    const dataRecords: BaseDataRecord[] = [];
+    const attributes: Attribute[] = [
+      {"name":"x", "attributeType": AttributeType.quantitative},
+      {"name":"y", "attributeType": AttributeType.quantitative}
+    ];
+    for(let i = 0; i < 10; i++) {
+      dataRecords.push(new BaseDataRecord(
+        attributes,
+        {
+          "x": i,
+          "y": i
+        },
+        ""+i
+      ));
+    }
+    const lrm: LinearRelationshipModel = new LinearRelationshipModel(
+      "y=x",
+      // input attributes
+      attributes.filter(a => a.name === "x"),
+      // output attribute
+      attributes.filter(a => a.name === "y")[0]
+    );
+    lrm.train(dataRecords);    
+    const toPredict: BaseDataRecord = new BaseDataRecord(
+      attributes,
+      {"x": "5", "y": 5},
+      "0"
+    );
+    expect(() => { return lrm.predict(toPredict) }).toThrow("input attribute 'x' is not of type 'number'.");
   });
 });

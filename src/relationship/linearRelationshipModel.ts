@@ -23,17 +23,20 @@ export class LinearRelationshipModel implements RelationshipModel {
   train(trainingSet: DataRecord[]): void {
     const x = [];
     const y = [];
-    if(trainingSet.length === 0) return;
+    if(!trainingSet || trainingSet.length === 0) {
+      throw new Error("No training data provided.");
+    }
 
+    // are these input attribute values numbers?
     for(let j = 0; j < this.inputAttributes.length; j++) {
       if(typeof trainingSet[0].getValueByName(this.inputAttributes[j].name) !== "number") {
         throw new Error("input attribute '" + this.inputAttributes[j].name + "' is not of type 'number'.");
       }
     }
+    // is this output attribute value a number?
     if(typeof trainingSet[0].getValueByName(this.outputAttribute.name) !== "number") {
       throw new Error("output attribute '" + this.outputAttribute.name + "' is not of type 'number'.");
     }
-
 
     for(let i = 0; i < trainingSet.length; i++) {
       const r: DataRecord = trainingSet[i];
