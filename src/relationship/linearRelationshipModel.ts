@@ -31,7 +31,7 @@ export class LinearRelationshipModel implements RelationshipModel {
       }
     }
     if(typeof trainingSet[0].getValueByName(this.outputAttribute.name) !== "number") {
-      throw new Error("input attribute '" + this.outputAttribute.name + "' is not of type 'number'.");
+      throw new Error("output attribute '" + this.outputAttribute.name + "' is not of type 'number'.");
     }
 
 

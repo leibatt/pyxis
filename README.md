@@ -11,7 +11,7 @@ NOTE: there is an issue with building `MultivariateLinearRegression`. To fix it 
 
 Add
 ```
-export default MultivariateLinearRegression
+export default MultivariateLinearRegression;
 ```
 at the end of the regression-multivariate-linear.d.ts file located at node_modules/ml-regression-multivariate-linear/
 
