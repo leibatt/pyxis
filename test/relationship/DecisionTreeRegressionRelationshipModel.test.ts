@@ -1,10 +1,10 @@
 import * as carsDataset from '../../datasets/cars.json'; // dataset for testing purposes
 import {Attribute,AttributeType,BaseDataRecord,Dataset,jsonObjectToDataset,ValueType} from '../../src/dataset';
-import {LinearRegressionRelationshipModel} from '../../src/relationship/LinearRegressionRelationshipModel';
+import {DecisionTreeRegressionRelationshipModel} from '../../src/relationship/DecisionTreeRegressionRelationshipModel';
 
-describe('LinearRegressionRelationshipModel', () => {
+describe('DecisionTreeRegressionRelationshipModel', () => {
   test('#constructor works', () => {
-    const lrm: LinearRegressionRelationshipModel = new LinearRegressionRelationshipModel(
+    const lrm: DecisionTreeRegressionRelationshipModel = new DecisionTreeRegressionRelationshipModel(
       "test",
       [ // input attributes
         {
@@ -21,7 +21,7 @@ describe('LinearRegressionRelationshipModel', () => {
   });
   test('#constructor attribute type check works', () => {
     expect(() => {
-      return new LinearRegressionRelationshipModel(
+      return new DecisionTreeRegressionRelationshipModel(
         "test",
         [ // input attributes
           {
@@ -34,9 +34,9 @@ describe('LinearRegressionRelationshipModel', () => {
           attributeType: AttributeType.quantitative
         }
       );
-    }).toThrow("LinearRegressionRelationshipModel can only be used with quantitative attributes.");
+    }).toThrow("DecisionTreeRegressionRelationshipModel can only be used with quantitative attributes.");
     expect(() => {
-      return new LinearRegressionRelationshipModel(
+      return new DecisionTreeRegressionRelationshipModel(
         "test",
         [ // input attributes
           {
@@ -49,11 +49,11 @@ describe('LinearRegressionRelationshipModel', () => {
           attributeType: AttributeType.nominal
         }
       );
-    }).toThrow("LinearRegressionRelationshipModel can only be used with quantitative attributes.");
+    }).toThrow("DecisionTreeRegressionRelationshipModel can only be used with quantitative attributes.");
   });
   test('#train runs without errors', () => {
     const cars: Dataset = jsonObjectToDataset(carsDataset,"cars");
-    const lrm: LinearRegressionRelationshipModel = new LinearRegressionRelationshipModel(
+    const lrm: DecisionTreeRegressionRelationshipModel = new DecisionTreeRegressionRelationshipModel(
       "cars",
       [ // input attributes
         {
@@ -76,7 +76,7 @@ describe('LinearRegressionRelationshipModel', () => {
   });
   test('#predict runs without errors', () => {
     const cars: Dataset = jsonObjectToDataset(carsDataset,"cars");
-    const lrm: LinearRegressionRelationshipModel = new LinearRegressionRelationshipModel(
+    const lrm: DecisionTreeRegressionRelationshipModel = new DecisionTreeRegressionRelationshipModel(
       "cars",
       [ // input attributes
         {
@@ -102,7 +102,7 @@ describe('LinearRegressionRelationshipModel', () => {
       {"name":"x", "attributeType": AttributeType.quantitative},
       {"name":"y", "attributeType": AttributeType.quantitative}
     ];
-    const lrm: LinearRegressionRelationshipModel = new LinearRegressionRelationshipModel(
+    const lrm: DecisionTreeRegressionRelationshipModel = new DecisionTreeRegressionRelationshipModel(
       "y=x",
       // input attributes
       attributes.filter(a => a.name === "x"),
@@ -123,7 +123,7 @@ describe('LinearRegressionRelationshipModel', () => {
       {"x": "0", "y": 0},
       "0"
     )];
-    const lrm: LinearRegressionRelationshipModel = new LinearRegressionRelationshipModel(
+    const lrm: DecisionTreeRegressionRelationshipModel = new DecisionTreeRegressionRelationshipModel(
       "y=x",
       // input attributes
       attributes.filter(a => a.name === "x"),
@@ -155,7 +155,7 @@ describe('LinearRegressionRelationshipModel', () => {
         ""+i
       ));
     }
-    const lrm: LinearRegressionRelationshipModel = new LinearRegressionRelationshipModel(
+    const lrm: DecisionTreeRegressionRelationshipModel = new DecisionTreeRegressionRelationshipModel(
       "y=x",
       // input attributes
       attributes.filter(a => a.name === "x"),
@@ -182,7 +182,7 @@ describe('LinearRegressionRelationshipModel', () => {
         ""+i
       ));
     }
-    const lrm: LinearRegressionRelationshipModel = new LinearRegressionRelationshipModel(
+    const lrm: DecisionTreeRegressionRelationshipModel = new DecisionTreeRegressionRelationshipModel(
       "y=x",
       // input attributes
       attributes.filter(a => a.name === "x"),
