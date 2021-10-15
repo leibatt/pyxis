@@ -1,10 +1,10 @@
 import * as carsDataset from '../../datasets/cars.json'; // dataset for testing purposes
 import {Attribute,AttributeType,BaseDataRecord,Dataset,jsonObjectToDataset,ValueType} from '../../src/dataset';
-import {LinearRegressionRelationshipModel} from '../../src/relationship/LinearRegressionRelationshipModel';
+import {DecisionTreeRegressionRelationshipModel} from '../../src/relationship/DecisionTreeRegressionRelationshipModel';
 
-describe('LinearRegressionRelationshipModel', () => {
+describe('DecisionTreeRegressionRelationshipModel', () => {
   test('#constructor works', () => {
-    const lrm: LinearRegressionRelationshipModel = new LinearRegressionRelationshipModel(
+    const dtrm: DecisionTreeRegressionRelationshipModel = new DecisionTreeRegressionRelationshipModel(
       "test",
       [ // input attributes
         {
@@ -17,11 +17,11 @@ describe('LinearRegressionRelationshipModel', () => {
         attributeType: AttributeType.quantitative
       }
     );
-    expect(lrm.name).toEqual("test");
+    expect(dtrm.name).toEqual("test");
   });
   test('#constructor attribute type check works', () => {
     expect(() => {
-      return new LinearRegressionRelationshipModel(
+      return new DecisionTreeRegressionRelationshipModel(
         "test",
         [ // input attributes
           {
@@ -34,9 +34,9 @@ describe('LinearRegressionRelationshipModel', () => {
           attributeType: AttributeType.quantitative
         }
       );
-    }).toThrow("LinearRegressionRelationshipModel can only be used with quantitative attributes.");
+    }).toThrow("DecisionTreeRegressionRelationshipModel can only be used with quantitative attributes.");
     expect(() => {
-      return new LinearRegressionRelationshipModel(
+      return new DecisionTreeRegressionRelationshipModel(
         "test",
         [ // input attributes
           {
@@ -49,11 +49,11 @@ describe('LinearRegressionRelationshipModel', () => {
           attributeType: AttributeType.nominal
         }
       );
-    }).toThrow("LinearRegressionRelationshipModel can only be used with quantitative attributes.");
+    }).toThrow("DecisionTreeRegressionRelationshipModel can only be used with quantitative attributes.");
   });
   test('#train runs without errors', () => {
     const cars: Dataset = jsonObjectToDataset(carsDataset,"cars");
-    const lrm: LinearRegressionRelationshipModel = new LinearRegressionRelationshipModel(
+    const dtrm: DecisionTreeRegressionRelationshipModel = new DecisionTreeRegressionRelationshipModel(
       "cars",
       [ // input attributes
         {
@@ -61,22 +61,20 @@ describe('LinearRegressionRelationshipModel', () => {
           attributeType: AttributeType.quantitative
         },
         {
-          name: "Cylinders",
+          name: "Horsepower",
           attributeType: AttributeType.quantitative
         }
       ],
       { // output attribute
-        name: "Horsepower",
+        name: "Cylinders",
         attributeType: AttributeType.quantitative
       }
     );
-    expect(lrm.model).toBeNull();
-    lrm.train(cars.records);
-    expect(lrm.model).not.toBeNull();
+    expect(() => { dtrm.train(cars.records); }).not.toThrow();
   });
   test('#predict runs without errors', () => {
     const cars: Dataset = jsonObjectToDataset(carsDataset,"cars");
-    const lrm: LinearRegressionRelationshipModel = new LinearRegressionRelationshipModel(
+    const dtrm: DecisionTreeRegressionRelationshipModel = new DecisionTreeRegressionRelationshipModel(
       "cars",
       [ // input attributes
         {
@@ -84,17 +82,17 @@ describe('LinearRegressionRelationshipModel', () => {
           attributeType: AttributeType.quantitative
         },
         {
-          name: "Cylinders",
+          name: "Horsepower",
           attributeType: AttributeType.quantitative
         }
       ],
       { // output attribute
-        name: "Horsepower",
+        name: "Cylinders",
         attributeType: AttributeType.quantitative
       }
     );
-    lrm.train(cars.records);
-    const res: ValueType = lrm.predict(cars.records[0]);
+    dtrm.train(cars.records);
+    const res: ValueType = dtrm.predict(cars.records[0]);
     expect(res).toEqual(expect.anything());
   });
   test('#train throws error if training set does note exist', () => {
@@ -102,16 +100,16 @@ describe('LinearRegressionRelationshipModel', () => {
       {"name":"x", "attributeType": AttributeType.quantitative},
       {"name":"y", "attributeType": AttributeType.quantitative}
     ];
-    const lrm: LinearRegressionRelationshipModel = new LinearRegressionRelationshipModel(
+    const dtrm: DecisionTreeRegressionRelationshipModel = new DecisionTreeRegressionRelationshipModel(
       "y=x",
       // input attributes
       attributes.filter(a => a.name === "x"),
       // output attribute
       attributes.filter(a => a.name === "y")[0]
     );
-    expect(() => { return lrm.train(null) }).toThrow("No training data provided.");
-    expect(() => { return lrm.train(undefined) }).toThrow("No training data provided.");
-    expect(() => { return lrm.train([]) }).toThrow("No training data provided.");
+    expect(() => { return dtrm.train(null) }).toThrow("No training data provided.");
+    expect(() => { return dtrm.train(undefined) }).toThrow("No training data provided.");
+    expect(() => { return dtrm.train([]) }).toThrow("No training data provided.");
   });
   test('#train throws errors for training data of wrong type', () => {
     const attributes: Attribute[] = [
@@ -123,7 +121,7 @@ describe('LinearRegressionRelationshipModel', () => {
       {"x": "0", "y": 0},
       "0"
     )];
-    const lrm: LinearRegressionRelationshipModel = new LinearRegressionRelationshipModel(
+    const dtrm: DecisionTreeRegressionRelationshipModel = new DecisionTreeRegressionRelationshipModel(
       "y=x",
       // input attributes
       attributes.filter(a => a.name === "x"),
@@ -131,15 +129,16 @@ describe('LinearRegressionRelationshipModel', () => {
       attributes.filter(a => a.name === "y")[0]
     );
     
-    expect(() => { return lrm.train(dataRecords) }).toThrow("input attribute 'x' is not of type 'number'.");
+    expect(() => { return dtrm.train(dataRecords) }).toThrow("input attribute 'x' is not of type 'number'.");
     dataRecords = [new BaseDataRecord(
       attributes,
       {"x": 0, "y": "0"},
       "0"
     )];
-    expect(() => { return lrm.train(dataRecords) }).toThrow("output attribute 'y' is not of type 'number'.");
+    expect(() => { return dtrm.train(dataRecords) }).toThrow("output attribute 'y' is not of type 'number'.");
   });
-  test('#predict y=x', () => {
+/*
+  test('#predict 3 clusters', () => {
     const dataRecords: BaseDataRecord[] = [];
     const attributes: Attribute[] = [
       {"name":"x", "attributeType": AttributeType.quantitative},
@@ -150,22 +149,47 @@ describe('LinearRegressionRelationshipModel', () => {
         attributes,
         {
           "x": i,
-          "y": i
+          "y": 0
         },
-        ""+i
+        i+"-"+0
       ));
     }
-    const lrm: LinearRegressionRelationshipModel = new LinearRegressionRelationshipModel(
-      "y=x",
+    for(let i = 10; i < 20; i++) {
+      dataRecords.push(new BaseDataRecord(
+        attributes,
+        {
+          "x": i,
+          "y": 16
+        },
+        i+"-"+16
+      ));
+    }
+    for(let i = 20; i < 30; i++) {
+      dataRecords.push(new BaseDataRecord(
+        attributes,
+        {
+          "x": i,
+          "y": 100
+        },
+        i+"-"+100
+      ));
+    }
+    const dtrm: DecisionTreeRegressionRelationshipModel = new DecisionTreeRegressionRelationshipModel(
+      "predict 3 clusters",
       // input attributes
       attributes.filter(a => a.name === "x"),
       // output attribute
       attributes.filter(a => a.name === "y")[0]
     );
-    lrm.train(dataRecords);
-    const res: ValueType = lrm.predict(dataRecords[5]);
-    expect(res).toBeCloseTo(5);
+    dtrm.train(dataRecords);
+    let res: ValueType = dtrm.predict(dataRecords[5]);
+    expect(res).toBeCloseTo(0);
+    res = dtrm.predict(dataRecords[15]);
+    expect(res).toBeCloseTo(16);
+    res = dtrm.predict(dataRecords[25]);
+    expect(res).toBeCloseTo(100);
   });
+*/
   test('#predict throws errors for input data of wrong type', () => {
     const dataRecords: BaseDataRecord[] = [];
     const attributes: Attribute[] = [
@@ -182,19 +206,19 @@ describe('LinearRegressionRelationshipModel', () => {
         ""+i
       ));
     }
-    const lrm: LinearRegressionRelationshipModel = new LinearRegressionRelationshipModel(
+    const dtrm: DecisionTreeRegressionRelationshipModel = new DecisionTreeRegressionRelationshipModel(
       "y=x",
       // input attributes
       attributes.filter(a => a.name === "x"),
       // output attribute
       attributes.filter(a => a.name === "y")[0]
     );
-    lrm.train(dataRecords);    
+    dtrm.train(dataRecords);    
     const toPredict: BaseDataRecord = new BaseDataRecord(
       attributes,
       {"x": "5", "y": 5},
       "0"
     );
-    expect(() => { return lrm.predict(toPredict) }).toThrow("input attribute 'x' is not of type 'number'.");
+    expect(() => { return dtrm.predict(toPredict) }).toThrow("input attribute 'x' is not of type 'number'.");
   });
 });

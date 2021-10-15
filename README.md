@@ -13,10 +13,11 @@ Add
 ```
 export default MultivariateLinearRegression;
 ```
-at the end of the regression-multivariate-linear.d.ts file located at node_modules/ml-regression-multivariate-linear/
+at the end of the regression-multivariate-linear.d.ts file located at node\_modules/ml-regression-multivariate-linear/
 
 then remove the line in MultivariateLinearRegression Class
 ```
 export = MultivariateLinearRegression;
 ```
 
+NOTE (10-14-2021): the [ml-cart](https://github.com/mljs/decision-tree-cart) package has a bug where it makes the same incorrect prediction for every input! See [this issue](https://github.com/mljs/random-forest/issues/32) for more details.

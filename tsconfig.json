@@ -13,6 +13,6 @@
     "resolveJsonModule": true
   },
   "files": ["src/index.ts"],
-  "include": ["src/**/*.ts", "test/**/*.ts"],
+  "include": ["src/**/*.ts", "test/**/*.ts", "types/**/*.ts"],
   "exclude": ["build/**/*"]
 }
