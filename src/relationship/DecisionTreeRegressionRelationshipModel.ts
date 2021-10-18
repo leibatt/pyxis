@@ -47,7 +47,6 @@ export class DecisionTreeRegressionRelationshipModel implements RelationshipMode
       const r: DataRecord = trainingSet[i];
       const xvec = this.inputAttributes.map((a) => r.getValueByName(a.name) as number);
       const yvec = r.getValueByName(this.outputAttribute.name) as number;
-      console.log(xvec,yvec);
       x.push(xvec);
       y.push(yvec);
     }
@@ -61,7 +60,6 @@ export class DecisionTreeRegressionRelationshipModel implements RelationshipMode
       }
     }
     const xvec = this.inputAttributes.map((a) => record.getValueByName(a.name) as number);
-    console.log([xvec],this.model.predict([xvec]));
     return this.model.predict([xvec])[0];
   }
 }
