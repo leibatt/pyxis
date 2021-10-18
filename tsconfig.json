@@ -5,14 +5,19 @@
     "module": "commonjs",
     "moduleResolution": "Node",
     "esModuleInterop": true,
+    "allowJs": true,
     "allowSyntheticDefaultImports": true,
-    "declaration": true,
+    "declaration": false,
     "noImplicitAny": true,
     "suppressImplicitAnyIndexErrors": true,
     "sourceMap": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "typeRoots": [
+      "./types",
+      "./node_modules/@types"
+    ]
   },
   "files": ["src/index.ts"],
-  "include": ["src/**/*.ts", "test/**/*.ts", "types/**/*.ts"],
+  "include": ["src/**/*.ts", "test/**/*.ts", "types/*.d.ts", "lib/decision-tree-js/decision-tree.js"],
   "exclude": ["build/**/*"]
 }
