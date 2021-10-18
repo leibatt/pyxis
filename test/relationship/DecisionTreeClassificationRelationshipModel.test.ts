@@ -125,10 +125,10 @@ describe('DecisionTreeClassificationRelationshipModel', () => {
     );
     dtrm.train(dataRecords);
     let res: ValueType = dtrm.predict(dataRecords[5]);
-    expect(res).toEqual("0");
+    expect(res).toEqual(0);
     res = dtrm.predict(dataRecords[15]);
-    expect(res).toEqual("16");
+    expect(res).toEqual(16);
     res = dtrm.predict(dataRecords[25]);
-    expect(res).toEqual("100");
+    expect(res).toEqual(100);
   });
 });
