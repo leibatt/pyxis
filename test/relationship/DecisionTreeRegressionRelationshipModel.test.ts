@@ -1,6 +1,6 @@
 import * as carsDataset from '../../datasets/cars.json'; // dataset for testing purposes
-import {Attribute,AttributeType,BaseDataRecord,Dataset,jsonObjectToDataset,ValueType} from '../../src/dataset';
-import {DecisionTreeRegressionRelationshipModel} from '../../src/relationship/DecisionTreeRegressionRelationshipModel';
+import { Attribute, AttributeType, BaseDataRecord, Dataset, jsonObjectToDataset, ValueType } from '../../src/dataset';
+import { DecisionTreeRegressionRelationshipModel } from '../../src/relationship/DecisionTreeRegressionRelationshipModel';
 
 describe('DecisionTreeRegressionRelationshipModel', () => {
   test('#constructor works', () => {
