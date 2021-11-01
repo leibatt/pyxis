@@ -1,10 +1,10 @@
 import * as carsDataset from '../../datasets/cars.json'; // dataset for testing purposes
 import { Attribute, AttributeType, BaseDataRecord, Dataset, jsonObjectToDataset, ValueType} from '../../src/dataset';
-import { DecisionTreeClassificationRelationshipModel} from '../../src/relationship/DecisionTreeClassificationRelationshipModel';
+import { KNNRelationshipModel } from '../../src/relationship/KNNRelationshipModel';
 
-describe('DecisionTreeClassificationRelationshipModel', () => {
+describe('KNNRelationshipModel', () => {
   test('#constructor works', () => {
-    const dtrm: DecisionTreeClassificationRelationshipModel = new DecisionTreeClassificationRelationshipModel(
+    const dtrm: KNNRelationshipModel = new KNNRelationshipModel(
       "test",
       [ // input attributes
         {
@@ -22,7 +22,7 @@ describe('DecisionTreeClassificationRelationshipModel', () => {
   });
   test('#train runs without errors', () => {
     const cars: Dataset = jsonObjectToDataset(carsDataset,"cars");
-    const dtrm: DecisionTreeClassificationRelationshipModel = new DecisionTreeClassificationRelationshipModel(
+    const dtrm: KNNRelationshipModel = new KNNRelationshipModel(
       "cars",
       [ // input attributes
         {
@@ -43,7 +43,7 @@ describe('DecisionTreeClassificationRelationshipModel', () => {
   });
   test('#predict runs without errors', () => {
     const cars: Dataset = jsonObjectToDataset(carsDataset,"cars");
-    const dtrm: DecisionTreeClassificationRelationshipModel = new DecisionTreeClassificationRelationshipModel(
+    const dtrm: KNNRelationshipModel = new KNNRelationshipModel(
       "cars",
       [ // input attributes
         {
@@ -69,7 +69,7 @@ describe('DecisionTreeClassificationRelationshipModel', () => {
       {"name":"x", "attributeType": AttributeType.quantitative},
       {"name":"y", "attributeType": AttributeType.quantitative}
     ];
-    const dtrm: DecisionTreeClassificationRelationshipModel = new DecisionTreeClassificationRelationshipModel(
+    const dtrm: KNNRelationshipModel = new KNNRelationshipModel(
       "y=x",
       // input attributes
       attributes.filter(a => a.name === "x"),
@@ -96,27 +96,27 @@ describe('DecisionTreeClassificationRelationshipModel', () => {
         i+"-"+0
       ));
     }
-    for(let i = 10; i < 20; i++) {
+    for(let i = 50; i < 60; i++) {
       dataRecords.push(new BaseDataRecord(
         attributes,
         {
           "x": i,
-          "y": 16
+          "y": 1
         },
-        i+"-"+16
+        i+"-"+1
       ));
     }
-    for(let i = 20; i < 30; i++) {
+    for(let i = 90; i < 100; i++) {
       dataRecords.push(new BaseDataRecord(
         attributes,
         {
           "x": i,
-          "y": 100
+          "y": 2
         },
-        i+"-"+100
+        i+"-"+2
       ));
     }
-    const dtrm: DecisionTreeClassificationRelationshipModel = new DecisionTreeClassificationRelationshipModel(
+    const dtrm: KNNRelationshipModel = new KNNRelationshipModel(
       "predict 3 clusters",
       // input attributes
       attributes.filter(a => a.name === "x"),
@@ -127,8 +127,8 @@ describe('DecisionTreeClassificationRelationshipModel', () => {
     let res: ValueType = dtrm.predict(dataRecords[5]);
     expect(res).toEqual(0);
     res = dtrm.predict(dataRecords[15]);
-    expect(res).toEqual(16);
+    expect(res).toEqual(1);
     res = dtrm.predict(dataRecords[25]);
-    expect(res).toEqual(100);
+    expect(res).toEqual(2);
   });
 });

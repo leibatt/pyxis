@@ -1,8 +1,8 @@
-import {RelationshipModel} from './relationshipModel';
-import {DataRecord,Attribute,AttributeType,ValueType} from '../dataset';
+import { MultivariateRelationshipModel } from './relationshipModel';
+import { DataRecord, Attribute, AttributeType, ValueType } from '../dataset';
 import MLR from 'ml-regression-multivariate-linear';
 
-export class LinearRegressionRelationshipModel implements RelationshipModel {
+export class LinearRegressionRelationshipModel implements MultivariateRelationshipModel {
   name: string; // name of the model
   inputAttributes: Attribute[]; // inputs used to predict output
   outputAttribute: Attribute; // output to be predicted
