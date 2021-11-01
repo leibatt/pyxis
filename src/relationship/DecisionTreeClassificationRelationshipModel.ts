@@ -49,7 +49,6 @@ export class DecisionTreeClassificationRelationshipModel implements Multivariate
     const res: string = this.model.predict(inputs);
     // cast back to number if the output label was originally quantitative
     const fres: ValueType = (this.outputAttribute.attributeType == AttributeType.quantitative) ? Number(res) : res;
-    console.log(inputs,fres);
     return fres;
   }
 }
