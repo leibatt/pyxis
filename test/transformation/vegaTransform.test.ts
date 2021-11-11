@@ -1,7 +1,7 @@
 import {Transforms,View, parse} from 'vega';
 import * as carsDataset from '../../datasets/cars.json';
-import {BaseDataset,Dataset,DataRecord,jsonObjectToDataset,dataRecordToJson} from '../../src/dataset';
-import {DataTransformation,executeDataTransformation} from '../../src/transformation/vegaTransform';
+import { ValueType, BaseDataset, Dataset, DataRecord, jsonObjectToDataset, dataRecordToJson } from '../../src/dataset';
+import { VegaDataTransformation, executeDataTransformation } from '../../src/transformation/vegaTransform';
 
 describe('transformation/vegaTransform.ts', () => {
   const cars: Dataset = jsonObjectToDataset(carsDataset,"cars");
@@ -26,7 +26,7 @@ describe('transformation/vegaTransform.ts', () => {
   ];
 
   test('vega executes as expected', () => {
-    const spec: Record<string, any> = {
+    const spec: Record<string, Record<string, string | Transforms[] | Record<string, ValueType | null>[]>[]> = {
       "data": [
         {
           "name": "carsSubset",
@@ -50,8 +50,9 @@ describe('transformation/vegaTransform.ts', () => {
   test('#executeDataTransformation executes Vega as expected', () => {
     const carsSubsetDataset: Dataset = {name: "carsSubset", records: carsSubset};
     const carsSubsetDataset2: Dataset = {name: "carsSubset2", records: carsSubset};
-    const transformation: DataTransformation = {
+    const transformation: VegaDataTransformation = {
       sources: [carsSubsetDataset,carsSubsetDataset2],
+      ops: transforms.map(t => t["type"]),
       transforms: transforms
     };
     const newDataset: BaseDataset = executeDataTransformation(transformation);

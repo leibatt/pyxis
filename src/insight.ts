@@ -1,4 +1,4 @@
-import {DataTransformation} from './transformation/vegaTransform';
+import { DataTransformation } from './transformation/DataTransformation';
 import {Dataset,DataRecord} from './dataset';
 import {RelationshipModel} from './relationship/relationshipModel';
 
