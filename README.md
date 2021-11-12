@@ -21,3 +21,5 @@ export = MultivariateLinearRegression;
 ```
 
 NOTE (10-14-2021): the [ml-cart](https://github.com/mljs/decision-tree-cart) package has a bug where it makes the same incorrect prediction for every input! See [this issue](https://github.com/mljs/random-forest/issues/32) for more details.
+
+NOTE (11-11-2021): I set the "skipLibCheck" property to `true` in tsconfig.json because the apache arrow library throws a lot of errors (I think they do not adhere to the stricter type checking of newer typescript versions). I got this idea from the [arquero tsconfig.json file](https://github.com/uwdata/arquero/blob/master/tsconfig.json). Hopefully someday the arrow folks will fix it.
