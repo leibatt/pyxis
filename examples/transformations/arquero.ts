@@ -39,9 +39,7 @@ console.log(hoppyBeerNames.records[0]);
 // complex transformations. The ArqueroDataTransformation will automatically
 // pass the output of one verb as input to the next, similar to how you would
 // use method chaining for the normal Arquero syntax
-console.log("group by example: group by beer style, calculate aggregate
-statistics, filter styles with too few examples, and sort in descending order
-by mean intensity");
+console.log("group by example: group by beer style, calculate aggregate statistics, filter styles with too few examples, and sort in descending order by mean intensity");
 t = {
   sources: [beers],
   ops: ["groupby","rollup","filter", "orderby"],
