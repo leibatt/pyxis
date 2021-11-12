@@ -5,9 +5,12 @@ import { ValueType, BaseDataset, jsonObjectToDataset } from '../../src/dataset';
 import { ArqueroDataTransformation, executeDataTransformation } from '../../src/transformation/arquero';
 
 // examples from https://observablehq.com/@uwdata/introducing-arquero
+
+// datasets from the Observable notebook
 const beers: BaseDataset = jsonObjectToDataset(beersRaw,"beers");
 const breweries: BaseDataset = jsonObjectToDataset(breweriesRaw,"beers");
 
+console.log("filter example: find all beers with 'hop' in the name");
 let t: ArqueroDataTransformation = {
   sources: [beers],
   ops: ["filter"],
@@ -21,6 +24,7 @@ let t: ArqueroDataTransformation = {
 const hoppyBeerNames: BaseDataset = executeDataTransformation(t);
 console.log(hoppyBeerNames.records[0]);
 
+console.log("group by example: group by beer style, calculate aggregate statistics, filter styles with too few examples, and sort in descending order by mean intensity");
 t = {
   sources: [beers],
   ops: ["groupby","rollup","filter", "orderby"],
@@ -51,7 +55,7 @@ t = {
 const beersGroupRollup: BaseDataset = executeDataTransformation(t);
 console.log(beersGroupRollup.records[0]);
 
-
+console.log("join example: join the beers and breweries tables by brewery_id");
 t = {
   sources: [beers,breweries],
   ops: ["join"],
