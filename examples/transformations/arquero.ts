@@ -8,7 +8,7 @@ import { ArqueroDataTransformation, executeDataTransformation } from '../../src/
 
 // datasets from the Observable notebook
 const beers: BaseDataset = jsonObjectToDataset(beersRaw,"beers");
-const breweries: BaseDataset = jsonObjectToDataset(breweriesRaw,"beers");
+const breweries: BaseDataset = jsonObjectToDataset(breweriesRaw,"breweries");
 
 console.log("filter example: find all beers with 'hop' in the name");
 let t: ArqueroDataTransformation = {
