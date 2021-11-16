@@ -73,22 +73,23 @@ const beersGroupRollup: BaseDataset = executeDataTransformation(t);
 // We check the results in the BaseDataset object
 console.log(beersGroupRollup.records[0]);
 
-/*
-// FINISH FIXING  THIS!!!
-// The only Join operator in Vega is the Lookup operator.
-// We handle joins a bit differently than other Vega verbs, since they
-// involve two rather than one data source. We include a new 'toJoin' parameter
-// in the transforms objects to tell the VegaDataTransformation to join the
-// current result with a separate data source.
-console.log("join example: join the beers and breweries tables by brewery_id");
+// The only Join operator in Vega is the Lookup operator, which basically
+// performs a left outer join:
+// https://www.w3schools.com/sql/sql_join_left.asp
+// Here's an example of how to use it through our framework.  We specify the
+// lookup exactly as described in the Vega documentation:
+// https://vega.github.io/vega/docs/transforms/lookup/
+console.log("Vega lookup example: join the beers and breweries tables by brewery_id");
 t = {
-  sources: [beers,breweries], // list all sources for our records. The first source (beers) is assumed to be the lefthand source for the join
-  ops: ["join"], // list all verbs for our records
+  sources: [beers,breweries], // list all sources for our records. The first source (beers) is assumed to be the primary (i.e., lefthand) source for the lookup
+  ops: ["lookup"], // list all transform operators for our records
   transforms: [
     {
-      op: "join", // specify the join verb in Vega
-      args: [['brewery_id', 'brewery_id']], // specify the attributes to join by for the lefthand (beers) and righthand (breweries) data sources
-      toJoin: breweries // specify the righthand data source to join with (this is a BaseDataset object)
+      "type": "lookup", // specify the lookup transform operator in Vega
+      "from": "breweries", // specify the secondary stream
+      "key":  "brewery_id", // key to join on in the secondary stream (breweries)
+      "fields": ["brewery_id"], // key to join on in the primary stream (beers)
+      "values": ["brewery-name","city","state"] // what attributes to include from the secondary stream (breweries)
     }
   ]
 };
@@ -97,4 +98,3 @@ const beersByBrewery: BaseDataset = executeDataTransformation(t);
 // Check the results in the final BaseDataset object.
 console.log(beersByBrewery.records[0]);
 
-*/
