@@ -41,7 +41,7 @@ console.log(hoppyBeerNames.records[0]);
 console.log("group by example: group by beer style, calculate aggregate statistics, filter styles with too few examples, and sort in descending order by mean intensity");
 t = {
   sources: [beers],
-  ops: ["groupby","rollup","filter", "orderby"],
+  ops: ["formula","aggregate","filter", "collect"],
   transforms: [
     { // calculate beer intensity
       "type": "formula",
