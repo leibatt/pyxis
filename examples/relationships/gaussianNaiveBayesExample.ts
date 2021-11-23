@@ -39,7 +39,7 @@ dtrm.train(cars.records);
 
 // With trained relationship models, we can actually use the model to predict
 // output values. Here's an example of predicting the output value for the
-// first record of the cars dataset:
+// second record of the cars dataset:
 const prediction_result: ValueType = dtrm.predict(cars.records[1]);
 console.log("record to predict:",cars.records[1].values);
 console.log("Gaussian NB prediction:",prediction_result);

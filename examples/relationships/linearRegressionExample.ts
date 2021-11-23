@@ -1,6 +1,6 @@
 import * as carsDataset from '../../datasets/cars.json';
 import { AttributeType, Dataset, jsonObjectToDataset, ValueType } from '../../src/dataset';
-import { KNNRelationshipModel } from '../../src/relationship/KNNRelationshipModel';
+import { LinearRegressionRelationshipModel } from '../../src/relationship/LinearRegressionRelationshipModel';
 
 // This example uses the cars dataset, originally from the vega-datasets
 // repository: https://github.com/vega/vega-datasets/blob/next/data/cars.json
@@ -8,11 +8,11 @@ import { KNNRelationshipModel } from '../../src/relationship/KNNRelationshipMode
 const cars: Dataset = jsonObjectToDataset(carsDataset,"cars");
 console.log("first row of cars dataset:",cars.records[0]);
 
-// Now, we want to specify a new relationship model. Specifically, a KNN
-// classifier relationship. To do this, we just need to create a new KNN
-// relationship model object, and specify which data attributes are involved in
-// the relationship:
-const dtrm: KNNRelationshipModel = new KNNRelationshipModel(
+// Now, we want to specify a new relationship model. Specifically, a linear
+// regression classifier relationship. To do this, we just need to create a new
+// linear regression relationship model object, and specify which data
+// attributes are involved in the relationship:
+const dtrm: LinearRegressionRelationshipModel = new LinearRegressionRelationshipModel(
   "cars", // give the dataset a name, we can just call it cars
   [ // input attributes, the attributes used to predict a certain outcome
     {
@@ -29,8 +29,8 @@ const dtrm: KNNRelationshipModel = new KNNRelationshipModel(
     attributeType: AttributeType.quantitative
   }
 );
-console.log("KNN relationship input attributes:",dtrm.inputAttributes);
-console.log("KNN relationship output attribute:",dtrm.outputAttribute);
+console.log("Linear regression relationship input attributes:",dtrm.inputAttributes);
+console.log("Linear regression relationship output attribute:",dtrm.outputAttribute);
 
 // Now, we can train the relationship model on some real data, so we can use it
 // to infer the desired relationship. Here, we can train the model using the
@@ -42,5 +42,5 @@ dtrm.train(cars.records);
 // second record of the cars dataset:
 const prediction_result: ValueType = dtrm.predict(cars.records[1]);
 console.log("record to predict:",cars.records[1].values);
-console.log("KNN prediction:",prediction_result);
+console.log("Linear regression prediction:",prediction_result);
 
