@@ -1,5 +1,14 @@
-import {sortObject, smartStringify} from '../src/util';
+import { sortObject, smartStringify, convertToIntegers } from '../src/util';
 
+describe("#convertToIntegers", () => {
+  test("produces valid mappings", () => {
+    const input = [3,3,null,1,1,1,50];
+    const { mapped, mapping } = convertToIntegers(input);
+    expect(mapping).toHaveLength(4);
+    expect(mapping).toEqual([3,null,1,50]);
+    expect(mapped).toEqual([0,0,1,2,2,2,3]);
+  });
+});
 describe("#sortObject", () => {
   test("basic types are returned as-is", () => {
     const vals: Record<string, unknown>[] = [{d:"c"},{d:1},{d:null},{d:undefined},{d:true}];
