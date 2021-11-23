@@ -1,9 +1,9 @@
 import { ValueType } from './dataset'
 
 // takes a list of items and converts them to a list of integers, along with
-// the mapping from value to integer. Assumes the input is NOT integers.
-// The index position of the target value in the mapping array is the desired
-// output integer equivalent.
+// the mapping from value to integer. Only uses as many integers as there are
+// unique values (i.e., model classes).  The index position of the target value
+// in the mapping array is the desired output integer equivalent.
 export function convertToIntegers(items: ValueType[]): { mapped: number[], mapping: ValueType[] } {
   const mapped: number[] = [];
   const mapping: ValueType[] = [];

@@ -3,8 +3,8 @@ import { MultivariateRelationshipModel } from './relationshipModel';
 import { DataRecord, Attribute, AttributeType, ValueType } from '../dataset';
 import { GaussianNB } from 'ml-naivebayes';
 
-// NOTE: this the 'ml-naivebayes' library assumes that at least two input
-// attributes are included for modeling purposes
+// NOTE: the 'ml-naivebayes' library assumes that at least two input attributes
+// are included for modeling purposes
 
 export class GaussianNaiveBayesRelationshipModel implements MultivariateRelationshipModel {
   name: string; // name of the model
