@@ -61,6 +61,9 @@ export function dataRecordToJson(r: BaseDataRecord): Record<string, ValueType | 
 // assuming the TypeScript JSON import was used to create the JSON object
 export function jsonObjectToDataset(datasetObject: Record<string, ValueType | null>[], name: string = null): BaseDataset {
   const keys: string[] = Object.keys(datasetObject);
+  if(keys.indexOf("default") >= 0) {
+    keys.splice(keys.indexOf("default"),1); // get rid of 'default'
+  }
   const records: DataRecord[] = keys.map((k) => jsonToDataRecord(datasetObject[k]));
   return new BaseDataset(name ? name : "dataset-"+uuid.v4(),records);
 }
