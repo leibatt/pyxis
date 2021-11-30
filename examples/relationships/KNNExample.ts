@@ -12,7 +12,7 @@ console.log("first row of cars dataset:",cars.records[0]);
 // classifier relationship. To do this, we just need to create a new KNN
 // relationship model object, and specify which data attributes are involved in
 // the relationship:
-const dtrm: KNNRelationshipModel = new KNNRelationshipModel(
+const knnrm: KNNRelationshipModel = new KNNRelationshipModel(
   "cars", // give the dataset a name, we can just call it cars
   [ // input attributes, the attributes used to predict a certain outcome
     {
@@ -29,18 +29,18 @@ const dtrm: KNNRelationshipModel = new KNNRelationshipModel(
     attributeType: AttributeType.quantitative
   }
 );
-console.log("KNN relationship input attributes:",dtrm.inputAttributes);
-console.log("KNN relationship output attribute:",dtrm.outputAttribute);
+console.log("KNN relationship input attributes:",knnrm.inputAttributes);
+console.log("KNN relationship output attribute:",knnrm.outputAttribute);
 
 // Now, we can train the relationship model on some real data, so we can use it
 // to infer the desired relationship. Here, we can train the model using the
 // records of the cars dataset:
-dtrm.train(cars.records);
+knnrm.train(cars.records);
 
 // With trained relationship models, we can actually use the model to predict
 // output values. Here's an example of predicting the output value for the
 // second record of the cars dataset:
-const prediction_result: ValueType = dtrm.predict(cars.records[1]);
+const prediction_result: ValueType = knnrm.predict(cars.records[1]);
 console.log("record to predict:",cars.records[1].values);
 console.log("KNN prediction:",prediction_result);
 

@@ -26,7 +26,7 @@ export class IsolationForestRelationshipModel implements OutlierRelationshipMode
 
     for(let i = 0; i < trainingSet.length; i++) {
       const r = trainingSet[i];
-      const nr = r.attributes.reduce((c,a) => { c[a.name] = r.getValueByName(a.name); return c; },{});
+      const nr = this.inputAttributes.reduce((c,a) => { c[a.name] = r.getValueByName(a.name); return c; },{});
       dataset.push(nr);
     }
     this.model = new IsolationForest();
