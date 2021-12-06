@@ -4,7 +4,7 @@ import { KNNRelationshipModel } from '../../src/relationship/KNNRelationshipMode
 
 describe('KNNRelationshipModel', () => {
   test('#constructor works', () => {
-    const dtrm: KNNRelationshipModel = new KNNRelationshipModel(
+    const knnm: KNNRelationshipModel = new KNNRelationshipModel(
       "test",
       [ // input attributes
         {
@@ -17,12 +17,12 @@ describe('KNNRelationshipModel', () => {
         attributeType: AttributeType.quantitative
       }
     );
-    expect(dtrm.name).toEqual("test");
-    expect(dtrm.model).toBeNull();
+    expect(knnm.name).toEqual("test");
+    expect(knnm.model).toBeNull();
   });
   test('#train runs without errors', () => {
     const cars: Dataset = jsonObjectToDataset(carsDataset,"cars");
-    const dtrm: KNNRelationshipModel = new KNNRelationshipModel(
+    const knnm: KNNRelationshipModel = new KNNRelationshipModel(
       "cars",
       [ // input attributes
         {
@@ -39,11 +39,11 @@ describe('KNNRelationshipModel', () => {
         attributeType: AttributeType.quantitative
       }
     );
-    expect(() => { dtrm.train(cars.records); }).not.toThrow();
+    expect(() => { knnm.train(cars.records); }).not.toThrow();
   });
   test('#predict runs without errors', () => {
     const cars: Dataset = jsonObjectToDataset(carsDataset,"cars");
-    const dtrm: KNNRelationshipModel = new KNNRelationshipModel(
+    const knnm: KNNRelationshipModel = new KNNRelationshipModel(
       "cars",
       [ // input attributes
         {
@@ -60,8 +60,8 @@ describe('KNNRelationshipModel', () => {
         attributeType: AttributeType.quantitative
       }
     );
-    dtrm.train(cars.records);
-    const res: ValueType = dtrm.predict(cars.records[0]);
+    knnm.train(cars.records);
+    const res: ValueType = knnm.predict(cars.records[0]);
     expect(res).toEqual(expect.anything());
   });
   test('#train throws error if training set does not exist', () => {
@@ -69,16 +69,16 @@ describe('KNNRelationshipModel', () => {
       {"name":"x", "attributeType": AttributeType.quantitative},
       {"name":"y", "attributeType": AttributeType.quantitative}
     ];
-    const dtrm: KNNRelationshipModel = new KNNRelationshipModel(
+    const knnm: KNNRelationshipModel = new KNNRelationshipModel(
       "y=x",
       // input attributes
       attributes.filter(a => a.name === "x"),
       // output attribute
       attributes.filter(a => a.name === "y")[0]
     );
-    expect(() => { return dtrm.train(null) }).toThrow("No training data provided.");
-    expect(() => { return dtrm.train(undefined) }).toThrow("No training data provided.");
-    expect(() => { return dtrm.train([]) }).toThrow("No training data provided.");
+    expect(() => { return knnm.train(null) }).toThrow("No training data provided.");
+    expect(() => { return knnm.train(undefined) }).toThrow("No training data provided.");
+    expect(() => { return knnm.train([]) }).toThrow("No training data provided.");
   });
   test('#predict 3 clusters', () => {
     const dataRecords: BaseDataRecord[] = [];
@@ -116,19 +116,19 @@ describe('KNNRelationshipModel', () => {
         i+"-"+2
       ));
     }
-    const dtrm: KNNRelationshipModel = new KNNRelationshipModel(
+    const knnm: KNNRelationshipModel = new KNNRelationshipModel(
       "predict 3 clusters",
       // input attributes
       attributes.filter(a => a.name === "x"),
       // output attribute
       attributes.filter(a => a.name === "y")[0]
     );
-    dtrm.train(dataRecords);
-    let res: ValueType = dtrm.predict(dataRecords[5]);
+    knnm.train(dataRecords);
+    let res: ValueType = knnm.predict(dataRecords[5]);
     expect(res).toEqual(0);
-    res = dtrm.predict(dataRecords[15]);
+    res = knnm.predict(dataRecords[15]);
     expect(res).toEqual(1);
-    res = dtrm.predict(dataRecords[25]);
+    res = knnm.predict(dataRecords[25]);
     expect(res).toEqual(2);
   });
 });

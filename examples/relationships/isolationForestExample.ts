@@ -3,10 +3,6 @@ import { AttributeType, Attribute, Dataset, jsonObjectToDataset, ValueType } fro
 import { IsolationForestRelationshipModel } from '../../src/relationship/IsolationForestRelationshipModel';
 
 
-// "Flipper Length (mm)"
-// "Species"
-// "Culmen Length (mm)"
-
 // This example uses the palmerpenguins dataset, originally from here:
 // https://allisonhorst.github.io/palmerpenguins/
 // We can load the penguins dataset from the /datasets folder as follows:
