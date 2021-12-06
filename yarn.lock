@@ -5117,6 +5117,13 @@ vega-selections@^5.1.5:
     vega-expression "^4.0.0"
     vega-util "^1.15.2"
 
+vega-statistics@^1.7.10:
+  version "1.7.10"
+  resolved "https://registry.yarnpkg.com/vega-statistics/-/vega-statistics-1.7.10.tgz#4353637402e5e96bff2ebd16bd58e2c15cac3018"
+  integrity sha512-QLb12gcfpDZ9K5h3TLGrlz4UXDH9wSPyg9LLfOJZacxvvJEPohacUQNrGEAVtFO9ccUCerRfH9cs25ZtHsOZrw==
+  dependencies:
+    d3-array "^2.7.1"
+
 vega-statistics@^1.7.9, vega-statistics@~1.7.9:
   version "1.7.9"
   resolved "https://registry.yarnpkg.com/vega-statistics/-/vega-statistics-1.7.9.tgz#feec01d463e1b50593d890d20631f72138fcb65d"

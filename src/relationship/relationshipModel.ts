@@ -12,7 +12,7 @@ export interface RelationshipModel {
 // used to define the required parameters for determining a meaningful data
 // relationship for a univariate observation
 export interface UnivariateRelationshipModel extends RelationshipModel {
-  inputAttributes: Attribute; // inputs used to simulate output
+  inputAttribute: Attribute; // inputs used to simulate output
 
   // for the given record, simulate the output attribute value.
   simulate: () => ValueType;
