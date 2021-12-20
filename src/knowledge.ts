@@ -1,5 +1,10 @@
 import { DataRecord } from './dataset';
 
+// The structure for user domain knowledge was adapted from the work by Gotz,
+// Zhou and Aggarwal: Gotz, D., Zhou, M.X. and Aggarwal, V., 2006, October.
+// Interactive visual synthesis of analytic knowledge. In 2006 IEEE Symposium
+// On Visual Analytics Science And Technology (pp. 51-58). IEEE.
+
 // handy type for categorizing the types of knowledge important for the analysis session
 export type KnowledgeType = string;
 
