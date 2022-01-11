@@ -1,14 +1,57 @@
 import { op } from 'arquero';
 import * as moviesRaw from '../../datasets/movies.json';
 import * as oscarsRaw from '../../datasets/oscars.json';
-import { Attribute, ValueType, BaseDataset, jsonObjectToDataset } from '../../src/dataset';
+import { Attribute, AttributeType, ValueType, BaseDataset, jsonObjectToDataset } from '../../src/dataset';
 import { ArqueroDataTransformation, executeDataTransformation } from '../../src/transformation/arquero';
 import { LinearRegressionRelationshipModel } from '../../src/relationship/LinearRegressionRelationshipModel';
+import { Concept, DomainKnowledgeNode, Instance, KnowledgeType } from '../../src/knowledge';
 import { Evidence } from '../../src/evidence';
+import { Insight } from '../../src/insight';
 
+// In this example, we will be recreating the movies dataset exploration scenario proposed by Amar et al:
+// Amar, R., Eagan, J. and Stasko, J., 2005, October. Low-level components of
+// analytic activity in information visualization. In IEEE Symposium on
+// Information Visualization, 2005. INFOVIS 2005. (pp. 111-117). IEEE.
+
+// Perhaps an interesting article on movie lengths spurred our analysis, e.g.,
+// https://www.businessinsider.com/are-movies-getting-longer-2016-6
+// We can record our domain knowledge using a knowledge node.
+const filmKnowledge: KnowledgeType = "FilmKNowledge";
+const articleConcept: Concept = {
+  name: "MediaArticle",
+  ctype: filmKnowledge,
+  parentTypes: []
+};
+const qualityConcept: Concept = {
+  name: "FilmQuality",
+  ctype: filmKnowledge,
+  parentTypes: []
+};
+
+const biArticle: Instance = {
+  name: "BusinessInsiderArticle",
+  id: "in-bi-mv-ln",
+  coreConcept: articleConcept,
+  relevantConcepts: [qualityConcept],
+  data: {
+    attributes: [{ name: "link", attributeType: AttributeType.nominal }],
+    values: {"name": "https://www.businessinsider.com/are-movies-getting-longer-2016-6"},
+    id: "dr-bi-mv-ln"
+  }
+};
+
+// We create a knowledge node representing our understanding of how film length
+// may affect quality or not.
+const knowledgeNode: DomainKnowledgeNode = new DomainKnowledgeNode("filmQualityKnowledge",biArticle);
+
+// To investigate evidence, we will use the movies dataset and oscars dataset
+// in this example (see README for source details).
 const movies: BaseDataset = jsonObjectToDataset(moviesRaw,"beers");
 const oscars: BaseDataset = jsonObjectToDataset(oscarsRaw,"breweries");
 
+// Our overall goal is to assess the relationship (if any) between movie length and
+// movie popularity for award-winning movies over a ten year period.  First, we
+// need to preprocess the data to identify award winning movies.
 console.log("filter the oscars dataset for award winners between 2001 and 2011");
 const filterTransformation: ArqueroDataTransformation = {
   sources: [oscars], // sources lists all Dataset objects involved in the transformation
@@ -28,9 +71,10 @@ const filterTransformation: ArqueroDataTransformation = {
     }
   ]
 };
+// We record the collection of award-winning movies as our first evidence node.
 const ev1: Evidence = {
-  name: "filter oscars for winners between 2001 and 2011",
-  description: "Amar et al. 2005 evidence example 1",
+  name: "amar2005-1",
+  description: "Oscar-winning movies between 2001 and 2011. Amar et al. 2005 evidence example 1",
   timestamp: Date.now(),
   sourceEvidence: [],
   targetEvidence: [],
@@ -42,6 +86,8 @@ const winners: BaseDataset = ev1.results();
 winners.sources = [oscars];
 console.log(winners.records[0]);
 
+// Now, we want additional information about each movie, e.g., movie length, so
+// we join our winners dataset with the movies dataset.
 console.log("join the movies and winners tables by movie name");
 const joinTransformation = {
   sources: [movies,winners],
@@ -75,9 +121,10 @@ const joinTransformation = {
     }
   ]
 };
+// We store the joined table as our second evidence node, and link it to the first.
 const ev2: Evidence = {
-  name: "join movies and winners",
-  description: "Amar et al. 2005 evidence example 2",
+  name: "amar2005-2",
+  description: "Oscar-winning movies between 2001 and 2011 with additional details. Amar et al. 2005 evidence example 2",
   timestamp: Date.now(),
   sourceEvidence: [ev1],
   targetEvidence: [],
@@ -91,6 +138,9 @@ winnersInfo.sources = [movies,winners];
 console.log(winnersInfo.records[0]);
 console.log(winnersInfo.records.length);
 
+// Now that we have the collection of movies we are interested in and the
+// necessary details for assessing our target relationship (movie length and
+// popularity), we can construct the relationship.
 console.log("create data relationship between movie length and oscar wins");
 const lrm: LinearRegressionRelationshipModel = new LinearRegressionRelationshipModel(
   "movie length predicts total oscar wins",
@@ -98,10 +148,10 @@ const lrm: LinearRegressionRelationshipModel = new LinearRegressionRelationshipM
   winnersInfo.records[0].attributes.filter((a: Attribute) => a.name === "total_wins")[0]
 );
 lrm.train(winnersInfo.records);
-
+// We store the final relationship as our third evidence node.
 const ev3: Evidence = {
-  name: "movie length predicts total oscar wins",
-  description: "Amar et al. 2005 evidence example 3",
+  name: "amar2005-3",
+  description: "movie length predicts total oscar wins. Amar et al. 2005 evidence example 3",
   timestamp: Date.now(),
   sourceEvidence: [ev2],
   targetEvidence: [],
@@ -110,3 +160,14 @@ const ev3: Evidence = {
   results: () => winnersInfo
 };
 ev2.targetEvidence.push(ev3);
+
+// Finally, we can formally connect our domain knowledge (knowledge node) and analytic knowledge (evidence nodes) to form a new insight:
+const movieInsight: Insight = {
+  name: "amar2005insight",
+  description: "connecting what was learned in an article with movies data",
+  domainKnowledge: [knowledgeNode],
+  analyticKnowledge: [ev1, ev2, ev3],
+  sourceInsights: [],
+  targetInsights: []
+};
+console.log(movieInsight);

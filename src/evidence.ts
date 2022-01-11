@@ -13,9 +13,9 @@ export interface Evidence {
   sourceEvidence?: Evidence[]; // previous evidence needed to derive this evidence
   targetEvidence?: Evidence[]; // later evidence derived (at least in part) from this evidence
 
-  transformation: DataTransformation; // how to pre-process the data before building the relationship
+  transformation: DataTransformation; // how to pre-process the data to uncover the desired evidence.
                                       // also includes references to the source datasets!
-  relationshipModel: RelationshipModel;
+  relationshipModel: RelationshipModel; // the data relationship captured by the evidence, if applicable
 
   // used to calculate what percentage of the original data records were used to compute this evidence
   // only return the source records used, not all source records

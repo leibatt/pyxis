@@ -20,7 +20,7 @@ export interface Concept {
 export interface Instance {
   name: string;
   id: number | string;
-  coreConcept: Concept; // main Conceept type associated with this instance
+  coreConcept: Concept; // main Concept type associated with this instance
   relevantConcepts?: Concept[]; // other relevant concepts !== ctype
   data?: DataRecord; // associated attributes for this instance and their values
 }
