@@ -8,7 +8,8 @@ export enum AttributeType {
   temporal = "temporal"
 }
 
-// sets attribute type by default, may not get things right for ordinal
+// sets attribute type by default, may not get things right for ordinal or
+// temporal
 export const AttributeTypeMapping: Record<string, AttributeType | null> = {
   string: AttributeType.nominal,
   number: AttributeType.quantitative,
@@ -32,7 +33,7 @@ export interface Attribute {
 }
 
 // types of data values within an attribute
-export type ValueType = string | boolean | number | bigint;
+export type ValueType = string | boolean | number | bigint | Date;
 
 export interface DataRecord {
   attributes: Attribute[]; // the attributes stored in this record
@@ -43,12 +44,22 @@ export interface DataRecord {
   getValueByIndex?: (index: number) => ValueType
 }
 
-export function jsonToDataRecord(record: Record<string, ValueType | null>, id: string = null): BaseDataRecord {
+export function jsonToDataRecord(record: Record<string, ValueType | null>, id: string = null, typeHints: Record<string, AttributeType> = {}): BaseDataRecord {
   const attributes: Attribute[] = (Object.keys(record)).map((k) => {
-    return {
-      name: k,
-      attributeType: getAttributeType(typeof record[k])
-    };
+    if(k in typeHints) {
+      if(typeHints[k] === AttributeType.temporal) {
+        record[k] = new Date(record[k] as string); // convert to Date object
+      }
+      return {
+        name: k,
+        attributeType: typeHints[k]
+      };
+    } else {
+      return {
+        name: k,
+        attributeType: getAttributeType(typeof record[k])
+      };
+    }
   });
   return new BaseDataRecord(attributes,record, id ? id : "record-"+uuid.v4());
 }
@@ -59,12 +70,12 @@ export function dataRecordToJson(r: BaseDataRecord): Record<string, ValueType | 
 }
 
 // assuming the TypeScript JSON import was used to create the JSON object
-export function jsonObjectToDataset(datasetObject: Record<string, ValueType | null>[], name: string = null): BaseDataset {
+export function jsonObjectToDataset(datasetObject: Record<string, ValueType | null>[], name: string = null, typeHints: Record<string, AttributeType> = {}): BaseDataset {
   const keys: string[] = Object.keys(datasetObject);
   if(keys.indexOf("default") >= 0) {
     keys.splice(keys.indexOf("default"),1); // get rid of 'default'
   }
-  const records: DataRecord[] = keys.map((k) => jsonToDataRecord(datasetObject[k]));
+  const records: DataRecord[] = keys.map((k) => jsonToDataRecord(datasetObject[k],null,typeHints));
   return new BaseDataset(name ? name : "dataset-"+uuid.v4(),records);
 }
 

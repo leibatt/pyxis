@@ -3,7 +3,7 @@ code repository for the formalizing visualization tasks research project.
 
 to install dependencies use `yarn`
 
-to build the codebase use `yarn build`
+to build the codebase use `yarn build`. Building the source code is fast (a few seconds) but building the examples may take a while (e.g., ~70-80 seconds).
 
 to run tests and do linting use `yarn test`
 
