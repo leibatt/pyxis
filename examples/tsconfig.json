@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "outDir": "../build",
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "declaration": false,
+    "skipLibCheck": true,
+    "noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "typeRoots": [
+      "./types",
+      "./node_modules/@types"
+    ]
+  },
+  "files": [
+    "relationships/KDEExample.ts",
+    "relationships/KNNExample.ts",
+    "relationships/decisionTreeExample.ts",
+    "relationships/gaussianNaiveBayesExample.ts",
+    "relationships/isolationForestExample.ts",
+    "relationships/linearRegressionExample.ts",
+    "transformations/arquero.ts",
+    "transformations/vega.ts",
+    "use_cases/amar.ts",
+    "use_cases/north.ts",
+    "use_cases/mathisen.ts"
+  ],
+  "include": ["../src/**/*.ts", "../types/*.d.ts", "../lib/decision-tree-js/decision-tree.js"]
+}
