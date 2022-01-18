@@ -29,7 +29,7 @@ const aggregateTransformation: ArqueroDataTransformation = {
     }
   ]
 };
-// We store the joined table as our second evidence node, and link it to the first.
+// We store the extrema as our first evidence node
 const ev1: Evidence = {
   name: "north2006-1",
   description: "Minimum and maximum rents for 2 bedroom homes. North 2006 evidence example 1",

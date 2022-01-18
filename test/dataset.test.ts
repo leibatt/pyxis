@@ -52,6 +52,18 @@ describe('dataset.ts tests', () => {
         expect(dr.values[dr.attributes[i].name]).toEqual(or[k]);
       });
     });
+    test('#jsonToDataRecord can parse date strings if requested', () => {
+      const or: Record<string, ValueType | null> = {
+        date1: "01/17/2022",
+        date2: "01/17/2022"
+      }
+      const dr: BaseDataRecord = jsonToDataRecord(or, null, { date1: AttributeType.temporal });
+      expect(dr.attributes[0].attributeType).toEqual(AttributeType.temporal);
+      expect(typeof dr.values["date1"]).toEqual("object");
+      expect((dr.values["date1"] as Date).getFullYear()).toEqual(2022);
+      expect(dr.attributes[1].attributeType).toEqual(AttributeType.nominal);
+      expect(typeof dr.values["date2"]).toEqual("string");
+    });
     test('#getValueByName retrieves correct values', () => {
       const or: Record<string, ValueType | null> = carsDataset[0];
       const dr: BaseDataRecord = jsonToDataRecord(or);
