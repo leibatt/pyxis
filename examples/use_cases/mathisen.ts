@@ -1,6 +1,6 @@
 import { op, desc } from 'arquero';
 import * as baltimoreCrimeRaw from '../../datasets/BPD_Part_1_Victim_Based_Crime_Data2.json';
-import { Attribute, AttributeType, BaseDataset, jsonObjectToDataset } from '../../src/dataset';
+import { AttributeType, BaseDataset, jsonObjectToDataset } from '../../src/dataset';
 import { ArqueroDataTransformation, executeDataTransformation } from '../../src/transformation/arquero';
 import { Concept, DomainKnowledgeNode, Instance, KnowledgeType } from '../../src/knowledge';
 import { Evidence } from '../../src/evidence';
@@ -55,7 +55,7 @@ const aggregateTransformation: ArqueroDataTransformation = {
     },
     {
       op: "filter",
-      args: [(d: Record<string, number>) => op.rank() <= 2]
+      args: [() => op.rank() <= 2]
     }
   ]
 };
