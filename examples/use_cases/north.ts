@@ -1,6 +1,5 @@
 import { op, bin } from 'arquero';
-import * as hudRentsRaw from '../../datasets/HUD_FY2021_50_County.json';
-import { Attribute, BaseDataset, jsonObjectToDataset } from '../../src/dataset';
+import { loadDataset, Attribute, BaseDataset } from '../../src/dataset';
 import { ArqueroDataTransformation, executeDataTransformation } from '../../src/transformation/arquero';
 import { NormalRelationshipModel } from '../../src/relationship/NormalRelationshipModel';
 import { Evidence } from '../../src/evidence';
@@ -13,7 +12,7 @@ import { Evidence } from '../../src/evidence';
 
 // To investigate evidence, we will use the rents dataset in this example (see
 // README for source details).
-const hudRents: BaseDataset = jsonObjectToDataset(hudRentsRaw,"HUD Rents 2021");
+const hudRents: BaseDataset = loadDataset("HUD_FY2021_50_County.json","HUD Rents 2021");
 
 console.log("calculate maximum and minimum rents for 2 bedroom homes");
 const aggregateTransformation: ArqueroDataTransformation = {

@@ -1,11 +1,10 @@
-import * as carsDataset from '../../datasets/cars.json';
-import { AttributeType, Dataset, jsonObjectToDataset, ValueType } from '../../src/dataset';
+import { loadDataset, AttributeType, Dataset, ValueType } from '../../src/dataset';
 import { LinearRegressionRelationshipModel } from '../../src/relationship/LinearRegressionRelationshipModel';
 
 // This example uses the cars dataset, originally from the vega-datasets
 // repository: https://github.com/vega/vega-datasets/blob/next/data/cars.json
 // We can load the cars dataset from the /datasets folder as follows:
-const cars: Dataset = jsonObjectToDataset(carsDataset,"cars");
+const cars: Dataset = loadDataset("cars.json","cars");
 console.log("first row of cars dataset:",cars.records[0]);
 
 // Now, we want to specify a new relationship model. Specifically, a linear

@@ -1,6 +1,5 @@
 import { op, desc } from 'arquero';
-import * as baltimoreCrimeRaw from '../../datasets/BPD_Part_1_Victim_Based_Crime_Data2.json';
-import { AttributeType, BaseDataset, jsonObjectToDataset } from '../../src/dataset';
+import { loadDataset, AttributeType, BaseDataset } from '../../src/dataset';
 import { ArqueroDataTransformation, executeDataTransformation } from '../../src/transformation/arquero';
 import { Concept, DomainKnowledgeNode, Instance, KnowledgeType } from '../../src/knowledge';
 import { Evidence } from '../../src/evidence';
@@ -25,7 +24,7 @@ const crime: Concept = {
 // We will use the (old) Baltimore Crime dataset in this example (see
 // README for source details).  Now load into our BaseDataset object,
 // specifying that CrimeDate is temporal
-const baltimoreCrime: BaseDataset = jsonObjectToDataset(baltimoreCrimeRaw,
+const baltimoreCrime: BaseDataset = loadDataset("BPD_Part_1_Victim_Based_Crime_Data2.json",
   "Baltimore Crime 2012 - 2017", { "CrimeDate": AttributeType.temporal });
 console.log("total records:",baltimoreCrime.records.length);
 console.log("first record:");

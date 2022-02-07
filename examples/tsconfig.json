@@ -22,6 +22,7 @@
     "relationships/KDEExample.ts",
     "relationships/KNNExample.ts",
     "relationships/decisionTreeExample.ts",
+    "relationships/decisionTreeExample2.ts",
     "relationships/gaussianNaiveBayesExample.ts",
     "relationships/isolationForestExample.ts",
     "relationships/linearRegressionExample.ts",

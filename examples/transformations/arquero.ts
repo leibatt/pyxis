@@ -1,7 +1,5 @@
 import { desc, op } from 'arquero';
-import * as beersRaw from '../../datasets/beers.json';
-import * as breweriesRaw from '../../datasets/breweries.json';
-import { ValueType, BaseDataset, jsonObjectToDataset } from '../../src/dataset';
+import { loadDataset, ValueType, BaseDataset } from '../../src/dataset';
 import { ArqueroDataTransformation, executeDataTransformation } from '../../src/transformation/arquero';
 
 // This example demonstrates how to create data transformation objects using our framework.
@@ -12,8 +10,8 @@ import { ArqueroDataTransformation, executeDataTransformation } from '../../src/
 // (see imports above).  You can import any JSON file automatically as a
 // BaseDataset object from our framework using the jsonObjectToDataset function
 // from 'src/datasets'.
-const beers: BaseDataset = jsonObjectToDataset(beersRaw,"beers");
-const breweries: BaseDataset = jsonObjectToDataset(breweriesRaw,"breweries");
+const beers: BaseDataset = loadDataset("beers.json","beers");
+const breweries: BaseDataset = loadDataset("breweries.json","breweries");
 
 // This is an example of how we can apply a filter transformation using Arquero.
 // t is a data transformation object. Data transformation objects can be linked

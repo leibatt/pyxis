@@ -1,7 +1,5 @@
 import { op } from 'arquero';
-import * as moviesRaw from '../../datasets/movies.json';
-import * as oscarsRaw from '../../datasets/oscars.json';
-import { Attribute, AttributeType, ValueType, BaseDataset, jsonObjectToDataset } from '../../src/dataset';
+import { loadDataset, Attribute, AttributeType, ValueType, BaseDataset } from '../../src/dataset';
 import { ArqueroDataTransformation, executeDataTransformation } from '../../src/transformation/arquero';
 import { LinearRegressionRelationshipModel } from '../../src/relationship/LinearRegressionRelationshipModel';
 import { Concept, DomainKnowledgeNode, Instance, KnowledgeType } from '../../src/knowledge';
@@ -46,8 +44,8 @@ const knowledgeNode: DomainKnowledgeNode = new DomainKnowledgeNode("filmQualityK
 
 // To investigate evidence, we will use the movies dataset and oscars dataset
 // in this example (see README for source details).
-const movies: BaseDataset = jsonObjectToDataset(moviesRaw,"beers");
-const oscars: BaseDataset = jsonObjectToDataset(oscarsRaw,"breweries");
+const movies: BaseDataset = loadDataset("movies.json","movies");
+const oscars: BaseDataset = loadDataset("oscars.json","oscars");
 
 // Our overall goal is to assess the relationship (if any) between movie length and
 // movie popularity for award-winning movies over a ten year period.  First, we
