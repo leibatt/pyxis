@@ -1,6 +1,9 @@
-import * as carsDataset from '../../datasets/cars.json'; // dataset for testing purposes
-import { AttributeType, Dataset, jsonObjectToDataset, ValueType} from '../../src/dataset';
+import * as path from 'path';
+import { loadJsonFile, AttributeType, Dataset, jsonObjectToDataset, ValueType} from '../../src/dataset';
 import { KDERelationshipModel } from '../../src/relationship/KDERelationshipModel';
+
+// dataset for testing purposes
+const carsDataset = loadJsonFile(path.join(__dirname,"..","..","datasets","cars.json"));
 
 describe('KDERelationshipModel', () => {
   test('#constructor works', () => {

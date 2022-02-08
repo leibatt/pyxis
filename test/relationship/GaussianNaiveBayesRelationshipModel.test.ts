@@ -1,6 +1,9 @@
-import * as carsDataset from '../../datasets/cars.json'; // dataset for testing purposes
-import { Attribute, AttributeType, BaseDataRecord, Dataset, jsonObjectToDataset, ValueType} from '../../src/dataset';
+import * as path from 'path';
+import { loadJsonFile, Attribute, AttributeType, BaseDataRecord, Dataset, jsonObjectToDataset, ValueType} from '../../src/dataset';
 import { GaussianNaiveBayesRelationshipModel } from '../../src/relationship/GaussianNaiveBayesRelationshipModel';
+
+// dataset for testing purposes
+const carsDataset = loadJsonFile(path.join(__dirname,"..","..","datasets","cars.json"));
 
 describe('GaussianNaiveBayesRelationshipModel', () => {
   test('#constructor works', () => {
