@@ -1,5 +1,8 @@
-import * as carsDataset from '../datasets/cars.json'; // dataset for testing purposes
-import {jsonObjectToDataset,jsonToDataRecord,BaseDataset,Dataset,BaseDataRecord,DataRecord,AttributeType,Attribute,ValueType} from '../src/dataset';
+import * as path from 'path';
+import { loadJsonFile,jsonObjectToDataset,jsonToDataRecord,BaseDataset,Dataset,BaseDataRecord,DataRecord,AttributeType,Attribute,ValueType} from '../src/dataset';
+
+// dataset for testing purposes
+const carsDataset = loadJsonFile(path.join(__dirname,"..","datasets","cars.json"));
 
 describe('dataset.ts tests', () => {
   describe('Attribute', () => {

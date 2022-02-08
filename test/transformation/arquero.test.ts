@@ -1,6 +1,9 @@
-import * as carsDataset from '../../datasets/cars.json';
-import { ValueType, BaseDataset, Dataset, jsonObjectToDataset } from '../../src/dataset';
+import * as path from 'path';
+import { loadJsonFile, ValueType, BaseDataset, Dataset, jsonObjectToDataset } from '../../src/dataset';
 import { ArqueroDataTransformation, executeDataTransformation } from '../../src/transformation/arquero';
+
+// dataset for testing purposes
+const carsDataset = loadJsonFile(path.join(__dirname,"..","..","datasets","cars.json"));
 
 describe('transformation/arquero.ts', () => {
   const cars: Dataset = jsonObjectToDataset(carsDataset,"cars");

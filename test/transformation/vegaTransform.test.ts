@@ -1,7 +1,10 @@
-import {Transforms,View, parse} from 'vega';
-import * as carsDataset from '../../datasets/cars.json';
-import { ValueType, BaseDataset, Dataset, DataRecord, jsonObjectToDataset, dataRecordToJson } from '../../src/dataset';
+import * as path from 'path';
+import { Transforms, View, parse } from 'vega';
+import { loadJsonFile, ValueType, BaseDataset, Dataset, DataRecord, jsonObjectToDataset, dataRecordToJson } from '../../src/dataset';
 import { VegaDataTransformation, executeDataTransformation } from '../../src/transformation/vegaTransform';
+
+// dataset for testing purposes
+const carsDataset = loadJsonFile(path.join(__dirname,"..","..","datasets","cars.json"));
 
 describe('transformation/vegaTransform.ts', () => {
   const cars: Dataset = jsonObjectToDataset(carsDataset,"cars");

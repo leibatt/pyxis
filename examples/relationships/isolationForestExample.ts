@@ -1,12 +1,11 @@
-import * as penguinsDataset from '../../datasets/penguins.json';
-import { AttributeType, Attribute, Dataset, jsonObjectToDataset, ValueType } from '../../src/dataset';
+import { loadDataset, AttributeType, Attribute, Dataset, ValueType } from '../../src/dataset';
 import { IsolationForestRelationshipModel } from '../../src/relationship/IsolationForestRelationshipModel';
 
 
 // This example uses the palmerpenguins dataset, originally from here:
 // https://allisonhorst.github.io/palmerpenguins/
 // We can load the penguins dataset from the /datasets folder as follows:
-const penguins: Dataset = jsonObjectToDataset(penguinsDataset,"penguins");
+const penguins: Dataset = loadDataset("penguins.json","penguins");
 console.log("first row of penguins dataset:",penguins.records[0]);
 
 // Now, we want to specify a new relationship model. Specifically, an isolation

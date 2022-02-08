@@ -1,6 +1,9 @@
-import * as carsDataset from '../../datasets/cars.json'; // dataset for testing purposes
-import { AttributeType, Dataset, jsonObjectToDataset, ValueType} from '../../src/dataset';
+import * as path from 'path';
+import { loadJsonFile, AttributeType, Dataset, jsonObjectToDataset, ValueType} from '../../src/dataset';
 import { NormalRelationshipModel } from '../../src/relationship/NormalRelationshipModel';
+
+// dataset for testing purposes
+const carsDataset = loadJsonFile(path.join(__dirname,"..","..","datasets","cars.json"));
 
 describe('NormalRelationshipModel', () => {
   test('#constructor works', () => {

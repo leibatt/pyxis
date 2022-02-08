@@ -1,6 +1,4 @@
-import * as beersRaw from '../../datasets/beers.json';
-import * as breweriesRaw from '../../datasets/breweries.json';
-import { BaseDataset, jsonObjectToDataset } from '../../src/dataset';
+import { loadDataset, BaseDataset } from '../../src/dataset';
 import { VegaDataTransformation, executeDataTransformation } from '../../src/transformation/vegaTransform';
 
 // This example demonstrates how to create data transformation objects using
@@ -13,8 +11,8 @@ import { VegaDataTransformation, executeDataTransformation } from '../../src/tra
 // introduction (see imports above).  You can import any JSON file
 // automatically as a BaseDataset object from our framework using the
 // jsonObjectToDataset function from 'src/datasets'.
-const beers: BaseDataset = jsonObjectToDataset(beersRaw,"beers");
-const breweries: BaseDataset = jsonObjectToDataset(breweriesRaw,"breweries");
+const beers: BaseDataset = loadDataset("beers.json","beers");
+const breweries: BaseDataset = loadDataset("breweries.json","breweries");
 
 // This is an example of how we can apply a filter transformation using Vega.
 // t is a data transformation object. Data transformation objects can be linked
