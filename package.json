@@ -4,7 +4,7 @@
   "description": "executable framework for defining visualization tasks",
   "main": "index.js",
   "repository": "git@github.com:leibatt/formalizing-vis-tasks.git",
-  "author": "Leilani Battle <leibatt@gmail.com>",
+  "author": "Leilani Battle <leibatt@cs.washington.edu>",
   "license": "MIT",
   "scripts": {
     "clean": "rm -rf build",
