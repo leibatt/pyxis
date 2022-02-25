@@ -30,7 +30,7 @@ export function executeDataTransformation(transformation: ArqueroDataTransformat
 }
 
 // translate a Dataset object to Arquero format
-function getArqueroTable (d: Dataset): aq.internal.ColumnTable {
+export function getArqueroTable (d: Dataset): aq.internal.ColumnTable {
   return aq.from(d.records.map(dataRecordToJson));
 }
 
