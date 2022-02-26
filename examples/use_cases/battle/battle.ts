@@ -1,5 +1,5 @@
 import { desc, op } from 'arquero';
-import { loadDataset, AttributeType, BaseDataset } from '../../../src/dataset';
+import { loadDataset, exportDatasetJson, AttributeType, BaseDataset } from '../../../src/dataset';
 import { ArqueroDataTransformation, executeDataTransformation } from '../../../src/transformation/arquero';
 import { Evidence } from '../../../src/evidence';
 
@@ -122,8 +122,10 @@ const ev2: Evidence = {
   relationshipModel: null,
   results: () => executeDataTransformation(groupedAggregateTransformation)
 };
+
 // In printing the results, we see the largest count for ac_class='A' (i.e., airplanes),
 // consistent with participants' answers
+console.log("Calculate instances of damage observe per aircraft type (ac_class).");
 const aircraftDamageData: BaseDataset = ev2.results();
 for(let i = 0; i < aircraftDamageData.records.length; i++) {
   console.log(aircraftDamageData.records[i]);
@@ -134,5 +136,98 @@ for(let i = 0; i < aircraftDamageData.records.length; i++) {
 // What relationships (if any) do you observe involving weather conditions
 // ([Precip], [Sky]) and strike frequency, or counts over time ([Incident
 // Date])?
+
+console.log("comparing precip and frequency");
+const grpPrecipTransformation: ArqueroDataTransformation = {
+  sources: [birdstrikes],
+  ops: ["filter","derive","groupby","rollup","orderby"], // list all verbs for our records
+  transforms: [
+    {
+      op: "filter",
+      args: [(d: Record<string, string>) => d["precip"] !== null && op.lower(d["precip"]) !== "none"]
+    },
+    {
+      op: "derive",
+      args: [{ year: (d: Record<string, Date>) => op.year(d["incident_date"]) }]
+    },
+    {
+      op: "groupby",
+      args: ["year","precip"]
+    },
+    {
+      op: "rollup",
+      args: [{ // count the times each part type was damaged
+        frequency: op.count()
+      }]
+    },
+    {
+      op: "orderby",
+      args: ["year"]
+    }
+  ]
+};
+const ev3_1: Evidence = {
+  name: "battle2019-3-1",
+  description: "Airplane has more occurrences of damage",
+  timestamp: Date.now(),
+  sourceEvidence: [],
+  targetEvidence: [],
+  transformation: grpPrecipTransformation,
+  relationshipModel: null,
+  results: () => executeDataTransformation(grpPrecipTransformation)
+};
+// we see variation in the results. Looking at precip results (ev3_1), we would
+// think bad weather leads to more strikes. See the relevant Vega-Lite figure
+// for more details.
+//exportDatasetJson(ev3_1.results(),"battle2019-3-1.json");
+
+console.log("comparing sky and frequency");
+const grpSkyTransformation: ArqueroDataTransformation = {
+  sources: [birdstrikes],
+  ops: ["filter","derive","groupby","rollup","orderby"], // list all verbs for our records
+  transforms: [
+    {
+      op: "filter",
+      args: [(d: Record<string, string>) => d.sky !== null && op.lower(d.sky) !== "none"]
+    },
+    {
+      op: "derive",
+      args: [{
+        year: (d: Record<string, Date>) => op.year(d["incident_date"]),
+        sky: (d: Record<string, Date>) => op.lower(d.sky)
+      }]
+    },
+    {
+      op: "groupby",
+      args: ["year","sky"]
+    },
+    {
+      op: "rollup",
+      args: [{ // count the times each part type was damaged
+        frequency: op.count()
+      }]
+    },
+    {
+      op: "orderby",
+      args: ["year"]
+    }
+  ]
+};
+const ev3_2: Evidence = {
+  name: "battle2019-3-2",
+  description: "Airplane has more occurrences of damage",
+  timestamp: Date.now(),
+  sourceEvidence: [],
+  targetEvidence: [],
+  transformation: grpSkyTransformation,
+  relationshipModel: null,
+  results: () => executeDataTransformation(grpSkyTransformation)
+};
+// However, when we look at sky (ev3_2), we see clear weather seems to lead to
+// more strikes. Also, we see that strikes increase with time for each sky
+// measure, but not for each precip measure (with the exception of "rain"). See
+// the Vega-Lite figure for more details.
+//exportDatasetJson(ev3_2.results(),"battle2019-3-2.json");
+
 
 
