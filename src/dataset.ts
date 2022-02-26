@@ -9,12 +9,12 @@ export function loadJsonFile(filepath: string): Record<string, ValueType | null>
 }
 
 // write JSON object to local filesystem, assumes a flat structure similar to CSV
-export function writeJsonFile(jsonData: Record<string, ValueType | null>[], filepath: string) {
+export function writeJsonFile(jsonData: Record<string, ValueType | null>[], filepath: string): void {
   fs.writeFileSync(filepath, JSON.stringify(jsonData));
 }
 
 // export a BaseDataset object to the datasets folder
-export function exportDatasetJson(dataset: BaseDataset, dataset_filename: string) {
+export function exportDatasetJson(dataset: BaseDataset, dataset_filename: string): void {
   writeJsonFile(dataset.records.map((r) => r.values), path.join(__dirname,"..","datasets",dataset_filename));
 }
 

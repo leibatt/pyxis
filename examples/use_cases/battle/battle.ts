@@ -179,7 +179,7 @@ const ev3_1: Evidence = {
 // we see variation in the results. Looking at precip results (ev3_1), we would
 // think bad weather leads to more strikes. See the relevant Vega-Lite figure
 // for more details.
-//exportDatasetJson(ev3_1.results(),"battle2019-3-1.json");
+exportDatasetJson(ev3_1.results(),"battle2019-3-1.json");
 
 console.log("comparing sky and frequency");
 const grpSkyTransformation: ArqueroDataTransformation = {
@@ -227,7 +227,7 @@ const ev3_2: Evidence = {
 // more strikes. Also, we see that strikes increase with time for each sky
 // measure, but not for each precip measure (with the exception of "rain"). See
 // the Vega-Lite figure for more details.
-//exportDatasetJson(ev3_2.results(),"battle2019-3-2.json");
+exportDatasetJson(ev3_2.results(),"battle2019-3-2.json");
 
 
 
