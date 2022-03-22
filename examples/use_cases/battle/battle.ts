@@ -144,11 +144,14 @@ const grpPrecipTransformation: ArqueroDataTransformation = {
   transforms: [
     {
       op: "filter",
-      args: [(d: Record<string, string>) => d["precip"] !== null && op.lower(d["precip"]) !== "none"]
+      args: [(d: Record<string, string>) => d.precip !== null && op.lower(d.precip) !== "none"]
     },
     {
       op: "derive",
-      args: [{ year: (d: Record<string, Date>) => op.year(d["incident_date"]) }]
+      args: [{
+        year: (d: Record<string, Date>) => op.year(d["incident_date"]),
+        precip: (d: Record<string, Date>) => op.lower(d.precip)
+      }]
     },
     {
       op: "groupby",
