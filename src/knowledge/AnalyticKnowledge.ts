@@ -1,6 +1,6 @@
 import { DataTransformation } from '../transformation/DataTransformation';
 import { BaseDataset,DataRecord } from '../dataset';
-import { RelationshipModel } from '../relationship/relationshipModel';
+import { RelationshipModel } from '../relationship/RelationshipModel';
 import { KnowledgeNode } from './KnowledgeNode';
 
 // Evidence represents some relationship within one or more datasets.
