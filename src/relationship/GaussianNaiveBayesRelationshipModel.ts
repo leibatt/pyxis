@@ -1,5 +1,5 @@
 import { convertToIntegers } from '../util';
-import { MultivariateRelationshipModel } from './relationshipModel';
+import { MultivariateRelationshipModel } from './RelationshipModel';
 import { DataRecord, Attribute, AttributeType, ValueType } from '../dataset';
 import { GaussianNB } from 'ml-naivebayes';
 

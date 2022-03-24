@@ -1,5 +1,5 @@
-import { DomainKnowledgeNode } from './knowledge';
-import { Evidence } from './evidence';
+import { DomainKnowledgeNode } from './knowledge/DomainKnowledge';
+import { AnalyticKnowledgeNode } from './knowledge/AnalyticKnowledge';
 
 // insight represents connecting analytic knowledge (evidence) with domain
 // knowledge (concept/instance).
@@ -7,7 +7,7 @@ export interface Insight {
   name: string;
   description: string;
   domainKnowledge: DomainKnowledgeNode[];
-  analyticKnowledge: Evidence[];
+  analyticKnowledge: AnalyticKnowledgeNode[];
 
   sourceInsights: Insight[]; // previous insights needed to derive this insight
   targetInsights: Insight[]; // later insights derived (at least in part) from this insight

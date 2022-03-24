@@ -1,5 +1,5 @@
 import { loadDataset, BaseDataset } from '../../src/dataset';
-import { VegaDataTransformation, executeDataTransformation } from '../../src/transformation/vegaTransform';
+import { VegaDataTransformation, executeDataTransformation } from '../../src/transformation/VegaTransform';
 
 // This example demonstrates how to create data transformation objects using
 // our framework.  These examples are backed by the Vega Dataflow, created at

@@ -1,4 +1,4 @@
-import { MultivariateRelationshipModel } from './relationshipModel';
+import { MultivariateRelationshipModel } from './RelationshipModel';
 import { DataRecord, Attribute, AttributeType, ValueType } from '../dataset';
 import { DecisionTreeRegression, DTOptions } from 'ml-cart';
 

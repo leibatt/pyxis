@@ -1,7 +1,7 @@
-import { Concept, Instance, DomainKnowledgeNode } from '../src/knowledge';
-import { AttributeType } from '../src/dataset';
+import { Concept, Instance, DomainKnowledgeNode } from '../../src/knowledge/DomainKnowledge';
+import { AttributeType } from '../../src/dataset';
 
-describe('knowledge.ts tests', () => {
+describe('DomainKnowledge.ts tests', () => {
   enum ConceptType {
     test1 = "test1",
     test2 = "test2",
@@ -113,65 +113,67 @@ describe('knowledge.ts tests', () => {
       const node1 = new DomainKnowledgeNode("n1", instance);
       const node2 = new DomainKnowledgeNode("n2", instance2);
       expect(node1.name).toEqual("n1");
+      expect(node1.id).toEqual(instance.id);
       expect(node2.name).toEqual("n2");
+      expect(node2.id).toEqual(instance2.id);
     });
-    describe('#addCauses', () => {
-      test('#addCauses adds node properly', () => {
+    describe('#addTargetKnowledge', () => {
+      test('#addTargetKnowledge adds node properly', () => {
         const node1 = new DomainKnowledgeNode("n1", instance);
         const node2 = new DomainKnowledgeNode("n2", instance2);
-        node1.addCauses(node2);
-        expect(node1.relatedTo).toHaveLength(0);
-        expect(node1.causes[0].instance.id).toEqual("ti2");
-        expect(node2.causedBy[0].instance.id).toEqual("ti1");
+        node1.addTargetKnowledge(node2);
+        expect(node1.relatedKnowledge).toHaveLength(0);
+        expect(node1.targetKnowledge[0].id).toEqual("ti2");
+        expect(node2.sourceKnowledge[0].id).toEqual("ti1");
       });
-      test('#addCauses ignores duplicates', () => {
+      test('#addTargetKnowledge ignores duplicates', () => {
         const node1 = new DomainKnowledgeNode("n1", instance);
         const node2 = new DomainKnowledgeNode("n2", instance2);
-        node1.addCauses(node2);
-        node1.addCauses(node2);
-        expect(node1.causes).toHaveLength(1);
-        expect(node2.causedBy).toHaveLength(1);
-      });
-    });
-    describe('#addCausedBy', () => {
-      test('#addCausedBy adds node properly', () => {
-        const node1 = new DomainKnowledgeNode("n1", instance);
-        const node2 = new DomainKnowledgeNode("n2", instance2);
-        node1.addCausedBy(node2);
-        expect(node1.relatedTo).toHaveLength(0);
-        expect(node1.causedBy[0].instance.id).toEqual("ti2");
-        expect(node2.causes[0].instance.id).toEqual("ti1");
-      });
-      test('#addCausedBy ignores duplicates', () => {
-        const node1 = new DomainKnowledgeNode("n1", instance);
-        const node2 = new DomainKnowledgeNode("n2", instance2);
-        node1.addCausedBy(node2);
-        node1.addCausedBy(node2);
-        expect(node1.causedBy).toHaveLength(1);
-        expect(node2.causes).toHaveLength(1);
+        node1.addTargetKnowledge(node2);
+        node1.addTargetKnowledge(node2);
+        expect(node1.targetKnowledge).toHaveLength(1);
+        expect(node2.sourceKnowledge).toHaveLength(1);
       });
     });
-    describe('#addRelatedTo', () => {
-      test('#addRelatedTo adds node properly', () => {
+    describe('#addSourceKnowledge', () => {
+      test('#addSourceKnowledge adds node properly', () => {
         const node1 = new DomainKnowledgeNode("n1", instance);
         const node2 = new DomainKnowledgeNode("n2", instance2);
-        node1.addRelatedTo(node2);
-        expect(node1.causes).toHaveLength(0);
-        expect(node1.causedBy).toHaveLength(0);
-        expect(node1.relatedTo[0].instance.id).toEqual("ti2");
-        expect(node2.relatedTo[0].instance.id).toEqual("ti1");
+        node1.addSourceKnowledge(node2);
+        expect(node1.relatedKnowledge).toHaveLength(0);
+        expect(node1.sourceKnowledge[0].id).toEqual("ti2");
+        expect(node2.targetKnowledge[0].id).toEqual("ti1");
       });
-      test('#addRelatedTo ignores duplicates', () => {
+      test('#addSourceKnowledge ignores duplicates', () => {
         const node1 = new DomainKnowledgeNode("n1", instance);
         const node2 = new DomainKnowledgeNode("n2", instance2);
-        node1.addRelatedTo(node2);
-        node1.addRelatedTo(node2);
-        expect(node1.causedBy).toHaveLength(0);
-        expect(node2.causedBy).toHaveLength(0);
-        expect(node1.causes).toHaveLength(0);
-        expect(node2.causes).toHaveLength(0);
-        expect(node1.relatedTo).toHaveLength(1);
-        expect(node2.relatedTo).toHaveLength(1);
+        node1.addSourceKnowledge(node2);
+        node1.addSourceKnowledge(node2);
+        expect(node1.sourceKnowledge).toHaveLength(1);
+        expect(node2.targetKnowledge).toHaveLength(1);
+      });
+    });
+    describe('#addRelatedKnowledge', () => {
+      test('#addRelatedKnowledge adds node properly', () => {
+        const node1 = new DomainKnowledgeNode("n1", instance);
+        const node2 = new DomainKnowledgeNode("n2", instance2);
+        node1.addRelatedKnowledge(node2);
+        expect(node1.targetKnowledge).toHaveLength(0);
+        expect(node1.sourceKnowledge).toHaveLength(0);
+        expect(node1.relatedKnowledge[0].id).toEqual("ti2");
+        expect(node2.relatedKnowledge[0].id).toEqual("ti1");
+      });
+      test('#addRelatedKnowledge ignores duplicates', () => {
+        const node1 = new DomainKnowledgeNode("n1", instance);
+        const node2 = new DomainKnowledgeNode("n2", instance2);
+        node1.addRelatedKnowledge(node2);
+        node1.addRelatedKnowledge(node2);
+        expect(node1.sourceKnowledge).toHaveLength(0);
+        expect(node2.sourceKnowledge).toHaveLength(0);
+        expect(node1.targetKnowledge).toHaveLength(0);
+        expect(node2.targetKnowledge).toHaveLength(0);
+        expect(node1.relatedKnowledge).toHaveLength(1);
+        expect(node2.relatedKnowledge).toHaveLength(1);
       });
     });
   });

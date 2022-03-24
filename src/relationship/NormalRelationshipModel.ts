@@ -1,5 +1,5 @@
 import { randomNormal, NormalDistribution } from 'vega-statistics';
-import { UnivariateRelationshipModel } from './relationshipModel';
+import { UnivariateRelationshipModel } from './RelationshipModel';
 import { DataRecord, Attribute, AttributeType, ValueType } from '../dataset';
 
 export class NormalRelationshipModel implements UnivariateRelationshipModel {
