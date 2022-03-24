@@ -1,6 +1,6 @@
 import * as path from 'path';
 import { loadJsonFile, ValueType, BaseDataset, Dataset, jsonObjectToDataset } from '../../src/dataset';
-import { ArqueroDataTransformation, executeDataTransformation } from '../../src/transformation/arquero';
+import { ArqueroDataTransformation, executeDataTransformation } from '../../src/transformation/Arquero';
 
 // dataset for testing purposes
 const carsDataset = loadJsonFile(path.join(__dirname,"..","..","datasets","cars.json"));
