@@ -1,4 +1,5 @@
 Datasets downloaded from:
+* `birdstrikes.json`: the birdstrikes dataset analyzed by Battle and Heer (EuroVis 2019). Original source [here](https://wildlife.faa.gov/search).
 * `beers.json`: the [introduction to Arquero](https://observablehq.com/@uwdata/introducing-arquero) on Observable
 * `breweries.json`: the [introduction to Arquero](https://observablehq.com/@uwdata/introducing-arquero) on Observable
 * `cars.json`: the [vega-datasets](https://github.com/vega/vega-datasets) project on Github.

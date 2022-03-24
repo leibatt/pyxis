@@ -1,9 +1,9 @@
 import { op } from 'arquero';
 import { loadDataset, Attribute, AttributeType, ValueType, BaseDataset } from '../../src/dataset';
-import { ArqueroDataTransformation, executeDataTransformation } from '../../src/transformation/arquero';
+import { ArqueroDataTransformation, executeDataTransformation } from '../../src/transformation/Arquero';
 import { LinearRegressionRelationshipModel } from '../../src/relationship/LinearRegressionRelationshipModel';
-import { Concept, DomainKnowledgeNode, Instance, KnowledgeType } from '../../src/knowledge';
-import { Evidence } from '../../src/evidence';
+import { Concept, DomainKnowledgeNode, Instance, KnowledgeType } from '../../src/knowledge/DomainKnowledge';
+import { AnalyticKnowledge, AnalyticKnowledgeNode } from '../../src/knowledge/AnalyticKnowledge';
 import { Insight } from '../../src/insight';
 
 // In this example, we will be recreating the movies dataset exploration scenario proposed by Amar et al:
@@ -70,17 +70,17 @@ const filterTransformation: ArqueroDataTransformation = {
   ]
 };
 // We record the collection of award-winning movies as our first evidence node.
-const ev1: Evidence = {
+const _ev1: AnalyticKnowledge = {
   name: "amar2005-1",
   description: "Oscar-winning movies between 2001 and 2011. Amar et al. 2005 evidence example 1",
   timestamp: Date.now(),
-  sourceEvidence: [],
-  targetEvidence: [],
   transformation: filterTransformation,
   relationshipModel: null,
   results: () => executeDataTransformation(filterTransformation)
 };
-const winners: BaseDataset = ev1.results();
+const ev1: AnalyticKnowledgeNode = new AnalyticKnowledgeNode("amar2005-1",_ev1);
+
+const winners: BaseDataset = ev1.analyticKnowledge.results();
 winners.sources = [oscars];
 console.log(winners.records[0]);
 
@@ -120,18 +120,18 @@ const joinTransformation = {
   ]
 };
 // We store the joined table as our second evidence node, and link it to the first.
-const ev2: Evidence = {
+const _ev2: AnalyticKnowledge = {
   name: "amar2005-2",
   description: "Oscar-winning movies between 2001 and 2011 with additional details. Amar et al. 2005 evidence example 2",
   timestamp: Date.now(),
-  sourceEvidence: [ev1],
-  targetEvidence: [],
   transformation: joinTransformation,
   relationshipModel: null,
   results: () => executeDataTransformation(joinTransformation)
 };
-ev1.targetEvidence.push(ev2);
-const winnersInfo: BaseDataset = ev2.results();
+const ev2: AnalyticKnowledgeNode = new AnalyticKnowledgeNode("amar2005-2",_ev2);
+ev2.addSourceKnowledge(ev1);
+
+const winnersInfo: BaseDataset = ev2.analyticKnowledge.results();
 winnersInfo.sources = [movies,winners];
 console.log(winnersInfo.records[0]);
 console.log(winnersInfo.records.length);
@@ -147,17 +147,16 @@ const lrm: LinearRegressionRelationshipModel = new LinearRegressionRelationshipM
 );
 lrm.train(winnersInfo.records);
 // We store the final relationship as our third evidence node.
-const ev3: Evidence = {
+const _ev3: AnalyticKnowledge = {
   name: "amar2005-3",
   description: "movie length predicts total oscar wins. Amar et al. 2005 evidence example 3",
   timestamp: Date.now(),
-  sourceEvidence: [ev2],
-  targetEvidence: [],
   transformation: null,
   relationshipModel: lrm,
   results: () => winnersInfo
 };
-ev2.targetEvidence.push(ev3);
+const ev3: AnalyticKnowledgeNode = new AnalyticKnowledgeNode("amar2005-3",_ev3);
+ev3.addSourceKnowledge(ev2);
 
 // Finally, we can formally connect our domain knowledge (knowledge node) and analytic knowledge (evidence nodes) to form a new insight:
 const movieInsight: Insight = {

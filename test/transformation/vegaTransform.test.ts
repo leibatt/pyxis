@@ -1,7 +1,7 @@
 import * as path from 'path';
 import { Transforms, View, parse } from 'vega';
 import { loadJsonFile, ValueType, BaseDataset, Dataset, DataRecord, jsonObjectToDataset, dataRecordToJson } from '../../src/dataset';
-import { VegaDataTransformation, executeDataTransformation } from '../../src/transformation/vegaTransform';
+import { VegaDataTransformation, executeDataTransformation } from '../../src/transformation/VegaTransform';
 
 // dataset for testing purposes
 const carsDataset = loadJsonFile(path.join(__dirname,"..","..","datasets","cars.json"));

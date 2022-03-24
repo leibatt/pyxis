@@ -1,4 +1,4 @@
-import { OutlierRelationshipModel } from './relationshipModel';
+import { OutlierRelationshipModel } from './RelationshipModel';
 import { DataRecord, Attribute, ValueType } from '../dataset';
 import { IsolationForest } from 'isolation-forest';
 

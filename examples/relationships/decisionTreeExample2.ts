@@ -15,7 +15,7 @@ const dtrm: DecisionTreeClassificationRelationshipModel = new DecisionTreeClassi
   [ // input attributes, the attributes used to predict a certain outcome
     {
       name: "Inside/Outside", // Attribute name from the baltimoreCrimes dataset
-      attributeType: AttributeType.quantitative // the type of attribute (quantitative, ordinal, or nominal)
+      attributeType: AttributeType.nominal // the type of attribute (quantitative, ordinal, or nominal)
     },
     {
       name: "Premise",
