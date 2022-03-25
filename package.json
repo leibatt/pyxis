@@ -11,7 +11,7 @@
     "build": "yarn build-src && yarn build-examples && yarn build-datasets",
     "build-src": "tsc",
     "build-examples": "tsc -p examples/tsconfig.json",
-    "build-datasets": "unzip datasets/birdstrikes.json.zip -d datasets; cp -R datasets build",
+    "build-datasets": "[ ! -d build/datasets ] && unzip datasets/birdstrikes.json.zip -d datasets; cp -R datasets build",
     "test": "jest --collectCoverage=true && yarn lint",
     "lint": "eslint ."
   },
