@@ -30,19 +30,6 @@ To copy the datasets to the build folder run:
 yarn build-datasets
 ``` 
 
-## Resolving Build Issue with  MultivariateLinearRegression
-
-NOTE: You may see an issue with building `MultivariateLinearRegression`, which is from an external package. To fix it do the following (from [here](https://github.com/mljs/regression-multivariate-linear/issues/15)):
-
-Add the following line to the end of the `regression-multivariate-linear.d.ts` file (located at `node\_modules/ml-regression-multivariate-linear/`):
-```
-export default MultivariateLinearRegression;
-```
-then remove this line in the MultivariateLinearRegression Class in the same file:
-```
-export = MultivariateLinearRegression;
-```
-
 # Testing Pyxis
 Make sure the code builds and the tests run properly before trying the examples. To run tests and do linting run:
 ```
