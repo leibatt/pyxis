@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "description": "executable framework for defining visualization tasks",
   "main": "index.js",
-  "repository": "anonymous",
-  "author": "anonymous",
+  "repository": "git@github.com:leibatt/formalizing-vis-tasks.git",
+  "author": "Leilani Battle <leibatt@cs.washington.edu>",
   "license": "MIT",
   "scripts": {
     "clean": "rm -rf build",
