@@ -1,5 +1,5 @@
-# formalizing-vis-tasks
-code repository for the formalizing visualization tasks research project.
+# pyxis
+code repository for the Pyxis project for formalizing visualization task research.
 
 to install dependencies use `yarn`
 
