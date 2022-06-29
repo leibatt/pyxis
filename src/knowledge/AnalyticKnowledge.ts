@@ -1,7 +1,7 @@
 import { DataTransformation } from '../transformation/DataTransformation';
 import { BaseDataset,DataRecord } from '../dataset';
 import { RelationshipModel } from '../relationship/RelationshipModel';
-import { KnowledgeNode } from './KnowledgeNode';
+import { Node } from '../Node';
 
 // Evidence represents some relationship within one or more datasets.
 // However analytic knowledge may also depend on 
@@ -34,7 +34,7 @@ export class AnalyticKnowledgeNode extends KnowledgeNode {
   constructor(name: string, analyticKnowledge: AnalyticKnowledge) {
     super(name);
     this.analyticKnowledge = analyticKnowledge;
-    this.id = this.analyticKnowledge.name;
+    this.name = this.analyticKnowledge.name;
   }
 }
 
