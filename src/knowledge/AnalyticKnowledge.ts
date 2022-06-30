@@ -28,7 +28,7 @@ export interface AnalyticKnowledge {
   complexity?: () => AnalyticKnowledgeNodeComplexity;
 }
 
-export class AnalyticKnowledgeNode extends KnowledgeNode {
+export class AnalyticKnowledgeNode extends Node {
   analyticKnowledge: AnalyticKnowledge;
 
   constructor(name: string, analyticKnowledge: AnalyticKnowledge) {

@@ -12,9 +12,8 @@ describe('DomainKnowledge.ts tests', () => {
     test('can specify concepts', () => {
       const concept: Concept = {
         name: "test concept",
-        ctype: ConceptType.test1,
-        parentTypes: [],
-        data: {
+        parentConcepts: [],
+        metadata: {
           attributes: [
             {
               name: "a",
@@ -32,9 +31,8 @@ describe('DomainKnowledge.ts tests', () => {
     test('can specify instances', () => {
       const concept: Concept = {
         name: "test concept",
-        ctype: ConceptType.test1,
-        parentTypes: [],
-        data: {
+        parentConcepts: [],
+        metadata: {
           attributes: [
             {
               name: "a",
@@ -46,10 +44,9 @@ describe('DomainKnowledge.ts tests', () => {
         }
       };
       const instance: Instance = {
-        id: "test instance",
         name: "test instance",
         coreConcept: concept,
-        data: {
+        metadata: {
           attributes: [
             {
               name: "a",
@@ -66,9 +63,8 @@ describe('DomainKnowledge.ts tests', () => {
   describe('DomainKnowledgeNode', () => {
       const concept: Concept = {
         name: "test concept",
-        ctype: ConceptType.test1,
-        parentTypes: [],
-        data: {
+        parentConcepts: [],
+        metadata: {
           attributes: [
             {
               name: "a",
@@ -80,10 +76,9 @@ describe('DomainKnowledge.ts tests', () => {
         }
       };
       const instance: Instance = {
-        id: "ti1",
-        name: "test instance",
+        name: "ti1",
         coreConcept: concept,
-        data: {
+        metadata: {
           attributes: [
             {
               name: "a",
@@ -95,10 +90,9 @@ describe('DomainKnowledge.ts tests', () => {
         }
       };
       const instance2: Instance = {
-        id: "ti2",
-        name: "another test instance",
+        name: "ti2",
         coreConcept: concept,
-        data: {
+        metadata: {
           attributes: [
             {
               name: "a",
@@ -113,67 +107,65 @@ describe('DomainKnowledge.ts tests', () => {
       const node1 = new DomainKnowledgeNode("n1", instance);
       const node2 = new DomainKnowledgeNode("n2", instance2);
       expect(node1.name).toEqual("n1");
-      expect(node1.id).toEqual(instance.id);
       expect(node2.name).toEqual("n2");
-      expect(node2.id).toEqual(instance2.id);
     });
-    describe('#addTargetKnowledge', () => {
-      test('#addTargetKnowledge adds node properly', () => {
+    describe('#addTarget', () => {
+      test('#addTarget adds node properly', () => {
         const node1 = new DomainKnowledgeNode("n1", instance);
         const node2 = new DomainKnowledgeNode("n2", instance2);
-        node1.addTargetKnowledge(node2);
-        expect(node1.relatedKnowledge).toHaveLength(0);
-        expect(node1.targetKnowledge[0].id).toEqual("ti2");
-        expect(node2.sourceKnowledge[0].id).toEqual("ti1");
+        node1.addTarget(node2);
+        expect(node1.related).toHaveLength(0);
+        expect(node1.target[0].name).toEqual("ti2");
+        expect(node2.source[0].name).toEqual("ti1");
       });
-      test('#addTargetKnowledge ignores duplicates', () => {
+      test('#addTarget ignores duplicates', () => {
         const node1 = new DomainKnowledgeNode("n1", instance);
         const node2 = new DomainKnowledgeNode("n2", instance2);
-        node1.addTargetKnowledge(node2);
-        node1.addTargetKnowledge(node2);
-        expect(node1.targetKnowledge).toHaveLength(1);
-        expect(node2.sourceKnowledge).toHaveLength(1);
-      });
-    });
-    describe('#addSourceKnowledge', () => {
-      test('#addSourceKnowledge adds node properly', () => {
-        const node1 = new DomainKnowledgeNode("n1", instance);
-        const node2 = new DomainKnowledgeNode("n2", instance2);
-        node1.addSourceKnowledge(node2);
-        expect(node1.relatedKnowledge).toHaveLength(0);
-        expect(node1.sourceKnowledge[0].id).toEqual("ti2");
-        expect(node2.targetKnowledge[0].id).toEqual("ti1");
-      });
-      test('#addSourceKnowledge ignores duplicates', () => {
-        const node1 = new DomainKnowledgeNode("n1", instance);
-        const node2 = new DomainKnowledgeNode("n2", instance2);
-        node1.addSourceKnowledge(node2);
-        node1.addSourceKnowledge(node2);
-        expect(node1.sourceKnowledge).toHaveLength(1);
-        expect(node2.targetKnowledge).toHaveLength(1);
+        node1.addTarget(node2);
+        node1.addTarget(node2);
+        expect(node1.target).toHaveLength(1);
+        expect(node2.source).toHaveLength(1);
       });
     });
-    describe('#addRelatedKnowledge', () => {
-      test('#addRelatedKnowledge adds node properly', () => {
+    describe('#addSource', () => {
+      test('#addSource adds node properly', () => {
         const node1 = new DomainKnowledgeNode("n1", instance);
         const node2 = new DomainKnowledgeNode("n2", instance2);
-        node1.addRelatedKnowledge(node2);
-        expect(node1.targetKnowledge).toHaveLength(0);
-        expect(node1.sourceKnowledge).toHaveLength(0);
-        expect(node1.relatedKnowledge[0].id).toEqual("ti2");
-        expect(node2.relatedKnowledge[0].id).toEqual("ti1");
+        node1.addSource(node2);
+        expect(node1.related).toHaveLength(0);
+        expect(node1.source[0].name).toEqual("ti2");
+        expect(node2.target[0].name).toEqual("ti1");
       });
-      test('#addRelatedKnowledge ignores duplicates', () => {
+      test('#addSource ignores duplicates', () => {
         const node1 = new DomainKnowledgeNode("n1", instance);
         const node2 = new DomainKnowledgeNode("n2", instance2);
-        node1.addRelatedKnowledge(node2);
-        node1.addRelatedKnowledge(node2);
-        expect(node1.sourceKnowledge).toHaveLength(0);
-        expect(node2.sourceKnowledge).toHaveLength(0);
-        expect(node1.targetKnowledge).toHaveLength(0);
-        expect(node2.targetKnowledge).toHaveLength(0);
-        expect(node1.relatedKnowledge).toHaveLength(1);
-        expect(node2.relatedKnowledge).toHaveLength(1);
+        node1.addSource(node2);
+        node1.addSource(node2);
+        expect(node1.source).toHaveLength(1);
+        expect(node2.target).toHaveLength(1);
+      });
+    });
+    describe('#addRelated', () => {
+      test('#addRelated adds node properly', () => {
+        const node1 = new DomainKnowledgeNode("n1", instance);
+        const node2 = new DomainKnowledgeNode("n2", instance2);
+        node1.addRelated(node2);
+        expect(node1.target).toHaveLength(0);
+        expect(node1.source).toHaveLength(0);
+        expect(node1.related[0].name).toEqual("ti2");
+        expect(node2.related[0].name).toEqual("ti1");
+      });
+      test('#addRelated ignores duplicates', () => {
+        const node1 = new DomainKnowledgeNode("n1", instance);
+        const node2 = new DomainKnowledgeNode("n2", instance2);
+        node1.addRelated(node2);
+        node1.addRelated(node2);
+        expect(node1.source).toHaveLength(0);
+        expect(node2.source).toHaveLength(0);
+        expect(node1.target).toHaveLength(0);
+        expect(node2.target).toHaveLength(0);
+        expect(node1.related).toHaveLength(1);
+        expect(node2.related).toHaveLength(1);
       });
     });
   });

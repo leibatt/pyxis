@@ -1,6 +1,6 @@
-import { BaseDataset, loadDataset, ValueType } from '../../src/dataset';
-import { AnalyticKnowledge, AnalyticKnowledgeNode } from '../../src/knowledge/AnalyticKnowledge';
-import { ArqueroDataTransformation, executeDataTransformation } from '../../src/transformation/Arquero';
+import { BaseDataset, loadDataset, ValueType } from '../src/dataset';
+import { AnalyticKnowledge, AnalyticKnowledgeNode } from '../src/knowledge/AnalyticKnowledge';
+import { ArqueroDataTransformation, executeDataTransformation } from '../src/transformation/Arquero';
 
 describe('AnalyticKnowledge.ts tests', () => {
   describe('AnalyticKnowledgeNode', () => {
@@ -27,7 +27,6 @@ describe('AnalyticKnowledge.ts tests', () => {
 
       const ak: AnalyticKnowledgeNode = new AnalyticKnowledgeNode("ak",_ak);
       expect(ak.name).toEqual("ak");
-      expect(ak.id).toEqual(_ak.name);
       expect(ak.analyticKnowledge.name).toEqual(_ak.name);
     });
   });

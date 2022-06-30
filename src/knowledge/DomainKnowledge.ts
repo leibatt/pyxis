@@ -9,7 +9,7 @@ import { Node } from '../Node';
 // concepts are essentially entity classes
 export interface Concept {
   name: string; // also acts as a unique identifier
-  parentTypes: Concept[]; // the parent concepts that this concept is derived from
+  parentConcepts: Concept[]; // the parent concepts that this concept is derived from
   metadata?: DataRecord; // associated metadata attributes for this concept and their values
 }
 
