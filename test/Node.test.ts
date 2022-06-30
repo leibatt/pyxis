@@ -25,7 +25,7 @@ describe('AnalyticKnowledge.ts tests', () => {
         results: () => executeDataTransformation(filterTransformation)
       };
 
-      const ak: AnalyticKnowledgeNode = new AnalyticKnowledgeNode("ak",_ak);
+      const ak: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(_ak);
       expect(ak.name).toEqual("ak");
       expect(ak.analyticKnowledge.name).toEqual(_ak.name);
     });

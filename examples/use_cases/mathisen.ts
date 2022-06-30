@@ -94,14 +94,12 @@ const baltimoreProtests: Instance = {
 };
 const protestsNode: DomainKnowledgeNode = new DomainKnowledgeNode(crimeKnowledge,baltimoreProtests);
 // Now we can link our protests knowledge node with our evidence:
-const protestsInsight: Insight = {
+const protestsInsight: InsightNode = new InsightNode({
   name: "mathisen2019insight1",
   description: "The day with the highest crime was April 27, 2015, the same day as the funeral of Freddy Gray, which led to widespread protests in Baltimore.",
   domainKnowledge: [protestsNode],
   analyticKnowledge: [ev1],
-  sourceInsights: [],
-  targetInsights: []
-};
+});
 
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -144,7 +142,7 @@ const _ev2: AnalyticKnowledge = {
   results: () => executeDataTransformation(aggregateTransformation2)
 };
 const ev2: AnalyticKnowledgeNode = new AnalyticKnowledgeNode("mathisen2019-2",_ev2);
-ev2.addSourceKnowledge(ev1); // also adds target knowledge to ev1
+ev2.addSource(ev1); // also adds target knowledge to ev1
 const apr27Crimes: BaseDataset = ev2.analyticKnowledge.results();
 apr27Crimes.sources = [baltimoreCrime];
 console.log(apr27Crimes.records[0].attributes);
@@ -182,7 +180,7 @@ const _ev3: AnalyticKnowledge = {
   results: () => executeDataTransformation(aggregateTransformation3)
 };
 const ev3: AnalyticKnowledgeNode = new AnalyticKnowledgeNode("mathisen2019-3",_ev3);
-ev3.addSourceKnowledge(ev2); // also adds target knowledge to ev2
+ev3.addSource(ev2); // also adds target knowledge to ev2
 const crimeDist: BaseDataset = ev3.analyticKnowledge.results();
 crimeDist.sources = [baltimoreCrime];
 console.log("first record:");
@@ -201,16 +199,14 @@ const burglary: Instance = {
   }
 };
 const burglaryNode: DomainKnowledgeNode = new DomainKnowledgeNode(crimeKnowledge,burglary);
-burglaryNode.addSourceKnowledge(protestsNode);
-const burglaryInsight: Insight = {
+burglaryNode.addSource(protestsNode);
+const burglaryInsight: InsightNode = new InsightNode({
   name: "mathisen2019insight2",
   description: "Burglaries were the most common type of crime observed on April 27, 2015. Burglaries were unusually high this day. This is likely due to the protests.",
   domainKnowledge: [burglaryNode],
-  analyticKnowledge: [ev2, ev3],
-  sourceInsights: [protestsInsight],
-  targetInsights: []
-};
-protestsInsight.targetInsights.push(burglaryInsight); // link this insight with our previous one
+  analyticKnowledge: [ev2, ev3]
+});
+protestsInsight.addTarget(burglaryInsight); // link this insight with our previous one
 
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -256,7 +252,7 @@ const _ev4: AnalyticKnowledge = {
   results: () => executeDataTransformation(aggregateTransformation4)
 };
 const ev4: AnalyticKnowledgeNode = new AnalyticKnowledgeNode("mathisen2019-4",_ev4);
-ev4.addSourceKnowledge(ev2); // also adds target knowledge to ev2
+ev4.addSource(ev2); // also adds target knowledge to ev2
 const crimeLoc: BaseDataset = ev4.analyticKnowledge.results();
 crimeLoc.sources = [baltimoreCrime];
 console.log(crimeLoc.records[0].attributes);

@@ -26,8 +26,8 @@ export class InsightNode extends Node {
   // used to calculate and track the complexity of this particular evidence
   complexity?: () => InsightComplexity;
 
-  constructor(name: string, insight: Insight, complexity?: () => InsightComplexity) {
-    super(name);
+  constructor(insight: Insight, complexity?: () => InsightComplexity) {
+    super(insight.name);
     this.insight = insight;
     if(typeof complexity !== 'undefined') {
       this.complexity = complexity;

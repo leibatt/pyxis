@@ -31,8 +31,8 @@ export interface AnalyticKnowledge {
 export class AnalyticKnowledgeNode extends Node {
   analyticKnowledge: AnalyticKnowledge;
 
-  constructor(name: string, analyticKnowledge: AnalyticKnowledge) {
-    super(name);
+  constructor(analyticKnowledge: AnalyticKnowledge) {
+    super(analyticKnowledge.name);
     this.analyticKnowledge = analyticKnowledge;
     this.name = this.analyticKnowledge.name;
   }

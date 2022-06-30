@@ -24,8 +24,8 @@ export interface Instance {
 export class DomainKnowledgeNode extends Node {
   instance: Instance;
 
-  constructor(name: string, instance: Instance) {
-    super(name);
+  constructor(instance: Instance) {
+    super(instance.name);
     this.instance = instance;
     this.name = this.instance.name;
   }

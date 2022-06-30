@@ -37,7 +37,7 @@ const _ev1: AnalyticKnowledge = {
   relationshipModel: null,
   results: () => executeDataTransformation(aggregateTransformation)
 };
-const ev1: AnalyticKnowledgeNode = new AnalyticKnowledgeNode("north2006-1",_ev1);
+const ev1: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(_ev1);
 const minMaxRents: BaseDataset = ev1.analyticKnowledge.results();
 minMaxRents.sources = [hudRents];
 console.log(minMaxRents.records[0]);
@@ -62,7 +62,7 @@ const _ev2: AnalyticKnowledge = {
   relationshipModel: nmm,
   results: () => hudRents
 };
-const ev2: AnalyticKnowledgeNode = new AnalyticKnowledgeNode("north2006-2",_ev2);
+const ev2: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(_ev2);
 
 console.log("\n\ncalculate binned aggregation over rents for 2 bedroom homes");
 const binnedTransformation: ArqueroDataTransformation = {
@@ -96,7 +96,7 @@ const _ev3: AnalyticKnowledge = {
   relationshipModel: null,
   results: () => executeDataTransformation(binnedTransformation)
 };
-const ev3: AnalyticKnowledgeNode = new AnalyticKnowledgeNode("north2006-2",_ev3);
+const ev3: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(_ev3);
 const binnedRents: BaseDataset = ev3.analyticKnowledge.results();
 binnedRents.sources = [hudRents];
 console.log(binnedRents.records[0].attributes);
