@@ -74,7 +74,7 @@ const _ev1: AnalyticKnowledge = {
   relationshipModel: null,
   results: () => executeDataTransformation(aggregateTransformation)
 };
-const ev1: AnalyticKnowledgeNode = new AnalyticKnowledgeNode("battle2019-1",_ev1);
+const ev1: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(_ev1);
 // In printing the results, we see the largest count for "count_wing_rot",
 // consistent with participants' answers
 console.log(ev1.analyticKnowledge.results().records[0]);
@@ -119,7 +119,7 @@ const _ev2: AnalyticKnowledge = {
   relationshipModel: null,
   results: () => executeDataTransformation(groupedAggregateTransformation)
 };
-const ev2: AnalyticKnowledgeNode = new AnalyticKnowledgeNode("battle2019-2",_ev2);
+const ev2: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(_ev2);
 
 // In printing the results, we see the largest count for ac_class='A' (i.e., airplanes),
 // consistent with participants' answers
@@ -175,7 +175,7 @@ const _ev3_1: AnalyticKnowledge = {
   relationshipModel: null,
   results: () => executeDataTransformation(grpPrecipTransformation)
 };
-const ev3_1: AnalyticKnowledgeNode = new AnalyticKnowledgeNode("battle2019-3-1",_ev3_1);
+const ev3_1: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(_ev3_1);
 // we see variation in the results. Looking at precip results (ev3_1), we would
 // think bad weather leads to more strikes. See the relevant Vega-Lite figure
 // for more details.
@@ -221,7 +221,7 @@ const _ev3_2: AnalyticKnowledge = {
   relationshipModel: null,
   results: () => executeDataTransformation(grpSkyTransformation)
 };
-const ev3_2: AnalyticKnowledgeNode = new AnalyticKnowledgeNode("battle2019-3-2",_ev3_2);
+const ev3_2: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(_ev3_2);
 // However, when we look at sky (ev3_2), we see clear weather seems to lead to
 // more strikes. Also, we see that strikes increase with time for each sky
 // measure, but not for each precip measure (with the exception of "rain"). See

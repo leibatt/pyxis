@@ -17,7 +17,7 @@ describe('AnalyticKnowledge.ts tests', () => {
     };
     test('#constructor works', () => {
       const _ak: AnalyticKnowledge = {
-        name: "_ak",
+        name: "ak",
         description: "analytic knowledge test",
         timestamp: Date.now(),
         transformation: filterTransformation,

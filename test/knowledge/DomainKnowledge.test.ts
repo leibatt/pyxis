@@ -106,8 +106,8 @@ describe('DomainKnowledge.ts tests', () => {
     test('#constructor works', () => {
       const node1 = new DomainKnowledgeNode(instance);
       const node2 = new DomainKnowledgeNode(instance2);
-      expect(node1.name).toEqual("n1");
-      expect(node2.name).toEqual("n2");
+      expect(node1.name).toEqual("ti1");
+      expect(node2.name).toEqual("ti2");
     });
     describe('#addTarget', () => {
       test('#addTarget adds node properly', () => {

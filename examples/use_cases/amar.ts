@@ -2,9 +2,9 @@ import { op } from 'arquero';
 import { loadDataset, Attribute, AttributeType, ValueType, BaseDataset } from '../../src/dataset';
 import { ArqueroDataTransformation, executeDataTransformation } from '../../src/transformation/Arquero';
 import { LinearRegressionRelationshipModel } from '../../src/relationship/LinearRegressionRelationshipModel';
-import { Concept, DomainKnowledgeNode, Instance, KnowledgeType } from '../../src/knowledge/DomainKnowledge';
+import { Concept, DomainKnowledgeNode, Instance } from '../../src/knowledge/DomainKnowledge';
 import { AnalyticKnowledge, AnalyticKnowledgeNode } from '../../src/knowledge/AnalyticKnowledge';
-import { Insight } from '../../src/insight';
+import { InsightNode } from '../../src/insight';
 
 // In this example, we will be recreating the movies dataset exploration scenario proposed by Amar et al:
 // Amar, R., Eagan, J. and Stasko, J., 2005, October. Low-level components of
@@ -14,24 +14,20 @@ import { Insight } from '../../src/insight';
 // Perhaps an interesting article on movie lengths spurred our analysis, e.g.,
 // https://www.businessinsider.com/are-movies-getting-longer-2016-6
 // We can record our domain knowledge using a knowledge node.
-const filmKnowledge: KnowledgeType = "FilmKNowledge";
 const articleConcept: Concept = {
   name: "MediaArticle",
-  ctype: filmKnowledge,
-  parentTypes: []
+  parentConcepts: []
 };
 const qualityConcept: Concept = {
   name: "FilmQuality",
-  ctype: filmKnowledge,
-  parentTypes: []
+  parentConcepts: []
 };
 
 const biArticle: Instance = {
   name: "BusinessInsiderArticle",
-  id: "in-bi-mv-ln",
   coreConcept: articleConcept,
   relevantConcepts: [qualityConcept],
-  data: {
+  metadata: {
     attributes: [{ name: "link", attributeType: AttributeType.nominal }],
     values: {"name": "https://www.businessinsider.com/are-movies-getting-longer-2016-6"},
     id: "dr-bi-mv-ln"
@@ -40,7 +36,7 @@ const biArticle: Instance = {
 
 // We create a knowledge node representing our understanding of how film length
 // may affect quality or not.
-const knowledgeNode: DomainKnowledgeNode = new DomainKnowledgeNode("filmQualityKnowledge",biArticle);
+const knowledgeNode: DomainKnowledgeNode = new DomainKnowledgeNode(biArticle);
 
 // To investigate evidence, we will use the movies dataset and oscars dataset
 // in this example (see README for source details).
@@ -78,7 +74,7 @@ const _ev1: AnalyticKnowledge = {
   relationshipModel: null,
   results: () => executeDataTransformation(filterTransformation)
 };
-const ev1: AnalyticKnowledgeNode = new AnalyticKnowledgeNode("amar2005-1",_ev1);
+const ev1: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(_ev1);
 
 const winners: BaseDataset = ev1.analyticKnowledge.results();
 winners.sources = [oscars];
@@ -128,8 +124,8 @@ const _ev2: AnalyticKnowledge = {
   relationshipModel: null,
   results: () => executeDataTransformation(joinTransformation)
 };
-const ev2: AnalyticKnowledgeNode = new AnalyticKnowledgeNode("amar2005-2",_ev2);
-ev2.addSourceKnowledge(ev1);
+const ev2: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(_ev2);
+ev2.addSource(ev1);
 
 const winnersInfo: BaseDataset = ev2.analyticKnowledge.results();
 winnersInfo.sources = [movies,winners];
@@ -155,16 +151,14 @@ const _ev3: AnalyticKnowledge = {
   relationshipModel: lrm,
   results: () => winnersInfo
 };
-const ev3: AnalyticKnowledgeNode = new AnalyticKnowledgeNode("amar2005-3",_ev3);
-ev3.addSourceKnowledge(ev2);
+const ev3: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(_ev3);
+ev3.addSource(ev2);
 
 // Finally, we can formally connect our domain knowledge (knowledge node) and analytic knowledge (evidence nodes) to form a new insight:
-const movieInsight: Insight = {
-  name: "amar2005insight",
-  description: "connecting what was learned in an article with movies data",
-  domainKnowledge: [knowledgeNode],
-  analyticKnowledge: [ev1, ev2, ev3],
-  sourceInsights: [],
-  targetInsights: []
-};
+const movieInsight: InsightNode = new InsightNode(
+  "amar2005insight", // name
+  [knowledgeNode], // domainKnowledge
+  [ev1, ev2, ev3], // analyticKnowledge
+  "connecting what was learned in an article with movies data" // description
+);
 console.log(movieInsight);
