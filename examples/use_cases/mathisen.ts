@@ -1,9 +1,9 @@
 import { op, desc } from 'arquero';
 import { loadDataset, AttributeType, BaseDataset } from '../../src/dataset';
 import { ArqueroDataTransformation, executeDataTransformation } from '../../src/transformation/Arquero';
-import { Concept, DomainKnowledgeNode, Instance, KnowledgeType } from '../../src/knowledge/DomainKnowledge';
+import { Concept, DomainKnowledgeNode, Instance } from '../../src/knowledge/DomainKnowledge';
 import { AnalyticKnowledge, AnalyticKnowledgeNode } from '../../src/knowledge/AnalyticKnowledge';
-import { Insight } from '../../src/insight';
+import { InsightNode } from '../../src/insight';
 
 // In this example, we will be recreating the Baltimore crime data investigation
 // scenario proposed by Mathisen et al.:
@@ -13,12 +13,9 @@ import { Insight } from '../../src/insight';
 
 // We are interested in learning more about potential causes for observed
 // crimes in Baltimore. let's start with establishing a relevant concept.
-const crimeKnowledge: KnowledgeType = "crime";
-
 const crime: Concept = {
   name: "Crime",
-  ctype: crimeKnowledge,
-  parentTypes: []
+  parentConcepts: []
 };
 
 // We will use the (old) Baltimore Crime dataset in this example (see
@@ -68,7 +65,7 @@ const _ev1: AnalyticKnowledge = {
   relationshipModel: null,
   results: () => executeDataTransformation(aggregateTransformation)
 };
-const ev1: AnalyticKnowledgeNode = new AnalyticKnowledgeNode("mathisen2019-1",_ev1);
+const ev1: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(_ev1);
 const peakCrimes: BaseDataset = ev1.analyticKnowledge.results();
 peakCrimes.sources = [baltimoreCrime];
 console.log(peakCrimes.records[0].attributes);
@@ -79,27 +76,25 @@ console.log(peakCrimes.records);
 // knowledge with our evidence. We start by establishing related concepts:
 const protest: Concept = {
   name: "Protest",
-  ctype: crimeKnowledge,
-  parentTypes: []
+  parentConcepts: []
 };
 const baltimoreProtests: Instance = {
   name: "WikipediaArticle-2015BaltimoreProtests",
-  id: "in-2015-baltimore-protests",
   coreConcept: protest,
-  data: {
+  metadata: {
     attributes: [{ name: "link", attributeType: AttributeType.nominal }],
     values: {"link": "https://en.wikipedia.org/wiki/2015_Baltimore_protests"},
     id: "dr-2015-baltimore-protests"
   }
 };
-const protestsNode: DomainKnowledgeNode = new DomainKnowledgeNode(crimeKnowledge,baltimoreProtests);
+const protestsNode: DomainKnowledgeNode = new DomainKnowledgeNode(baltimoreProtests);
 // Now we can link our protests knowledge node with our evidence:
-const protestsInsight: InsightNode = new InsightNode({
-  name: "mathisen2019insight1",
-  description: "The day with the highest crime was April 27, 2015, the same day as the funeral of Freddy Gray, which led to widespread protests in Baltimore.",
-  domainKnowledge: [protestsNode],
-  analyticKnowledge: [ev1],
-});
+const protestsInsight: InsightNode = new InsightNode(
+  "mathisen2019insight1", // name
+  [protestsNode], // domainKnowledge
+  [ev1], // analyticKnowledge
+  "The day with the highest crime was April 27, 2015, the same day as the funeral of Freddy Gray, which led to widespread protests in Baltimore." // description
+);
 
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -141,7 +136,7 @@ const _ev2: AnalyticKnowledge = {
   relationshipModel: null,
   results: () => executeDataTransformation(aggregateTransformation2)
 };
-const ev2: AnalyticKnowledgeNode = new AnalyticKnowledgeNode("mathisen2019-2",_ev2);
+const ev2: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(_ev2);
 ev2.addSource(ev1); // also adds target knowledge to ev1
 const apr27Crimes: BaseDataset = ev2.analyticKnowledge.results();
 apr27Crimes.sources = [baltimoreCrime];
@@ -179,7 +174,7 @@ const _ev3: AnalyticKnowledge = {
   relationshipModel: null,
   results: () => executeDataTransformation(aggregateTransformation3)
 };
-const ev3: AnalyticKnowledgeNode = new AnalyticKnowledgeNode("mathisen2019-3",_ev3);
+const ev3: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(_ev3);
 ev3.addSource(ev2); // also adds target knowledge to ev2
 const crimeDist: BaseDataset = ev3.analyticKnowledge.results();
 crimeDist.sources = [baltimoreCrime];
@@ -190,22 +185,21 @@ console.log(crimeDist.records[0]);
 // want to incorporate this information in our knowledge base.
 const burglary: Instance = {
   name: "WikipediaArticle-Burglary",
-  id: "in-burglary",
   coreConcept: crime,
-  data: {
+  metadata: {
     attributes: [{ name: "link", attributeType: AttributeType.nominal }],
     values: {"link": "https://en.wikipedia.org/wiki/Burglary"},
     id: "dr-burglary"
   }
 };
-const burglaryNode: DomainKnowledgeNode = new DomainKnowledgeNode(crimeKnowledge,burglary);
+const burglaryNode: DomainKnowledgeNode = new DomainKnowledgeNode(burglary);
 burglaryNode.addSource(protestsNode);
-const burglaryInsight: InsightNode = new InsightNode({
-  name: "mathisen2019insight2",
-  description: "Burglaries were the most common type of crime observed on April 27, 2015. Burglaries were unusually high this day. This is likely due to the protests.",
-  domainKnowledge: [burglaryNode],
-  analyticKnowledge: [ev2, ev3]
-});
+const burglaryInsight: InsightNode = new InsightNode(
+  "mathisen2019insight2", // name
+  [burglaryNode], // domainKnowledge
+  [ev2, ev3], // analyticKnowledge 
+  "Burglaries were the most common type of crime observed on April 27, 2015. Burglaries were unusually high this day. This is likely due to the protests." // description
+);
 protestsInsight.addTarget(burglaryInsight); // link this insight with our previous one
 
 
@@ -251,7 +245,7 @@ const _ev4: AnalyticKnowledge = {
   relationshipModel: null,
   results: () => executeDataTransformation(aggregateTransformation4)
 };
-const ev4: AnalyticKnowledgeNode = new AnalyticKnowledgeNode("mathisen2019-4",_ev4);
+const ev4: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(_ev4);
 ev4.addSource(ev2); // also adds target knowledge to ev2
 const crimeLoc: BaseDataset = ev4.analyticKnowledge.results();
 crimeLoc.sources = [baltimoreCrime];
@@ -264,14 +258,12 @@ burglaryInsight.analyticKnowledge.push(ev4);
 
 // Finally, we will create a final insight to capture the summary takeaway from
 // Figure 8 of the original paper:
-const summaryInsight: Insight = {
-  name: "mathisen2019insight3",
-  description: "Quoting the paper: 'The main result shows that burglars occasionally take advantage of chaotic situations elsewhere in the city, likely because they know this will draw much attention of the police'",
-  domainKnowledge: [],
-  analyticKnowledge: [],
-  sourceInsights: [protestsInsight, burglaryInsight],
-  targetInsights: []
-};
-protestsInsight.targetInsights.push(summaryInsight); // link up with the new insight
-burglaryInsight.targetInsights.push(summaryInsight);
+const summaryInsight: InsightNode = new InsightNode(
+  "mathisen2019insight3",
+  [],
+  [],
+  "Quoting the paper: 'The main result shows that burglars occasionally take advantage of chaotic situations elsewhere in the city, likely because they know this will draw much attention of the police'"
+);
+protestsInsight.addTarget(summaryInsight); // link up with the new insight
+burglaryInsight.addTarget(summaryInsight);
 

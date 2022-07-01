@@ -7,8 +7,8 @@ import { Node } from './Node';
 export interface Insight {
   name: string; // also used as an unique identifier
   description?: string;
-  domainKnowledge: DomainKnowledgeNode; // only one node can be associated with this insight
-  analyticKnowledge: AnalyticKnowledgeNode; // only one node can be associated with this insight
+  domainKnowledge: DomainKnowledgeNode[];
+  analyticKnowledge: AnalyticKnowledgeNode[];
 }
 
 // used to track and evaluate the complexity of derived insight
@@ -21,17 +21,28 @@ export interface InsightComplexity {
 }
 
 // helps to keep track of relationships between insights
-export class InsightNode extends Node {
-  insight: Insight;
+export class InsightNode extends Node implements Insight {
+  name: string; // also used as an unique identifier
+  description?: string;
+  domainKnowledge: DomainKnowledgeNode[]; // only one node can be associated with this insight
+  analyticKnowledge: AnalyticKnowledgeNode[]; // only one node can be associated with this insight
+
   // used to calculate and track the complexity of this particular evidence
   complexity?: () => InsightComplexity;
 
-  constructor(insight: Insight, complexity?: () => InsightComplexity) {
-    super(insight.name);
-    this.insight = insight;
+  constructor(name: string, domainKnowledge: DomainKnowledgeNode[],
+    analyticKnowledge: AnalyticKnowledgeNode[],
+    description?: string, complexity?: () => InsightComplexity) {
+
+    super(name);
+    this.name = name;
+    this.domainKnowledge = domainKnowledge;
+    this.analyticKnowledge = analyticKnowledge;
+    if(typeof description !== 'undefined') {
+      this.description = description;
+    }
     if(typeof complexity !== 'undefined') {
       this.complexity = complexity;
     }
-    this.name = this.insight.name;
   }
 }
