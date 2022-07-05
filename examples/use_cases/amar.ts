@@ -2,7 +2,7 @@ import { op } from 'arquero';
 import { loadDataset, Attribute, AttributeType, ValueType, BaseDataset } from '../../src/dataset';
 import { ArqueroDataTransformation, executeDataTransformation } from '../../src/transformation/Arquero';
 import { LinearRegressionRelationshipModel } from '../../src/relationship/LinearRegressionRelationshipModel';
-import { Concept, DomainKnowledgeNode, Instance } from '../../src/knowledge/DomainKnowledge';
+import { Concept, DomainKnowledgeNode } from '../../src/knowledge/DomainKnowledge';
 import { AnalyticKnowledge, AnalyticKnowledgeNode } from '../../src/knowledge/AnalyticKnowledge';
 import { InsightNode } from '../../src/insight';
 
@@ -23,20 +23,18 @@ const qualityConcept: Concept = {
   parentConcepts: []
 };
 
-const biArticle: Instance = {
-  name: "BusinessInsiderArticle",
-  coreConcept: articleConcept,
-  relevantConcepts: [qualityConcept],
-  metadata: {
+// We create a knowledge node representing our understanding of how film length
+// may affect quality or not.
+const knowledgeNode: DomainKnowledgeNode = new DomainKnowledgeNode(
+  "BusinessInsiderArticle", // name
+  articleConcept, // coreConcept
+  [qualityConcept], // relevantConcepts
+  { // metadata
     attributes: [{ name: "link", attributeType: AttributeType.nominal }],
     values: {"name": "https://www.businessinsider.com/are-movies-getting-longer-2016-6"},
     id: "dr-bi-mv-ln"
   }
-};
-
-// We create a knowledge node representing our understanding of how film length
-// may affect quality or not.
-const knowledgeNode: DomainKnowledgeNode = new DomainKnowledgeNode(biArticle);
+);
 
 // To investigate evidence, we will use the movies dataset and oscars dataset
 // in this example (see README for source details).

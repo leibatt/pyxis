@@ -1,7 +1,7 @@
 import { op, desc } from 'arquero';
 import { loadDataset, AttributeType, BaseDataset } from '../../src/dataset';
 import { ArqueroDataTransformation, executeDataTransformation } from '../../src/transformation/Arquero';
-import { Concept, DomainKnowledgeNode, Instance } from '../../src/knowledge/DomainKnowledge';
+import { Concept, DomainKnowledgeNode } from '../../src/knowledge/DomainKnowledge';
 import { AnalyticKnowledge, AnalyticKnowledgeNode } from '../../src/knowledge/AnalyticKnowledge';
 import { InsightNode } from '../../src/insight';
 
@@ -78,16 +78,16 @@ const protest: Concept = {
   name: "Protest",
   parentConcepts: []
 };
-const baltimoreProtests: Instance = {
-  name: "WikipediaArticle-2015BaltimoreProtests",
-  coreConcept: protest,
-  metadata: {
+const protestsNode: DomainKnowledgeNode = new DomainKnowledgeNode(
+  "WikipediaArticle-2015BaltimoreProtests", // name
+  protest, // coreConcept
+  [], // relevantConcepts
+  { // metadata
     attributes: [{ name: "link", attributeType: AttributeType.nominal }],
     values: {"link": "https://en.wikipedia.org/wiki/2015_Baltimore_protests"},
     id: "dr-2015-baltimore-protests"
   }
-};
-const protestsNode: DomainKnowledgeNode = new DomainKnowledgeNode(baltimoreProtests);
+);
 // Now we can link our protests knowledge node with our evidence:
 const protestsInsight: InsightNode = new InsightNode(
   "mathisen2019insight1", // name
@@ -183,16 +183,16 @@ console.log(crimeDist.records[0]);
 
 // Since we find that Burglary was the most common crime, and unusually so, we
 // want to incorporate this information in our knowledge base.
-const burglary: Instance = {
-  name: "WikipediaArticle-Burglary",
-  coreConcept: crime,
-  metadata: {
+const burglaryNode: DomainKnowledgeNode = new DomainKnowledgeNode(
+  "WikipediaArticle-Burglary", // name
+  crime, // coreConcept
+  [], // relevantConcepts
+  { // metadata
     attributes: [{ name: "link", attributeType: AttributeType.nominal }],
     values: {"link": "https://en.wikipedia.org/wiki/Burglary"},
     id: "dr-burglary"
   }
-};
-const burglaryNode: DomainKnowledgeNode = new DomainKnowledgeNode(burglary);
+);
 burglaryNode.addSource(protestsNode);
 const burglaryInsight: InsightNode = new InsightNode(
   "mathisen2019insight2", // name

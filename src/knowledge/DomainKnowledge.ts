@@ -21,13 +21,22 @@ export interface Instance {
   metadata?: DataRecord; // associated metadata attributes for this instance and their values
 }
 
-export class DomainKnowledgeNode extends Node {
-  instance: Instance;
+export class DomainKnowledgeNode extends Node implements Instance {
+  name: string;
+  coreConcept: Concept;
+  relevantConcepts?: Concept[];
+  metadata?: DataRecord;
 
-  constructor(instance: Instance) {
-    super(instance.name);
-    this.instance = instance;
-    this.name = this.instance.name;
+  constructor(name: string, coreConcept: Concept, relevantConcepts?: Concept[], metadata?: DataRecord) {
+    super(name);
+    this.name = name;
+    this.coreConcept = coreConcept;
+    if(typeof relevantConcepts !== 'undefined') {
+      this.relevantConcepts = relevantConcepts;
+    }
+    if(typeof metadata !== 'undefined') {
+      this.metadata = metadata;
+    }
   }
 }
 
