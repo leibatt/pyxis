@@ -6,37 +6,48 @@ import { Node } from '../Node';
 // Interactive visual synthesis of analytic knowledge. In 2006 IEEE Symposium
 // On Visual Analytics Science And Technology (pp. 51-58). IEEE.
 
-// concepts are essentially entity classes
-export interface Concept {
+// concepts are entity classes
+export class Concept {
   name: string; // also acts as a unique identifier
   parentConcepts: Concept[]; // the parent concepts that this concept is derived from
   metadata?: DataRecord; // associated metadata attributes for this concept and their values
+
+  constructor(name: string, parentConcepts: Concept[] = [], metadata?: DataRecord) {
+    this.name = name;
+    this.parentConcepts = parentConcepts;
+    if(typeof metadata !== 'undefined') {
+      this.metadata = metadata
+    }
+  }
 }
 
 // instances are instantiations of concepts
-export interface Instance {
+export class Instance {
   name: string; // also acts as a unique identifier
   coreConcept: Concept; // main Concept type associated with this instance
   relevantConcepts?: Concept[]; // other relevant concepts !== coreConcept
   metadata?: DataRecord; // associated metadata attributes for this instance and their values
-}
-
-export class DomainKnowledgeNode extends Node implements Instance {
-  name: string;
-  coreConcept: Concept;
-  relevantConcepts?: Concept[];
-  metadata?: DataRecord;
 
   constructor(name: string, coreConcept: Concept, relevantConcepts?: Concept[], metadata?: DataRecord) {
-    super(name);
     this.name = name;
     this.coreConcept = coreConcept;
     if(typeof relevantConcepts !== 'undefined') {
       this.relevantConcepts = relevantConcepts;
     }
     if(typeof metadata !== 'undefined') {
-      this.metadata = metadata;
+      this.metadata = metadata
     }
+  }
+}
+
+export class DomainKnowledgeNode extends Node {
+  name: string;
+  instance: Instance; // the instance associated with this domain knowledge
+
+  constructor(name: string, instance: Instance) {
+    super(name);
+    this.name = name;
+    this.instance = instance;
   }
 }
 

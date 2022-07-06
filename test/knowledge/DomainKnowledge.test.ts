@@ -3,11 +3,11 @@ import { AttributeType } from '../../src/dataset';
 
 describe('DomainKnowledge.ts tests', () => {
   describe('Concept', () => {
-    test('can specify concepts', () => {
-      const concept: Concept = {
-        name: "test concept",
-        parentConcepts: [],
-        metadata: {
+    test('#constructor works', () => {
+      const concept: Concept = new Concept(
+        "test concept", // name
+        [], // parentConcepts
+        { // metadata 
           attributes: [
             {
               name: "a",
@@ -17,16 +17,16 @@ describe('DomainKnowledge.ts tests', () => {
           values: {"a": "test"},
           id: "d"
         }
-      };
+      );
       expect(concept.name).toEqual("test concept");
     });
   });
   describe('Instance', () => {
-    test('can specify instances', () => {
-      const concept: Concept = {
-        name: "test concept",
-        parentConcepts: [],
-        metadata: {
+    test('#constructor works', () => {
+      const concept: Concept = new Concept(
+        "test concept",
+        [],
+        {
           attributes: [
             {
               name: "a",
@@ -36,11 +36,12 @@ describe('DomainKnowledge.ts tests', () => {
           values: {"a": "test"},
           id: "d"
         }
-      };
-      const instance: Instance = {
-        name: "test instance",
-        coreConcept: concept,
-        metadata: {
+      );
+      const instance: Instance = new Instance(
+        "test instance", // name
+        concept, // coreConcept
+        [], // relevantConcepts
+        { // metadata
           attributes: [
             {
               name: "a",
@@ -50,66 +51,66 @@ describe('DomainKnowledge.ts tests', () => {
           values: {"a": "test"},
           id: "d"
         }
-      };
+      );
       expect(instance.name).toEqual("test instance");
     });
   });
   describe('DomainKnowledgeNode', () => {
-      const concept: Concept = {
-        name: "test concept",
-        parentConcepts: [],
-        metadata: {
-          attributes: [
-            {
-              name: "a",
-              attributeType: AttributeType.nominal
-            }
-          ],
-          values: {"a": "test"},
-          id: "d"
-        }
-      };
-      const instance: Instance = {
-        name: "ti1",
-        coreConcept: concept,
-        metadata: {
-          attributes: [
-            {
-              name: "a",
-              attributeType: AttributeType.nominal
-            }
-          ],
-          values: {"a": "test1"},
-          id: "0"
-        }
-      };
-      const instance2: Instance = {
-        name: "ti2",
-        coreConcept: concept,
-        metadata: {
-          attributes: [
-            {
-              name: "a",
-              attributeType: AttributeType.nominal
-            }
-          ],
-          values: {"a": "test2"},
-          id: "1"
-        }
-      };
+    const concept: Concept = new Concept(
+      "test concept",
+      [],
+      {
+        attributes: [
+          {
+            name: "a",
+            attributeType: AttributeType.nominal
+          }
+        ],
+        values: {"a": "test"},
+        id: "d"
+      }
+    );
+    const instance: Instance = new Instance(
+      "ti1",
+      concept,
+      [],
+      {
+        attributes: [
+          {
+            name: "a",
+            attributeType: AttributeType.nominal
+          }
+        ],
+        values: {"a": "test1"},
+        id: "0"
+      }
+    );
+    const instance2: Instance = new Instance(
+      "ti2",
+      concept,
+      [],
+      {
+        attributes: [
+          {
+            name: "a",
+            attributeType: AttributeType.nominal
+          }
+        ],
+        values: {"a": "test2"},
+        id: "1"
+      }
+    );
     test('#constructor works', () => {
-      const node1 = new DomainKnowledgeNode(instance.name,
-        instance.coreConcept,
-        [],
-        instance.metadata
+      const node1 = new DomainKnowledgeNode("n1",
+        instance,
       );
-      const node2 = new DomainKnowledgeNode(instance2.name,
-        instance2.coreConcept,
-        [],
-        instance2.metadata
+      const node2 = new DomainKnowledgeNode("n2",
+        instance2,
       );
-      expect(node1.name).toEqual("ti1");
-      expect(node2.name).toEqual("ti2");
+      expect(node1.name).toEqual("n1");
+      expect(node1.instance.name).toEqual("ti1");
+      expect(node2.name).toEqual("n2");
+      expect(node2.instance.name).toEqual("ti2");
     });
   });
 });

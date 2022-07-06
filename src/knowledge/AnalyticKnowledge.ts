@@ -29,7 +29,7 @@ export interface AnalyticKnowledge {
   complexity?: () => AnalyticKnowledgeNodeComplexity;
 }
 
-export class AnalyticKnowledgeNode extends Node {
+export class AnalyticKnowledgeNode extends Node implements AnalyticKnowledge {
   name: string;
   timestamp: number;
   transformation: DataTransformation;
