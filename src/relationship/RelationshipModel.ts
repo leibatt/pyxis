@@ -1,4 +1,4 @@
-import {BaseDataRecord,Attribute, ValueType} from '../dataset';
+import { DataRecord,Attribute, ValueType } from '../dataset';
 
 // base interface to define the required parameters for determining a meaningful data
 // relationship
@@ -6,7 +6,7 @@ export interface RelationshipModel {
   name: string; // name of the model
 
   // if needed, train the model first with the given training set
-  train?: (trainingSet: BaseDataRecord[]) => void;
+  train?: (trainingSet: DataRecord[]) => void;
 }
 
 // used to define the required parameters for determining a meaningful data
@@ -26,7 +26,7 @@ export interface MultivariateRelationshipModel extends RelationshipModel {
 
   // for the given record, predict the output attribute value using the input
   // attributes.
-  predict: (record: BaseDataRecord) => ValueType;
+  predict: (record: DataRecord) => ValueType;
 }
 
 // used to define the required parameters for determining a meaningful data
@@ -35,5 +35,5 @@ export interface OutlierRelationshipModel extends RelationshipModel {
   inputAttributes: Attribute[]; // inputs used to predict output
 
   // for the given record, predict whether the record is an outlier.
-  predict: (record: BaseDataRecord) => ValueType;
+  predict: (record: DataRecord) => ValueType;
 }
