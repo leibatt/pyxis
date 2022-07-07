@@ -1,8 +1,8 @@
 import { op, desc } from 'arquero';
 import { loadDataset, AttributeType, BaseDataset } from '../../src/dataset';
 import { ArqueroDataTransformation, executeDataTransformation } from '../../src/transformation/Arquero';
-import { Concept, DomainKnowledgeNode } from '../../src/knowledge/DomainKnowledge';
-import { AnalyticKnowledge, AnalyticKnowledgeNode } from '../../src/knowledge/AnalyticKnowledge';
+import { Concept, Instance, DomainKnowledgeNode } from '../../src/knowledge/DomainKnowledge';
+import { AnalyticKnowledgeNode } from '../../src/knowledge/AnalyticKnowledge';
 import { InsightNode } from '../../src/insight';
 
 // In this example, we will be recreating the Baltimore crime data investigation
@@ -13,10 +13,10 @@ import { InsightNode } from '../../src/insight';
 
 // We are interested in learning more about potential causes for observed
 // crimes in Baltimore. let's start with establishing a relevant concept.
-const crime: Concept = {
-  name: "Crime",
-  parentConcepts: []
-};
+const crime: Concept = new Concept(
+  "Crime", // name
+  [] // parentConcepts
+);
 
 // We will use the (old) Baltimore Crime dataset in this example (see
 // README for source details).  Now load into our BaseDataset object,
@@ -57,16 +57,15 @@ const aggregateTransformation: ArqueroDataTransformation = {
   ]
 };
 // We store the results as our first evidence node
-const _ev1: AnalyticKnowledge = {
-  name: "mathisen2019-1",
-  description: "Top three crime peaks: April 27, 2015 (419 crimes), December 20, 2013 (192 crimes), and June 22, 2013 (192 crimes). Mathisen 2019 evidence example 1",
-  timestamp: Date.now(),
-  transformation: aggregateTransformation,
-  relationshipModel: null,
-  results: () => executeDataTransformation(aggregateTransformation)
-};
-const ev1: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(_ev1);
-const peakCrimes: BaseDataset = ev1.analyticKnowledge.results();
+const ev1: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(
+  "mathisen2019-1", // name
+  Date.now(), // timestamp
+  aggregateTransformation, // transformation
+  null, // relationshipModel
+  () => executeDataTransformation(aggregateTransformation), // results
+  "Top three crime peaks: April 27, 2015 (419 crimes), December 20, 2013 (192 crimes), and June 22, 2013 (192 crimes). Mathisen 2019 evidence example 1" // description
+);
+const peakCrimes: BaseDataset = ev1.results();
 peakCrimes.sources = [baltimoreCrime];
 console.log(peakCrimes.records[0].attributes);
 console.log(peakCrimes.records);
@@ -74,11 +73,11 @@ console.log(peakCrimes.records);
 // Looking online, we see that April 27 coincides with an important date of
 // protests in Baltimore related to Freddie Gray's funeral. We want to link this
 // knowledge with our evidence. We start by establishing related concepts:
-const protest: Concept = {
-  name: "Protest",
-  parentConcepts: []
-};
-const protestsNode: DomainKnowledgeNode = new DomainKnowledgeNode(
+const protest: Concept = new Concept(
+  "Protest", // name
+  [] // parentConcepts
+);
+const protestsInstance: Instance = new Instance(
   "WikipediaArticle-2015BaltimoreProtests", // name
   protest, // coreConcept
   [], // relevantConcepts
@@ -87,6 +86,10 @@ const protestsNode: DomainKnowledgeNode = new DomainKnowledgeNode(
     values: {"link": "https://en.wikipedia.org/wiki/2015_Baltimore_protests"},
     id: "dr-2015-baltimore-protests"
   }
+);
+const protestsNode: DomainKnowledgeNode = new DomainKnowledgeNode(
+  "WikipediaArticle-2015BaltimoreProtests", // name
+  protestsInstance
 );
 // Now we can link our protests knowledge node with our evidence:
 const protestsInsight: InsightNode = new InsightNode(
@@ -128,17 +131,16 @@ const aggregateTransformation2: ArqueroDataTransformation = {
   ]
 };
 // We store the results as our second evidence node
-const _ev2: AnalyticKnowledge = {
-  name: "mathisen2019-2",
-  description: "Distribution of crimes observed for the April 27, 2015 peak. Burglaries are the most frequent crime type on this day (210 crimes). Mathisen 2019 evidence example 2",
-  timestamp: Date.now(),
-  transformation: aggregateTransformation2,
-  relationshipModel: null,
-  results: () => executeDataTransformation(aggregateTransformation2)
-};
-const ev2: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(_ev2);
+const ev2: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(
+  "mathisen2019-2", // name
+  Date.now(), // timestamp
+  aggregateTransformation2, // transformation
+  null, // relationshipModel
+  () => executeDataTransformation(aggregateTransformation2), // results
+  "Distribution of crimes observed for the April 27, 2015 peak. Burglaries are the most frequent crime type on this day (210 crimes). Mathisen 2019 evidence example 2" // description
+);
 ev2.addSource(ev1); // also adds target knowledge to ev1
-const apr27Crimes: BaseDataset = ev2.analyticKnowledge.results();
+const apr27Crimes: BaseDataset = ev2.results();
 apr27Crimes.sources = [baltimoreCrime];
 console.log(apr27Crimes.records[0].attributes);
 console.log(apr27Crimes.records);
@@ -166,24 +168,23 @@ const aggregateTransformation3: ArqueroDataTransformation = {
   ]
 };
 // We store the results as our third evidence node
-const _ev3: AnalyticKnowledge = {
-  name: "mathisen2019-3",
-  description: "Distribution of crimes over time. Verifying that no one crime type dominates the observed peak crime days. Mathisen 2019 evidence example 3",
-  timestamp: Date.now(),
-  transformation: aggregateTransformation3,
-  relationshipModel: null,
-  results: () => executeDataTransformation(aggregateTransformation3)
-};
-const ev3: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(_ev3);
+const ev3: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(
+  "mathisen2019-3", // name
+  Date.now(), // timestamp
+  aggregateTransformation3, // transformation
+  null, // relationshipModel
+  () => executeDataTransformation(aggregateTransformation3), // results
+  "Distribution of crimes over time. Verifying that no one crime type dominates the observed peak crime days. Mathisen 2019 evidence example 3" // description
+);
 ev3.addSource(ev2); // also adds target knowledge to ev2
-const crimeDist: BaseDataset = ev3.analyticKnowledge.results();
+const crimeDist: BaseDataset = ev3.results();
 crimeDist.sources = [baltimoreCrime];
 console.log("first record:");
 console.log(crimeDist.records[0]);
 
 // Since we find that Burglary was the most common crime, and unusually so, we
 // want to incorporate this information in our knowledge base.
-const burglaryNode: DomainKnowledgeNode = new DomainKnowledgeNode(
+const burglaryInstance: Instance =  new Instance(
   "WikipediaArticle-Burglary", // name
   crime, // coreConcept
   [], // relevantConcepts
@@ -192,6 +193,10 @@ const burglaryNode: DomainKnowledgeNode = new DomainKnowledgeNode(
     values: {"link": "https://en.wikipedia.org/wiki/Burglary"},
     id: "dr-burglary"
   }
+);
+const burglaryNode: DomainKnowledgeNode = new DomainKnowledgeNode(
+  "WikipediaArticle-Burglary", // name
+  burglaryInstance
 );
 burglaryNode.addSource(protestsNode);
 const burglaryInsight: InsightNode = new InsightNode(
@@ -237,17 +242,16 @@ const aggregateTransformation4: ArqueroDataTransformation = {
   ]
 };
 // We store the results as our fourth evidence node
-const _ev4: AnalyticKnowledge = {
-  name: "mathisen2019-4",
-  description: "Distribution of crimes by district. The burglaries seem to be fairly evenly distributed throughout the city, with slightly more burglaries observed in Western Baltimore. Mathisen 2019 evidence example 4",
-  timestamp: Date.now(),
-  transformation: aggregateTransformation4,
-  relationshipModel: null,
-  results: () => executeDataTransformation(aggregateTransformation4)
-};
-const ev4: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(_ev4);
+const ev4: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(
+  "mathisen2019-4", // name
+  Date.now(), // timestamp
+  aggregateTransformation4, // transformation
+  null, // relationshipModel
+  () => executeDataTransformation(aggregateTransformation4), // results
+  "Distribution of crimes by district. The burglaries seem to be fairly evenly distributed throughout the city, with slightly more burglaries observed in Western Baltimore. Mathisen 2019 evidence example 4" // description
+);
 ev4.addSource(ev2); // also adds target knowledge to ev2
-const crimeLoc: BaseDataset = ev4.analyticKnowledge.results();
+const crimeLoc: BaseDataset = ev4.results();
 crimeLoc.sources = [baltimoreCrime];
 console.log(crimeLoc.records[0].attributes);
 console.log(crimeLoc.records);
@@ -259,11 +263,11 @@ burglaryInsight.analyticKnowledge.push(ev4);
 // Finally, we will create a final insight to capture the summary takeaway from
 // Figure 8 of the original paper:
 const summaryInsight: InsightNode = new InsightNode(
-  "mathisen2019insight3",
-  [],
-  [],
-  "Quoting the paper: 'The main result shows that burglars occasionally take advantage of chaotic situations elsewhere in the city, likely because they know this will draw much attention of the police'"
+  "mathisen2019insight3", // name
+  [], // domainKnowledge
+  [], // analyticKnowledge
+  "Quoting the paper: 'The main result shows that burglars occasionally take advantage of chaotic situations elsewhere in the city, likely because they know this will draw much attention of the police'" // description
 );
-protestsInsight.addTarget(summaryInsight); // link up with the new insight
+protestsInsight.addTarget(summaryInsight); // link with the new insight
 burglaryInsight.addTarget(summaryInsight);
 

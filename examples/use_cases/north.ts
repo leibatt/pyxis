@@ -2,7 +2,7 @@ import { op, bin } from 'arquero';
 import { loadDataset, Attribute, BaseDataset } from '../../src/dataset';
 import { ArqueroDataTransformation, executeDataTransformation } from '../../src/transformation/Arquero';
 import { NormalRelationshipModel } from '../../src/relationship/NormalRelationshipModel';
-import { AnalyticKnowledge, AnalyticKnowledgeNode } from '../../src/knowledge/AnalyticKnowledge';
+import { AnalyticKnowledgeNode } from '../../src/knowledge/AnalyticKnowledge';
 
 // In this example, we will be recreating the rents dataset exploration
 // scenario proposed by North, focusing on data transformations and

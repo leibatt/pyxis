@@ -2,26 +2,26 @@ import { DomainKnowledgeNode } from './knowledge/DomainKnowledge';
 import { AnalyticKnowledgeNode } from './knowledge/AnalyticKnowledge';
 import { Node } from './Node';
 
-// insight represents connecting analytic knowledge (evidence) with domain
-// knowledge (concept/instance).
-export interface Insight {
-  name: string; // also used as an unique identifier
-  description?: string;
-  domainKnowledge: DomainKnowledgeNode[];
-  analyticKnowledge: AnalyticKnowledgeNode[];
-}
-
 // used to track and evaluate the complexity of derived insight
-export interface InsightComplexity {
-  insight: Insight; // what insight is this for?
-  percentageSourceRecords: () => number; // percentage of source records used by this insight
-  insightDepth: () => number; // how many levels of insights were created to form this insight?
-  insightCount: () => number; // how many insights were derived in order to form this insight?
-  complexityScore: () => number; // what is the final complexity score for this insight?
+export abstract class InsightComplexity {
+  insight: InsightNode; // what insight is this for?
+
+  constructor(insight: InsightNode) {
+    this.insight = insight;
+  }
+
+  abstract insightDepth: () => number; // how many levels of insights were created to form this insight?
+
+  abstract insightCount: () => number; // how many insights were derived in order to form this insight?
+
+  abstract percentageSourceRecords: () => number; // percentage of source records used by this insight
+
+  abstract complexityScore: () => number; // what is the final complexity score for this insight?
 }
 
-// helps to keep track of relationships between insights
-export class InsightNode extends Node implements Insight {
+// insight represents connecting analytic knowledge (evidence) with domain
+// knowledge (concept/instance), as well as building on prior insights.
+export class InsightNode extends Node {
   name: string; // also used as an unique identifier
   description?: string;
   domainKnowledge: DomainKnowledgeNode[]; // only one node can be associated with this insight
@@ -32,7 +32,7 @@ export class InsightNode extends Node implements Insight {
 
   constructor(name: string, domainKnowledge: DomainKnowledgeNode[],
     analyticKnowledge: AnalyticKnowledgeNode[],
-    description?: string, complexity?: () => InsightComplexity) {
+    description?: string) {
 
     super(name);
     this.name = name;
@@ -41,8 +41,6 @@ export class InsightNode extends Node implements Insight {
     if(typeof description !== 'undefined') {
       this.description = description;
     }
-    if(typeof complexity !== 'undefined') {
-      this.complexity = complexity;
-    }
+    // TODO: instantiate complexity object
   }
 }
