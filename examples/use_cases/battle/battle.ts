@@ -66,18 +66,17 @@ const aggregateTransformation: ArqueroDataTransformation = {
 */
   ]
 };
-const _ev1: AnalyticKnowledge = {
-  name: "battle2019-1",
-  description: "The wing/rotor get damaged the most",
-  timestamp: Date.now(),
-  transformation: aggregateTransformation,
-  relationshipModel: null,
-  results: () => executeDataTransformation(aggregateTransformation)
-};
-const ev1: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(_ev1);
+const ev1: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(
+  "battle2019-1", // name
+  Date.now(), // timestamp
+  aggregateTransformation, // transformation
+  null, // relationshipModel
+  () => executeDataTransformation(aggregateTransformation), // results
+  "The wing/rotor get damaged the most" // description
+);
 // In printing the results, we see the largest count for "count_wing_rot",
 // consistent with participants' answers
-console.log(ev1.analyticKnowledge.results().records[0]);
+console.log(ev1.results().records[0]);
 
 /************ BIRDSTRIKES TASK 2: "Airplane has more occurrences of damage" ************/
 // Participants answered the following question for this task:
@@ -111,20 +110,19 @@ const groupedAggregateTransformation: ArqueroDataTransformation = {
     }
   ]
 };
-const _ev2: AnalyticKnowledge = {
-  name: "battle2019-2",
-  description: "Airplane has more occurrences of damage",
-  timestamp: Date.now(),
-  transformation: groupedAggregateTransformation,
-  relationshipModel: null,
-  results: () => executeDataTransformation(groupedAggregateTransformation)
-};
-const ev2: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(_ev2);
+const ev2: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(
+  "battle2019-2", // name
+  Date.now(), // timestamp
+  groupedAggregateTransformation, // transformation
+  null, // relationshipModel
+  () => executeDataTransformation(groupedAggregateTransformation), // results
+  "Airplane has more occurrences of damage" // description
+);
 
 // In printing the results, we see the largest count for ac_class='A' (i.e., airplanes),
 // consistent with participants' answers
 console.log("Calculate instances of damage observe per aircraft type (ac_class).");
-const aircraftDamageData: BaseDataset = ev2.analyticKnowledge.results();
+const aircraftDamageData: BaseDataset = ev2.results();
 for(let i = 0; i < aircraftDamageData.records.length; i++) {
   console.log(aircraftDamageData.records[i]);
 }
@@ -167,19 +165,18 @@ const grpPrecipTransformation: ArqueroDataTransformation = {
     }
   ]
 };
-const _ev3_1: AnalyticKnowledge = {
-  name: "battle2019-3-1",
-  description: "Airplane has more occurrences of damage",
-  timestamp: Date.now(),
-  transformation: grpPrecipTransformation,
-  relationshipModel: null,
-  results: () => executeDataTransformation(grpPrecipTransformation)
-};
-const ev3_1: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(_ev3_1);
+const ev3_1: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(
+  "battle2019-3-1", // name
+  Date.now(), // timestamp
+  grpPrecipTransformation, // transformation
+  null, // relationshipModel: 
+  () => executeDataTransformation(grpPrecipTransformation), // results
+  "Airplane has more occurrences of damage" // description
+);
 // we see variation in the results. Looking at precip results (ev3_1), we would
 // think bad weather leads to more strikes. See the relevant Vega-Lite figure
 // for more details.
-exportDatasetJson(ev3_1.analyticKnowledge.results(),"battle2019-3-1.json");
+exportDatasetJson(ev3_1.results(),"battle2019-3-1.json");
 
 console.log("comparing sky and frequency");
 const grpSkyTransformation: ArqueroDataTransformation = {
@@ -213,20 +210,18 @@ const grpSkyTransformation: ArqueroDataTransformation = {
     }
   ]
 };
-const _ev3_2: AnalyticKnowledge = {
-  name: "battle2019-3-2",
-  description: "Airplane has more occurrences of damage",
-  timestamp: Date.now(),
-  transformation: grpSkyTransformation,
-  relationshipModel: null,
-  results: () => executeDataTransformation(grpSkyTransformation)
-};
-const ev3_2: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(_ev3_2);
+const ev3_2: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(
+  "battle2019-3-2", // name
+  Date.now(), // timestamp
+  grpSkyTransformation, // transformation
+  null, // relationshipModel
+  () => executeDataTransformation(grpSkyTransformation), // results
+  "Airplane has more occurrences of damage" // description
+);
 // However, when we look at sky (ev3_2), we see clear weather seems to lead to
 // more strikes. Also, we see that strikes increase with time for each sky
 // measure, but not for each precip measure (with the exception of "rain"). See
 // the Vega-Lite figure for more details.
-exportDatasetJson(ev3_2.analyticKnowledge.results(),"battle2019-3-2.json");
-
+exportDatasetJson(ev3_2.results(),"battle2019-3-2.json");
 
 
