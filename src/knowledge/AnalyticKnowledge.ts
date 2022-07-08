@@ -6,10 +6,9 @@ import { Node } from '../Node';
 // Evidence represents some relationship within one or more datasets.
 // However analytic knowledge may also depend on 
 // or can be defined as relationships between existing analytic knowledge.
-export interface AnalyticKnowledge {
+export class AnalyticKnowledgeNode extends Node {
   name: string;
   timestamp: number; // to keep track of when the analytic knowledge was created;
-
   transformation: DataTransformation; // how to pre-process the data to uncover the desired analytic knowledge.
                                       // also includes references to the source datasets!
   relationshipModel: RelationshipModel; // the data relationship captured by the analytic knowledge, if applicable
@@ -17,7 +16,6 @@ export interface AnalyticKnowledge {
   // generates a new dataset including the calculations important for this analytic knowledge
   // Only return source records if no computation is needed to capture the analytic knowledge (e.g., if doing filtering only)
   results: () => BaseDataset; // produces the final results of applying transformation and relationship
-
   description?: string;
 
   // used to calculate what percentage of the original data records were used to compute this analytic knowledge
@@ -26,17 +24,6 @@ export interface AnalyticKnowledge {
   sourceRecordsUsed?: () => {dataset: BaseDataset, recordsUsed: DataRecord[]}[]; // the original source records used by this analytic knowledge
 
   // used to calculate and track the complexity of this particular analytic knowledge
-  complexity?: () => AnalyticKnowledgeNodeComplexity;
-}
-
-export class AnalyticKnowledgeNode extends Node implements AnalyticKnowledge {
-  name: string;
-  timestamp: number;
-  transformation: DataTransformation;
-  relationshipModel: RelationshipModel;
-  results: () => BaseDataset;
-  description?: string;
-  sourceRecordsUsed?: () => {dataset: BaseDataset, recordsUsed: DataRecord[]}[];
   complexity?: () => AnalyticKnowledgeNodeComplexity;
 
   constructor(name: string, timestamp: number, transformation: DataTransformation, relationshipModel: RelationshipModel,

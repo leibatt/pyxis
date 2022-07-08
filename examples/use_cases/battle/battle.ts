@@ -1,7 +1,7 @@
 import { desc, op } from 'arquero';
 import { loadDataset, exportDatasetJson, AttributeType, BaseDataset } from '../../../src/dataset';
 import { ArqueroDataTransformation, executeDataTransformation } from '../../../src/transformation/Arquero';
-import { AnalyticKnowledge, AnalyticKnowledgeNode } from '../../../src/Knowledge/AnalyticKnowledge';
+import { AnalyticKnowledgeNode } from '../../../src/Knowledge/AnalyticKnowledge';
 
 // In this example, we will be recreating participants' answers to tasks
 // involving the birdstrikes dataset, studied by Battle & Heer:
