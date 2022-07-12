@@ -10,11 +10,15 @@ export abstract class InsightComplexity {
     this.insight = insight;
   }
 
-  insightDepth(): number { // how many levels of insights were created to form this insight?
+  // how many levels of insights were created to form this insight?
+  insightDepth(): number {
     return this.insight.sourceDepth();
   }
 
-  abstract insightCount: () => number; // how many insights were derived in order to form this insight?
+  // how many insights were derived in order to form this insight?
+  insightCount(): number {
+    return this.insight.sourceCount();
+  }
 
   abstract percentageSourceRecords: () => number; // percentage of source records used by this insight
 

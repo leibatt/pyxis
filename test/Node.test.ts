@@ -5,6 +5,28 @@ describe('Node.ts tests', () => {
     const node: Node = new Node("n");
     expect(node.name).toEqual("n");
   });
+  describe('#sourceCount', () => {
+    const node1 = new Node("n");
+    const node2 = new Node("n2");
+    node2.addSource(node1);
+    const node3 = new Node("n3");
+    node3.addSource(node2);
+    test('#sourceCount returns 0 for empty node', () => {
+      expect(node1.sourceCount()).toEqual(0);
+    });
+    test('#sourceCount returns 1 for one source node', () => {
+      expect(node2.sourceCount()).toEqual(1);
+    });
+    test('#sourceCount returns 2 with source of source', () => {
+      expect(node3.sourceCount()).toEqual(2);
+    });
+    test('#sourceCount returns 2 with two total source nodes', () => {
+      const node4 = new Node("n4");
+      node4.addSource(node1);
+      node4.addSource(node2);
+      expect(node4.sourceCount()).toEqual(2);
+    });
+  });
   describe('#sourceDepth', () => {
     const node1 = new Node("n");
     const node2 = new Node("n2");
@@ -26,11 +48,6 @@ describe('Node.ts tests', () => {
       node4.addSource(node2);
       expect(node4.sourceDepth()).toEqual(3);
     });
-    test('#sourceDepth throws error when node is its own source', () => {
-      const node5 = new Node("n5");
-      node5.addSource(node5);
-      expect(node5.sourceDepth).toThrow();
-    });
   });
   describe('#addTarget', () => {
     test('#addTarget adds node properly', () => {
@@ -49,6 +66,16 @@ describe('Node.ts tests', () => {
       expect(node1.target).toHaveLength(1);
       expect(node2.source).toHaveLength(1);
     });
+    test('#addTarget throws error when node is its own target', () => {
+      const node1 = new Node("n");
+      expect(() => { node1.addTarget(node1); }).toThrow();
+    });
+    test('#addTarget throws error when node is already source', () => {
+      const node1 = new Node("n");
+      const node2 = new Node("n2");
+      node1.addSource(node2);
+      expect(() => { node1.addTarget(node2); }).toThrow();
+    });
   });
   describe('#addSource', () => {
     test('#addSource adds node properly', () => {
@@ -66,6 +93,16 @@ describe('Node.ts tests', () => {
       node1.addSource(node2);
       expect(node1.source).toHaveLength(1);
       expect(node2.target).toHaveLength(1);
+    });
+    test('#addSource throws error when node is its own source', () => {
+      const node1 = new Node("n");
+      expect(() => { node1.addSource(node1); }).toThrow();
+    });
+    test('#addSource throws error when node is already target', () => {
+      const node1 = new Node("n");
+      const node2 = new Node("n2");
+      node1.addTarget(node2);
+      expect(() => { node1.addSource(node2); }).toThrow();
     });
   });
   describe('#addRelated', () => {
@@ -89,6 +126,10 @@ describe('Node.ts tests', () => {
       expect(node2.target).toHaveLength(0);
       expect(node1.related).toHaveLength(1);
       expect(node2.related).toHaveLength(1);
+    });
+    test('#addRelated throws error when node is its own relation', () => {
+      const node1 = new Node("n");
+      expect(() => { node1.addRelated(node1); }).toThrow();
     });
   });
 });

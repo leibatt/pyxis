@@ -14,6 +14,12 @@ export class Node {
   }
 
   addTarget(node: Node): void {
+    if(node.name === this.name) {
+        throw new Error("Node cannot be its own target! "+ typeof(node) + ": " + node.name);
+    }
+    if(Node.listContainsNode(this.source,node)) {
+        throw new Error("Node cannot be both source and target! "+ typeof(node) + ": " + node.name);
+    }
     if(!Node.listContainsNode(this.target,node)) {
       this.target.push(node);
       node.source.push(this);
@@ -21,6 +27,12 @@ export class Node {
   }
 
   addSource(node: Node): void {
+    if(node.name === this.name) {
+        throw new Error("Node cannot be its own source! "+ typeof(node) + ": " + node.name);
+    }
+    if(Node.listContainsNode(this.target,node)) {
+        throw new Error("Node cannot be both source and target! "+ typeof(node) + ": " + node.name);
+    }
     if(!Node.listContainsNode(this.source,node)) {
       this.source.push(node);
       node.target.push(this);
@@ -28,10 +40,35 @@ export class Node {
   }
 
   addRelated(node: Node): void {
+    if(node.name === this.name) {
+        throw new Error("Node cannot be its own relation! "+ typeof(node) + ": " + node.name);
+    }
     if(!Node.listContainsNode(this.related,node)) {
       this.related.push(node);
       node.related.push(this);
     }
+  }
+
+  // Follow all the source paths and count unique source nodes.
+  sourceCount(): number {
+    const q1: Node[] = [...this.source]; // shallow copy of source nodes
+    // nodes we have already visited
+    const visited: Set<string> = new Set<string>();
+    while(q1.length > 0) {
+      const n: Node = q1.splice(0,1)[0];
+      if(n.name === this.name) {
+        throw new Error("Node cannot be its own source! "+ typeof(n) + ": " + n.name);
+      }
+      if(!visited.has(n.name)) { // have we seen this one before?
+        visited.add(n.name);
+        n.source.forEach((n2: Node) => { // check its sources
+          if(!visited.has(n2.name)) {
+            q1.push(n2);
+          }
+        });
+      }
+    }
+    return visited.size;
   }
 
   // how long is this node's chain of source nodes?
@@ -47,13 +84,12 @@ export class Node {
         if(n.name === this.name) {
           throw new Error("Node cannot be its own source! "+ typeof(n) + ": " + n.name);
         }
-        if(visited.has(n.name)) { // have we seen this one before?
-          return;
+        if(!visited.has(n.name)) { // have we seen this one before?
+          visited.add(n.name); // we've seen it now
+          n.source.forEach((n2: Node) => { // check its sources
+            q2.push(n2);
+          });
         }
-        visited.add(n.name); // we've seen it now
-        n.source.forEach((n2: Node) => { // check its sources
-          q2.push(n2);
-        });
       });
       q1 = [...q2]; // swap q1 and q2
       q2 = [];
