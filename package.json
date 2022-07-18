@@ -3,9 +3,16 @@
   "version": "0.0.1",
   "description": "executable framework for defining visualization tasks",
   "main": "index.js",
-  "repository": "git@github.com:leibatt/formalizing-vis-tasks.git",
+  "repository": "git@github.com:leibatt/pyxis.git",
   "author": "Leilani Battle <leibatt@cs.washington.edu>",
   "license": "MIT",
+  "files": [
+    "build",
+    "src",
+    "lib",
+    "types",
+    "tsconfig.json"
+  ],
   "scripts": {
     "clean": "rm -rf build",
     "build": "yarn build-src && yarn build-examples && yarn build-datasets",
@@ -13,9 +20,12 @@
     "build-examples": "tsc -p examples/tsconfig.json",
     "build-datasets": "cp -R datasets build",
     "test": "jest --collectCoverage=true && yarn lint",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "bundle": "rollup --config"
   },
   "dependencies": {
+    "@rollup/plugin-commonjs": "^22.0.1",
+    "@rollup/plugin-typescript": "^8.3.3",
     "arquero": "^4.8.8",
     "eslint-plugin-jest": "^24.1.3",
     "isolation-forest": "^0.0.9",
@@ -23,6 +33,7 @@
     "ml-cart": "^2.1.1",
     "ml-knn": "^3.0.0",
     "ml-naivebayes": "^4.0.0",
+    "rollup": "^2.76.0",
     "typescript": "^4.1.2",
     "uuid": "^8.3.2",
     "vega-statistics": "^1.7.10"

@@ -1,13 +1,12 @@
 import { DataTransformation } from '../transformation/DataTransformation';
 import { BaseDataset,DataRecord } from '../dataset';
 import { RelationshipModel } from '../relationship/RelationshipModel';
-import { Node } from '../Node';
+import { GraphNode } from '../GraphNode';
 
 // Evidence represents some relationship within one or more datasets.
 // However analytic knowledge may also depend on 
 // or can be defined as relationships between existing analytic knowledge.
-export class AnalyticKnowledgeNode extends Node {
-  name: string;
+export class AnalyticKnowledgeNode extends GraphNode {
   timestamp: number; // to keep track of when the analytic knowledge was created;
   transformation: DataTransformation; // how to pre-process the data to uncover the desired analytic knowledge.
                                       // also includes references to the source datasets!

@@ -1,6 +1,6 @@
 import { DomainKnowledgeNode } from './knowledge/DomainKnowledge';
 import { AnalyticKnowledgeNode } from './knowledge/AnalyticKnowledge';
-import { Node } from './Node';
+import { GraphNode } from './GraphNode';
 
 // used to track and evaluate the complexity of derived insight
 export abstract class InsightComplexity {
@@ -27,8 +27,7 @@ export abstract class InsightComplexity {
 
 // insight represents connecting analytic knowledge (evidence) with domain
 // knowledge (concept/instance), as well as building on prior insights.
-export class InsightNode extends Node {
-  name: string; // also used as an unique identifier
+export class InsightNode extends GraphNode {
   description?: string;
   domainKnowledge: DomainKnowledgeNode[]; // only one node can be associated with this insight
   analyticKnowledge: AnalyticKnowledgeNode[]; // only one node can be associated with this insight

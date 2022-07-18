@@ -1,5 +1,5 @@
 import { DataRecord } from '../dataset';
-import { Node } from '../Node';
+import { GraphNode } from '../GraphNode';
 
 // The structure for user domain knowledge was adapted from the work by Gotz,
 // Zhou and Aggarwal: Gotz, D., Zhou, M.X. and Aggarwal, V., 2006, October.
@@ -40,8 +40,7 @@ export class Instance {
   }
 }
 
-export class DomainKnowledgeNode extends Node {
-  name: string;
+export class DomainKnowledgeNode extends GraphNode {
   instance: Instance; // the instance associated with this domain knowledge
 
   constructor(name: string, instance: Instance) {
