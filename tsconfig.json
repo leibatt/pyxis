@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "build",
+    "outDir": "build-test",
     "target": "es6",
     "module": "esnext",
     "moduleResolution": "Node",

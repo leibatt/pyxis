@@ -6,23 +6,11 @@ export default [
   input: 'src/index.ts',
   output: {
     sourcemap: true,
-    dir: 'output/es',
-    format: 'es'
-  },
-  plugins: [
-    typescript({outDir: 'output/es'}),
-    commonjs({transformMixedEsModules:true})
-  ]
-},
-{
-  input: 'src/index.ts',
-  output: {
-    sourcemap: true,
-    dir: 'output/cjs',
+    dir: 'build',
     format: 'cjs'
   },
   plugins: [
-    typescript({outDir: 'output/cjs'}),
+    typescript({outDir: 'build'}),
     commonjs({transformMixedEsModules:true})
   ]
 }
