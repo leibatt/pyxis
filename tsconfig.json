@@ -20,5 +20,5 @@
   },
   "files": ["src/index.ts"],
   "include": ["src/**/*.ts", "test/**/*.ts", "types/*.d.ts", "lib/decision-tree-js/decision-tree.js"],
-  "exclude": ["build/**/*","examples/**/*","node_modules"]
+  "exclude": ["build-test/**/*", "build/**/*","examples/**/*","node_modules"]
 }
