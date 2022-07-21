@@ -1,27 +1,18 @@
-# formalizing-vis-tasks
-code repository for the formalizing visualization tasks research project.
+# Pyxis
+Pyxis is a specification language for defining visual analysis objectives, insights, and tasks in a programmatic way that is consistent with the academic literature.
 
-to install dependencies use `yarn`
+## Research Team
+This project is the work of [Prof. Leilani Battle](https://homes.cs.washington.edu/~leibatt/bio.html), Co-Director of the [UW Interactive Data Lab](http://idl.cs.washington.edu/), and Alvitta Ottley, Director of the [Visual Data Analysis Group](http://visualdata.wustl.edu/) at WashU.
 
-To build the codebase use `yarn build`. To build the source code only use `yarn build-src`. To build the examples only use `yarn build-examples`.
+## Citing Pyxis
 
-To run tests and do linting use `yarn test`
-
-NOTE: there is an issue with building `MultivariateLinearRegression`. To fix it do the following (from [here](https://github.com/mljs/regression-multivariate-linear/issues/15)):
-
-Add
+This paper is currently under preparation, however we have a technical report available on [arXiv](https://arxiv.org/abs/2206.04767). If you would like to cite this work, please use the following:
 ```
-export default MultivariateLinearRegression;
-```
-at the end of the regression-multivariate-linear.d.ts file located at node\_modules/ml-regression-multivariate-linear/
-
-then remove the line in MultivariateLinearRegression Class
-```
-export = MultivariateLinearRegression;
+@article{battle2022programmatic,
+  title={A Programmatic Definition of Visualization Tasks, Insights, and Objectives},
+  author={Battle, Leilani and Ottley, Alvitta},
+  journal={arXiv preprint arXiv:2206.04767},
+  year={2022}
+}
 ```
 
-NOTE (10-14-2021): the [ml-cart](https://github.com/mljs/decision-tree-cart) package has a bug where it makes the same incorrect prediction for every input! See [this issue](https://github.com/mljs/random-forest/issues/32) for more details.
-
-NOTE (11-11-2021): I set the "skipLibCheck" property to `true` in tsconfig.json because the apache arrow library throws a lot of errors (I think they do not adhere to the stricter type checking of newer typescript versions). I got this idea from the [arquero tsconfig.json file](https://github.com/uwdata/arquero/blob/master/tsconfig.json). Hopefully someday the arrow folks will fix it.
-
-NOTE (02-07-2022): When running compiled examples in the build folder, the examples assume that there's a copy of the datasets folder in the build folder.
