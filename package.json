@@ -1,14 +1,15 @@
 {
-  "name": "pyxis",
+  "name": "@leibatt/pyxis",
   "version": "0.0.1",
-  "description": "executable framework for defining visualization tasks",
+  "description": "A language for specifying visual analysis insights, objectives and tasks.",
   "main": "build/index.js",
   "module": "build/src/index",
   "types": "build/src/index.d.ts",
   "repository": "git@github.com:leibatt/pyxis.git",
-  "author": "Leilani Battle <leibatt@cs.washington.edu>",
+  "author": "Leilani Battle, Alvitta Ottley",
   "license": "MIT",
   "files": [
+    "README.md",
     "build",
     "src",
     "lib",
@@ -16,7 +17,7 @@
     "tsconfig.json"
   ],
   "scripts": {
-    "clean": "rm -rf build",
+    "clean": "rm -rf build/* build-test/*",
     "build": "yarn build-src && yarn build-examples && yarn build-datasets",
     "build-src": "tsc",
     "build-examples": "tsc -p examples/tsconfig.json",
