@@ -2,7 +2,7 @@ import { op, bin } from 'arquero';
 import { loadDataset, Attribute, BaseDataset } from '../../src/dataset';
 import { ArqueroDataTransformation, executeDataTransformation } from '../../src/transformation/Arquero';
 import { NormalRelationshipModel } from '../../src/relationship/NormalRelationshipModel';
-import { AnalyticKnowledge, AnalyticKnowledgeNode } from '../../src/knowledge/AnalyticKnowledge';
+import { AnalyticKnowledgeNode } from '../../src/knowledge/AnalyticKnowledge';
 
 // In this example, we will be recreating the rents dataset exploration
 // scenario proposed by North, focusing on data transformations and
@@ -29,16 +29,15 @@ const aggregateTransformation: ArqueroDataTransformation = {
   ]
 };
 // We store the extrema as our first evidence node
-const _ev1: AnalyticKnowledge = {
-  name: "north2006-1",
-  description: "Minimum and maximum rents for 2 bedroom homes. North 2006 evidence example 1",
-  timestamp: Date.now(),
-  transformation: aggregateTransformation,
-  relationshipModel: null,
-  results: () => executeDataTransformation(aggregateTransformation)
-};
-const ev1: AnalyticKnowledgeNode = new AnalyticKnowledgeNode("north2006-1",_ev1);
-const minMaxRents: BaseDataset = ev1.analyticKnowledge.results();
+const ev1: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(
+  "north2006-1", // name
+  Date.now(), // timestamp
+  aggregateTransformation, // transformation
+  null, // relationshipModel
+  () => executeDataTransformation(aggregateTransformation), // results
+  "Minimum and maximum rents for 2 bedroom homes. North 2006 evidence example 1" // description
+);
+const minMaxRents: BaseDataset = ev1.results();
 minMaxRents.sources = [hudRents];
 console.log(minMaxRents.records[0]);
 
@@ -54,15 +53,14 @@ const nmm: NormalRelationshipModel = new NormalRelationshipModel(
 nmm.train(hudRents.records);
 console.log("mean:",nmm.model.mean(),"stdev:",nmm.model.stdev());
 // We store the final relationship as our second piece of evidence.
-const _ev2: AnalyticKnowledge = {
-  name: "north2006-2",
-  description: "Normal distribution calculated from 2br rents. North 2006 evidence example 2",
-  timestamp: Date.now(),
-  transformation: null,
-  relationshipModel: nmm,
-  results: () => hudRents
-};
-const ev2: AnalyticKnowledgeNode = new AnalyticKnowledgeNode("north2006-2",_ev2);
+const ev2: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(
+  "north2006-2", // name
+  Date.now(), // timestamp
+  null, // transformation
+  nmm, // relationshipModel
+  () => hudRents, // results
+  "Normal distribution calculated from 2br rents. North 2006 evidence example 2" // description: 
+);
 
 console.log("\n\ncalculate binned aggregation over rents for 2 bedroom homes");
 const binnedTransformation: ArqueroDataTransformation = {
@@ -88,16 +86,15 @@ const binnedTransformation: ArqueroDataTransformation = {
   ]
 };
 // We store the joined table as our second evidence node, and link it to the first.
-const _ev3: AnalyticKnowledge = {
-  name: "north2006-3",
-  description: "Histogram of rents for 2 bedroom homes. North 2006 evidence example 3",
-  timestamp: Date.now(),
-  transformation: binnedTransformation,
-  relationshipModel: null,
-  results: () => executeDataTransformation(binnedTransformation)
-};
-const ev3: AnalyticKnowledgeNode = new AnalyticKnowledgeNode("north2006-2",_ev3);
-const binnedRents: BaseDataset = ev3.analyticKnowledge.results();
+const ev3: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(
+  "north2006-3", // name
+  Date.now(), // timestamp
+  binnedTransformation, // transformation
+  null, // relationshipModel
+  () => executeDataTransformation(binnedTransformation), // results
+  "Histogram of rents for 2 bedroom homes. North 2006 evidence example 3" // description
+);
+const binnedRents: BaseDataset = ev3.results();
 binnedRents.sources = [hudRents];
 console.log(binnedRents.records[0].attributes);
 console.log(binnedRents.records.map(r => r.values));

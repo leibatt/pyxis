@@ -1,5 +1,6 @@
 *.swp
 node_modules/
 build/*
+build-test/*
 .DS_Store
 coverage
