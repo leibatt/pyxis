@@ -1,6 +1,6 @@
 {
   "name": "@leibatt/pyxis",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A language for specifying visual analysis insights, objectives and tasks.",
   "main": "build/index.js",
   "module": "build/src/index",
