@@ -59,7 +59,7 @@ describe('transformation/vegaTransform.ts', () => {
       transforms: transforms
     };
     const newDataset: BaseDataset = executeDataTransformation(transformation);
-    expect(newDataset.name).toEqual("carsSubset-carsSubset2_filter-filter-lookup");
+    expect(newDataset.name).toBe("carsSubset-carsSubset2_filter-filter-lookup");
     expect(newDataset.records).toHaveLength(2);
   });
 });

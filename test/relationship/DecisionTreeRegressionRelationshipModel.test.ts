@@ -20,7 +20,7 @@ describe('DecisionTreeRegressionRelationshipModel', () => {
         attributeType: AttributeType.quantitative
       }
     );
-    expect(dtrm.name).toEqual("test");
+    expect(dtrm.name).toBe("test");
   });
   test('#constructor attribute type check works', () => {
     expect(() => {

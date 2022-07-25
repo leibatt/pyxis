@@ -20,7 +20,7 @@ describe('KNNRelationshipModel', () => {
         attributeType: AttributeType.quantitative
       }
     );
-    expect(knnm.name).toEqual("test");
+    expect(knnm.name).toBe("test");
     expect(knnm.model).toBeNull();
   });
   test('#train runs without errors', () => {
@@ -128,10 +128,10 @@ describe('KNNRelationshipModel', () => {
     );
     knnm.train(dataRecords);
     let res: ValueType = knnm.predict(dataRecords[5]);
-    expect(res).toEqual(0);
+    expect(res).toBe(0);
     res = knnm.predict(dataRecords[15]);
-    expect(res).toEqual(1);
+    expect(res).toBe(1);
     res = knnm.predict(dataRecords[25]);
-    expect(res).toEqual(2);
+    expect(res).toBe(2);
   });
 });

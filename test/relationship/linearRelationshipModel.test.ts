@@ -20,7 +20,7 @@ describe('LinearRegressionRelationshipModel', () => {
         attributeType: AttributeType.quantitative
       }
     );
-    expect(lrm.name).toEqual("test");
+    expect(lrm.name).toBe("test");
   });
   test('#constructor attribute type check works', () => {
     expect(() => {

@@ -20,7 +20,7 @@ describe('IsolationForestRelationshipModel', () => {
         }
       ]
     );
-    expect(dtrm.name).toEqual("test");
+    expect(dtrm.name).toBe("test");
     expect(dtrm.model).toBeNull();
   });
   test('#train runs without errors', () => {
