@@ -7,7 +7,8 @@ export default [{
   output: {
     sourcemap: true,
     dir: 'build',
-    format: 'cjs'
+    format: 'umd',
+    name: 'pyxis'
   },
   plugins: [
     typescript({outDir: 'build'}),
