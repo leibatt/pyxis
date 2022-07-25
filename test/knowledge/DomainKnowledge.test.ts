@@ -18,7 +18,7 @@ describe('DomainKnowledge.ts tests', () => {
           id: "d"
         }
       );
-      expect(concept.name).toEqual("test concept");
+      expect(concept.name).toBe("test concept");
     });
   });
   describe('Instance', () => {
@@ -52,7 +52,7 @@ describe('DomainKnowledge.ts tests', () => {
           id: "d"
         }
       );
-      expect(instance.name).toEqual("test instance");
+      expect(instance.name).toBe("test instance");
     });
   });
   describe('DomainKnowledgeNode', () => {
@@ -107,10 +107,10 @@ describe('DomainKnowledge.ts tests', () => {
       const node2 = new DomainKnowledgeNode("n2",
         instance2,
       );
-      expect(node1.name).toEqual("n1");
-      expect(node1.instance.name).toEqual("ti1");
-      expect(node2.name).toEqual("n2");
-      expect(node2.instance.name).toEqual("ti2");
+      expect(node1.name).toBe("n1");
+      expect(node1.instance.name).toBe("ti1");
+      expect(node2.name).toBe("n2");
+      expect(node2.instance.name).toBe("ti2");
     });
   });
 });

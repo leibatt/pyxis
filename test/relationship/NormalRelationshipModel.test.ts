@@ -15,7 +15,7 @@ describe('NormalRelationshipModel', () => {
         attributeType: AttributeType.quantitative
       }
     );
-    expect(nmm.name).toEqual("test");
+    expect(nmm.name).toBe("test");
     expect(nmm.model).toBeNull();
   });
   test('#train runs without errors', () => {

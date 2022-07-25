@@ -50,8 +50,8 @@ describe('AnalyticKnowledge.ts tests', () => {
         rm,
         () => cars // just return the cars dataset
       );
-      expect(node1.name).toEqual("akn_t");
-      expect(node2.name).toEqual("akn_rm");
+      expect(node1.name).toBe("akn_t");
+      expect(node2.name).toBe("akn_rm");
     });
   });
 });

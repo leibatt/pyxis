@@ -11,7 +11,7 @@ describe('dataset.ts tests', () => {
         name: "test",
         attributeType: AttributeType.nominal
       };
-      expect(attribute.name).toEqual("test");
+      expect(attribute.name).toBe("test");
       expect(attribute.attributeType).toEqual(AttributeType.nominal);
     });
   });
@@ -30,8 +30,8 @@ describe('dataset.ts tests', () => {
         values: values,
         id: id
       };
-      expect(d.attributes[0].name).toEqual("a");
-      expect(d.values["a"]).toEqual("test");
+      expect(d.attributes[0].name).toBe("a");
+      expect(d.values["a"]).toBe("test");
     });
     test('#constructor enforces attribute and value array lengths', () => {
       const attributes: Attribute[] = [
@@ -62,10 +62,10 @@ describe('dataset.ts tests', () => {
       }
       const dr: BaseDataRecord = jsonToDataRecord(or, null, { date1: AttributeType.temporal });
       expect(dr.attributes[0].attributeType).toEqual(AttributeType.temporal);
-      expect(typeof dr.values["date1"]).toEqual("object");
-      expect((dr.values["date1"] as Date).getFullYear()).toEqual(2022);
+      expect(typeof dr.values["date1"]).toBe("object");
+      expect((dr.values["date1"] as Date).getFullYear()).toBe(2022);
       expect(dr.attributes[1].attributeType).toEqual(AttributeType.nominal);
-      expect(typeof dr.values["date2"]).toEqual("string");
+      expect(typeof dr.values["date2"]).toBe("string");
     });
     test('#getValueByName retrieves correct values', () => {
       const or: Record<string, ValueType | null> = carsDataset[0];
@@ -128,11 +128,11 @@ describe('dataset.ts tests', () => {
         name: "test",
         records: records
       };
-      expect(d.name).toEqual("test");
+      expect(d.name).toBe("test");
       expect(d.records[0].attributes).toHaveLength(1);
       expect(Object.keys(d.records[0].values)).toHaveLength(1);
-      expect(d.records[0].attributes[0].name).toEqual("a");
-      expect(d.records[0].values["a"]).toEqual("test");
+      expect(d.records[0].attributes[0].name).toBe("a");
+      expect(d.records[0].values["a"]).toBe("test");
     });
     test('#jsonObjectToDataset can load full JSON object to Dataset', () => {
       expect(jsonObjectToDataset(carsDataset,"cars")).toBeTruthy();
@@ -143,22 +143,22 @@ describe('dataset.ts tests', () => {
         const cars1: Dataset = new BaseDataset(cars.name+"1", cars.records.slice(0,10));
         const cars2: Dataset = new BaseDataset(cars.name+"2", cars.records.slice(10,20));
         const coverage: { overlap: Dataset, percentOverlap: Record<string, number> } = cars1.compareCoverage(cars2);
-        expect(coverage.percentOverlap["cars1"]).toEqual(0.0);
-        expect(coverage.percentOverlap["cars2"]).toEqual(0.0);
+        expect(coverage.percentOverlap["cars1"]).toBe(0.0);
+        expect(coverage.percentOverlap["cars2"]).toBe(0.0);
       });
       test('Calculated coverage is 100% for the same datasets', () => {
         const cars1: Dataset = new BaseDataset(cars.name+"1", cars.records.slice(0,10));
         const cars2: Dataset = new BaseDataset(cars.name+"2", cars.records.slice(0,10));
         const coverage: { overlap: Dataset, percentOverlap: Record<string, number> } = cars1.compareCoverage(cars2);
-        expect(coverage.percentOverlap["cars1"]).toEqual(1.0);
-        expect(coverage.percentOverlap["cars2"]).toEqual(1.0);
+        expect(coverage.percentOverlap["cars1"]).toBe(1.0);
+        expect(coverage.percentOverlap["cars2"]).toBe(1.0);
       });
       test('Calculated coverage is 50% for half the dataset', () => {
         const cars1: Dataset = new BaseDataset(cars.name+"1", cars.records.slice(0,10));
         const cars2: Dataset = new BaseDataset(cars.name+"2", cars.records.slice(0,5));
         const coverage: { overlap: Dataset, percentOverlap: Record<string, number> } = cars1.compareCoverage(cars2);
-        expect(coverage.percentOverlap["cars1"]).toEqual(0.5);
-        expect(coverage.percentOverlap["cars2"]).toEqual(1.0);
+        expect(coverage.percentOverlap["cars1"]).toBe(0.5);
+        expect(coverage.percentOverlap["cars2"]).toBe(1.0);
       });
     });
     describe('#subsumes', () => {

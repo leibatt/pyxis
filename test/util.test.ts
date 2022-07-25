@@ -35,8 +35,8 @@ describe("#sortObject", () => {
     }
     const res: Record<string, unknown> = sortObject(obj);
     const l1keys: string[] = Object.keys(res);
-    expect(l1keys[0]).toEqual("test1");
-    expect(l1keys[1]).toEqual("test2");
+    expect(l1keys[0]).toBe("test1");
+    expect(l1keys[1]).toBe("test2");
 
     const keysSorted: string[] = keys.sort();
     const objSortedKeys: string[] = Object.keys(res["test1"]);
@@ -49,6 +49,6 @@ describe("#smartStringify", () => {
     const obj: Record<string, unknown> = {};
     obj.b = false;
     obj.a = false;
-    expect(smartStringify(obj)).toEqual("{\"a\":false,\"b\":false}");
+    expect(smartStringify(obj)).toBe("{\"a\":false,\"b\":false}");
   });
 });

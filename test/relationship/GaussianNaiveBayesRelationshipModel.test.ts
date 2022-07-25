@@ -20,7 +20,7 @@ describe('GaussianNaiveBayesRelationshipModel', () => {
         attributeType: AttributeType.quantitative
       }
     );
-    expect(dtrm.name).toEqual("test");
+    expect(dtrm.name).toBe("test");
     expect(dtrm.model).toBeNull();
   });
   test('#train runs without errors', () => {
@@ -132,10 +132,10 @@ describe('GaussianNaiveBayesRelationshipModel', () => {
     );
     dtrm.train(dataRecords);
     let res: ValueType = dtrm.predict(dataRecords[5]);
-    expect(res).toEqual(0);
+    expect(res).toBe(0);
     res = dtrm.predict(dataRecords[15]);
-    expect(res).toEqual(1);
+    expect(res).toBe(1);
     res = dtrm.predict(dataRecords[25]);
-    expect(res).toEqual(2);
+    expect(res).toBe(2);
   });
 });

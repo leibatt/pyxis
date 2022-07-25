@@ -15,7 +15,7 @@ describe('KDERelationshipModel', () => {
         attributeType: AttributeType.quantitative
       }
     );
-    expect(kdem.name).toEqual("test");
+    expect(kdem.name).toBe("test");
     expect(kdem.model).toBeNull();
   });
   test('#train runs without errors', () => {
