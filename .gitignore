@@ -4,3 +4,4 @@ build/*
 build-test/*
 .DS_Store
 coverage
+umd
