@@ -1,4 +1,5 @@
-import { loadDataset, BaseDataset } from '../../src/dataset';
+import { loadDataset } from '../../src/load';
+import { BaseDataset } from '../../src/dataset';
 import { VegaDataTransformation, executeDataTransformation } from '../../src/transformation/VegaTransform';
 
 // This example demonstrates how to create data transformation objects using

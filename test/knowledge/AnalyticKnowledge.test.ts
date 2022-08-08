@@ -1,5 +1,6 @@
 import * as path from 'path';
-import { AttributeType, loadJsonFile, ValueType, BaseDataset, jsonObjectToDataset } from '../../src/dataset';
+import { loadJsonFile } from '../../src/load';
+import { AttributeType, ValueType, BaseDataset, jsonObjectToDataset } from '../../src/dataset';
 import { AnalyticKnowledgeNode } from '../../src/knowledge/AnalyticKnowledge';
 import { RelationshipModel } from '../../src/relationship/RelationshipModel';
 import { LinearRegressionRelationshipModel } from '../../src/relationship/LinearRegressionRelationshipModel';

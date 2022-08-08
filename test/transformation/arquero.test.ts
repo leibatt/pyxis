@@ -1,5 +1,6 @@
 import * as path from 'path';
-import { loadJsonFile, ValueType, BaseDataset, Dataset, jsonObjectToDataset } from '../../src/dataset';
+import { loadJsonFile } from '../../src/load';
+import { ValueType, BaseDataset, Dataset, jsonObjectToDataset } from '../../src/dataset';
 import { ArqueroDataTransformation, executeDataTransformation } from '../../src/transformation/Arquero';
 
 // dataset for testing purposes

@@ -1,4 +1,5 @@
-import { loadDataset, AttributeType, Attribute, Dataset, ValueType } from '../../src/dataset';
+import { loadDataset } from '../../src/load';
+import { AttributeType, Attribute, Dataset, ValueType } from '../../src/dataset';
 import { IsolationForestRelationshipModel } from '../../src/relationship/IsolationForestRelationshipModel';
 
 

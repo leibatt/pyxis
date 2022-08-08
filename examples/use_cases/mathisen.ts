@@ -1,5 +1,6 @@
 import { op, desc } from 'arquero';
-import { loadDataset, AttributeType, BaseDataset } from '../../src/dataset';
+import { loadDataset } from '../../src/load';
+import { AttributeType, BaseDataset } from '../../src/dataset';
 import { ArqueroDataTransformation, executeDataTransformation } from '../../src/transformation/Arquero';
 import { Concept, Instance, DomainKnowledgeNode } from '../../src/knowledge/DomainKnowledge';
 import { AnalyticKnowledgeNode } from '../../src/knowledge/AnalyticKnowledge';

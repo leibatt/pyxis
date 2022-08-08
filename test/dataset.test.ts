@@ -1,5 +1,6 @@
 import * as path from 'path';
-import { loadJsonFile,jsonObjectToDataset,jsonToDataRecord,BaseDataset,Dataset,BaseDataRecord,DataRecord,AttributeType,Attribute,ValueType} from '../src/dataset';
+import { loadJsonFile } from '../src/load';
+import { jsonObjectToDataset,jsonToDataRecord,BaseDataset,Dataset,BaseDataRecord,DataRecord,AttributeType,Attribute,ValueType} from '../src/dataset';
 
 // dataset for testing purposes
 const carsDataset = loadJsonFile(path.join(__dirname,"..","datasets","cars.json"));

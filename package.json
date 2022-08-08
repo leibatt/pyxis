@@ -3,6 +3,7 @@
   "version": "0.1.2",
   "description": "A language for specifying visual analysis insights, objectives and tasks.",
   "main": "build/index.js",
+  "browser": "umd/index.umd.js",
   "module": "build/src/index",
   "types": "build/src/index.d.ts",
   "repository": "git@github.com:leibatt/pyxis.git",
@@ -18,7 +19,7 @@
     "umd"
   ],
   "scripts": {
-    "clean": "rm -rf build/* build-test/*",
+    "clean": "rm -rf build/* build-test/* umd/*",
     "build": "yarn build-src && yarn build-examples && yarn build-datasets",
     "build-src": "tsc",
     "build-examples": "tsc -p examples/tsconfig.json",
@@ -40,6 +41,8 @@
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^22.0.1",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.3.0",
     "@rollup/plugin-typescript": "^8.3.3",
     "@types/jest": "^26.0.15",
     "@types/uuid": "^8.3.0",

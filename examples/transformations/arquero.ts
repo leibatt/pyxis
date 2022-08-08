@@ -1,5 +1,6 @@
 import { desc, op } from 'arquero';
-import { loadDataset, ValueType, BaseDataset } from '../../src/dataset';
+import { loadDataset } from '../../src/load';
+import { ValueType, BaseDataset } from '../../src/dataset';
 import { ArqueroDataTransformation, executeDataTransformation } from '../../src/transformation/Arquero';
 
 // This example demonstrates how to create data transformation objects using our framework.

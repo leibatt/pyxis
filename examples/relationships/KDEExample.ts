@@ -1,4 +1,5 @@
-import { loadDataset, AttributeType, Dataset } from '../../src/dataset';
+import { loadDataset } from '../../src/load';
+import { AttributeType, Dataset } from '../../src/dataset';
 import { KDERelationshipModel } from '../../src/relationship/KDERelationshipModel';
 
 // This example uses the palmerpenguins dataset, originally from here:

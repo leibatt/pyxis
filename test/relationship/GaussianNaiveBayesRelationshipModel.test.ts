@@ -1,5 +1,6 @@
 import * as path from 'path';
-import { loadJsonFile, Attribute, AttributeType, BaseDataRecord, Dataset, jsonObjectToDataset, ValueType} from '../../src/dataset';
+import { loadJsonFile } from '../../src/load';
+import { Attribute, AttributeType, BaseDataRecord, Dataset, jsonObjectToDataset, ValueType} from '../../src/dataset';
 import { GaussianNaiveBayesRelationshipModel } from '../../src/relationship/GaussianNaiveBayesRelationshipModel';
 
 // dataset for testing purposes

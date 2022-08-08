@@ -1,5 +1,6 @@
 import * as path from 'path';
-import { loadJsonFile, AttributeType, Dataset, jsonObjectToDataset, ValueType} from '../../src/dataset';
+import { loadJsonFile } from '../../src/load';
+import { AttributeType, Dataset, jsonObjectToDataset, ValueType} from '../../src/dataset';
 import { NormalRelationshipModel } from '../../src/relationship/NormalRelationshipModel';
 
 // dataset for testing purposes

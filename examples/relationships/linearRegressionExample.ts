@@ -1,4 +1,5 @@
-import { loadDataset, AttributeType, Dataset, ValueType } from '../../src/dataset';
+import { loadDataset } from '../../src/load';
+import { AttributeType, Dataset, ValueType } from '../../src/dataset';
 import { LinearRegressionRelationshipModel } from '../../src/relationship/LinearRegressionRelationshipModel';
 
 // This example uses the cars dataset, originally from the vega-datasets

@@ -1,4 +1,5 @@
-import { loadDataset, AttributeType, Dataset, ValueType } from '../../src/dataset';
+import { loadDataset } from '../../src/load';
+import { AttributeType, Dataset, ValueType } from '../../src/dataset';
 import { DecisionTreeClassificationRelationshipModel } from '../../src/relationship/DecisionTreeClassificationRelationshipModel';
 
 // This example uses the Baltimore crimes dataset.

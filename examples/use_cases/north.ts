@@ -1,5 +1,6 @@
 import { op, bin } from 'arquero';
-import { loadDataset, Attribute, BaseDataset } from '../../src/dataset';
+import { loadDataset } from '../../src/load';
+import { Attribute, BaseDataset } from '../../src/dataset';
 import { ArqueroDataTransformation, executeDataTransformation } from '../../src/transformation/Arquero';
 import { NormalRelationshipModel } from '../../src/relationship/NormalRelationshipModel';
 import { AnalyticKnowledgeNode } from '../../src/knowledge/AnalyticKnowledge';

@@ -1,5 +1,6 @@
 import { op } from 'arquero';
-import { loadDataset, Attribute, AttributeType, ValueType, BaseDataset } from '../../src/dataset';
+import { loadDataset } from '../../src/load';
+import { Attribute, AttributeType, ValueType, BaseDataset } from '../../src/dataset';
 import { ArqueroDataTransformation, executeDataTransformation } from '../../src/transformation/Arquero';
 import { LinearRegressionRelationshipModel } from '../../src/relationship/LinearRegressionRelationshipModel';
 import { Concept, Instance, DomainKnowledgeNode } from '../../src/knowledge/DomainKnowledge';

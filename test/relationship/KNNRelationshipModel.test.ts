@@ -1,5 +1,6 @@
 import * as path from 'path';
-import { loadJsonFile, Attribute, AttributeType, BaseDataRecord, Dataset, jsonObjectToDataset, ValueType} from '../../src/dataset';
+import { loadJsonFile } from '../../src/load';
+import { Attribute, AttributeType, BaseDataRecord, Dataset, jsonObjectToDataset, ValueType} from '../../src/dataset';
 import { KNNRelationshipModel } from '../../src/relationship/KNNRelationshipModel';
 
 // dataset for testing purposes

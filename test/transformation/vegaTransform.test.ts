@@ -1,6 +1,7 @@
 import * as path from 'path';
 import { Transforms, View, parse } from 'vega';
-import { loadJsonFile, ValueType, BaseDataset, Dataset, DataRecord, jsonObjectToDataset, dataRecordToJson } from '../../src/dataset';
+import { loadJsonFile } from '../../src/load';
+import { ValueType, BaseDataset, Dataset, DataRecord, jsonObjectToDataset, dataRecordToJson } from '../../src/dataset';
 import { VegaDataTransformation, executeDataTransformation } from '../../src/transformation/VegaTransform';
 
 // dataset for testing purposes
