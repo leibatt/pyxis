@@ -1,6 +1,6 @@
 import { MultivariateRelationshipModel } from './RelationshipModel';
 import { DataRecord, Attribute, AttributeType, ValueType } from '../dataset';
-import { DecisionTree } from './../../lib/decision-tree-js/decision-tree';
+import { DecisionTree } from './decision-tree-js/decision-tree';
 
 /*
 NOTE: the underlyling decision tree library assumes that the output labels are
@@ -46,7 +46,7 @@ export class DecisionTreeClassificationRelationshipModel implements Multivariate
   predict(record: DataRecord): ValueType {
     const inputs = this.inputAttributes.reduce((c,a) => { c[a.name] = record.getValueByName(a.name); return c; },{});
     // library always casts the labels to strings, and only returns strings
-    const res: string = this.model.predict(inputs);
+    const res: string | number = this.model.predict(inputs);
     // cast back to number if the output label was originally quantitative
     const fres: ValueType = (this.outputAttribute.attributeType == AttributeType.quantitative) ? Number(res) : res;
     return fres;

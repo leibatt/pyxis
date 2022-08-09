@@ -1,4 +1,4 @@
-import { ValueType } from './dataset'
+import { ValueType } from './dataset';
 
 // takes a list of items and converts them to a list of integers, along with
 // the mapping from value to integer. Only uses as many integers as there are

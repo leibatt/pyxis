@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "build-test",
+    "outDir": "umd",
     "target": "es6",
     "module": "esnext",
     "moduleResolution": "Node",
@@ -18,7 +18,7 @@
       "./node_modules/@types"
     ]
   },
-  "files": ["src/index.ts"],
-  "include": ["src/**/*.ts", "test/**/*.ts", "types/*.d.ts"],
-  "exclude": ["build-test/**/*", "build/**/*","examples/**/*","node_modules"]
+  "files": ["src/index.umd.ts"],
+  "include": ["src/**/*.ts", "types/*.d.ts"],
+  "exclude": ["src/index.ts","test/**/*.ts", "build-test/**/*", "build/**/*","examples/**/*","node_modules"]
 }
