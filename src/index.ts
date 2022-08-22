@@ -4,6 +4,7 @@ import * as transformation from './transformation';
 import { DataTransformation, ArqueroDataTransformation, VegaDataTransformation } from './transformation';
 import { version } from '../package.json';
 
+export * from './task'; // task objects
 export * from './insight'; // insight objects
 export * from './knowledge'; // knowledge objects
 export * from './dataset'; // dataset objects
