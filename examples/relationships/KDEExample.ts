@@ -1,11 +1,9 @@
-import { loadDataset } from '../../src/load';
-import { AttributeType, Dataset } from '../../src/dataset';
-import { KDERelationshipModel } from '../../src/relationship/KDERelationshipModel';
+import * as pyxis from '../../src/index';
 
 // This example uses the palmerpenguins dataset, originally from here:
 // https://allisonhorst.github.io/palmerpenguins/
 // We can load the penguins dataset from the /datasets folder as follows:
-const penguins: Dataset = loadDataset("penguins.json","penguins");
+const penguins: pyxis.Dataset = pyxis.loadDataset("penguins.json","penguins");
 console.log("first row of penguins dataset:",penguins.records[0]);
 
 // Now, we want to specify a new relationship model. Specifically, we want to
@@ -14,11 +12,11 @@ console.log("first row of penguins dataset:",penguins.records[0]);
 // distribution model from the 'vega-statistics' package.  To do this, we
 // just need to create a new KDE relationship model object, and
 // specify which data attribute is involved in the relationship:
-const kdem: KDERelationshipModel = new KDERelationshipModel(
+const kdem: pyxis.KDERelationshipModel = new pyxis.KDERelationshipModel(
   "pengiuns - simulate flipper length",
   { // input attribute to simulate
     name: "Flipper Length (mm)", // Attribute name from the penguins dataset
-    attributeType: AttributeType.quantitative // the type of attribute (quantitative, ordinal, or nominal)
+    attributeType: pyxis.AttributeType.quantitative // the type of attribute (quantitative, ordinal, or nominal)
   }
 );
 console.log("KDE relationship input attribute:",kdem.inputAttribute);

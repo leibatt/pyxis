@@ -1,7 +1,5 @@
+import * as pyxis from '../../src/index';
 import { desc, op } from 'arquero';
-import { loadDataset } from '../../src/load';
-import { ValueType, BaseDataset } from '../../src/dataset';
-import { ArqueroDataTransformation, executeDataTransformation } from '../../src/transformation/Arquero';
 
 // This example demonstrates how to create data transformation objects using our framework.
 // These examples are backed by the Arquero library created at UW.
@@ -11,26 +9,26 @@ import { ArqueroDataTransformation, executeDataTransformation } from '../../src/
 // (see imports above).  You can import any JSON file automatically as a
 // BaseDataset object from our framework using the jsonObjectToDataset function
 // from 'src/datasets'.
-const beers: BaseDataset = loadDataset("beers.json","beers");
-const breweries: BaseDataset = loadDataset("breweries.json","breweries");
+const beers: pyxis.BaseDataset = pyxis.loadDataset("beers.json","beers");
+const breweries: pyxis.BaseDataset = pyxis.loadDataset("breweries.json","breweries");
 
 // This is an example of how we can apply a filter transformation using Arquero.
 // t is a data transformation object. Data transformation objects can be linked
 // to insights to specify what transformations applied prior to uncovering an
 // insight
 console.log("filter example: find all beers with 'hop' in the name");
-let t: ArqueroDataTransformation = {
+let t: pyxis.transformation.ArqueroDataTransformation = {
   sources: [beers], // sources lists all Dataset objects involved in the transformation
   ops: ["filter"], // ops lists all Arquero verbs that will be used to process the sources
   transforms: [ // transforms is the list of Arquero Verbs to execute, in order
     {
       op: "filter", // the specific verb to execute, which must be the actual function name in Arquero
-      args: [(d: Record<string,ValueType>) => op.includes(op.lower(d.name), 'hop',0)] // the exact parameters to pass to the Arquero verb
+      args: [(d: Record<string,pyxis.ValueType>) => op.includes(op.lower(d.name), 'hop',0)] // the exact parameters to pass to the Arquero verb
     }
   ]
 };
 // We can execute the specified data transformation using the executeDataTransformation function from 'src/transformation/arquero'
-const hoppyBeerNames: BaseDataset = executeDataTransformation(t);
+const hoppyBeerNames: pyxis.BaseDataset = pyxis.transformation.arquero.executeDataTransformation(t);
 // We can print one of the records from the BaseDataset object to confirm the results
 console.log(hoppyBeerNames.records[0]);
 
@@ -67,7 +65,7 @@ t = {
   ]
 };
 // we execute the ArqueroDataTransformation object
-const beersGroupRollup: BaseDataset = executeDataTransformation(t);
+const beersGroupRollup: pyxis.BaseDataset = pyxis.transformation.arquero.executeDataTransformation(t);
 // We check the results in the BaseDataset object
 console.log(beersGroupRollup.records[0]);
 
@@ -88,7 +86,7 @@ t = {
   ]
 };
 // Execute the join
-const beersByBrewery: BaseDataset = executeDataTransformation(t);
+const beersByBrewery: pyxis.BaseDataset = pyxis.transformation.arquero.executeDataTransformation(t);
 // Check the results in the final BaseDataset object.
 console.log(beersByBrewery.records[0]);
 

@@ -1,9 +1,5 @@
 import { op, bin } from 'arquero';
-import { loadDataset } from '../../src/load';
-import { Attribute, BaseDataset } from '../../src/dataset';
-import { ArqueroDataTransformation, executeDataTransformation } from '../../src/transformation/Arquero';
-import { NormalRelationshipModel } from '../../src/relationship/NormalRelationshipModel';
-import { AnalyticKnowledgeNode } from '../../src/knowledge/AnalyticKnowledge';
+import * as pyxis from '../../src/index';
 
 // In this example, we will be recreating the rents dataset exploration
 // scenario proposed by North, focusing on data transformations and
@@ -13,10 +9,10 @@ import { AnalyticKnowledgeNode } from '../../src/knowledge/AnalyticKnowledge';
 
 // To investigate evidence, we will use the rents dataset in this example (see
 // README for source details).
-const hudRents: BaseDataset = loadDataset("HUD_FY2021_50_County.json","HUD Rents 2021");
+const hudRents: pyxis.BaseDataset = pyxis.loadDataset("HUD_FY2021_50_County.json","HUD Rents 2021");
 
 console.log("calculate maximum and minimum rents for 2 bedroom homes");
-const aggregateTransformation: ArqueroDataTransformation = {
+const aggregateTransformation: pyxis.transformation.ArqueroDataTransformation = {
   sources: [hudRents],
   ops: ["rollup"], // list all verbs for our records
   transforms: [
@@ -30,15 +26,15 @@ const aggregateTransformation: ArqueroDataTransformation = {
   ]
 };
 // We store the extrema as our first evidence node
-const ev1: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(
+const ev1: pyxis.AnalyticKnowledgeNode = new pyxis.AnalyticKnowledgeNode(
   "north2006-1", // name
   Date.now(), // timestamp
   aggregateTransformation, // transformation
   null, // relationshipModel
-  () => executeDataTransformation(aggregateTransformation), // results
+  () => pyxis.transformation.arquero.executeDataTransformation(aggregateTransformation), // results
   "Minimum and maximum rents for 2 bedroom homes. North 2006 evidence example 1" // description
 );
-const minMaxRents: BaseDataset = ev1.results();
+const minMaxRents: pyxis.BaseDataset = ev1.results();
 minMaxRents.sources = [hudRents];
 console.log(minMaxRents.records[0]);
 
@@ -47,14 +43,14 @@ console.log(minMaxRents.records[0]);
 // using the rent dataset as input. This is an example of a univariate
 // data relationship.
 console.log("\n\ncreate data relationship to estimate a normal distribution over rents");
-const nmm: NormalRelationshipModel = new NormalRelationshipModel(
+const nmm: pyxis.NormalRelationshipModel = new pyxis.NormalRelationshipModel(
   "normal distribution - HUD dataset - 2br only",
-  hudRents.records[0].attributes.filter((a: Attribute) => a.name === "rent50_2")[0]
+  hudRents.records[0].attributes.filter((a: pyxis.Attribute) => a.name === "rent50_2")[0]
 );
 nmm.train(hudRents.records);
 console.log("mean:",nmm.model.mean(),"stdev:",nmm.model.stdev());
 // We store the final relationship as our second piece of evidence.
-const ev2: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(
+const ev2: pyxis.AnalyticKnowledgeNode = new pyxis.AnalyticKnowledgeNode(
   "north2006-2", // name
   Date.now(), // timestamp
   null, // transformation
@@ -64,7 +60,7 @@ const ev2: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(
 );
 
 console.log("\n\ncalculate binned aggregation over rents for 2 bedroom homes");
-const binnedTransformation: ArqueroDataTransformation = {
+const binnedTransformation: pyxis.transformation.ArqueroDataTransformation = {
   sources: [hudRents],
   ops: ["groupby","rollup","orderby"], // list all verbs for our records
   transforms: [
@@ -87,15 +83,15 @@ const binnedTransformation: ArqueroDataTransformation = {
   ]
 };
 // We store the joined table as our second evidence node, and link it to the first.
-const ev3: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(
+const ev3: pyxis.AnalyticKnowledgeNode = new pyxis.AnalyticKnowledgeNode(
   "north2006-3", // name
   Date.now(), // timestamp
   binnedTransformation, // transformation
   null, // relationshipModel
-  () => executeDataTransformation(binnedTransformation), // results
+  () => pyxis.transformation.arquero.executeDataTransformation(binnedTransformation), // results
   "Histogram of rents for 2 bedroom homes. North 2006 evidence example 3" // description
 );
-const binnedRents: BaseDataset = ev3.results();
+const binnedRents: pyxis.BaseDataset = ev3.results();
 binnedRents.sources = [hudRents];
 console.log(binnedRents.records[0].attributes);
 console.log(binnedRents.records.map(r => r.values));

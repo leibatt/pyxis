@@ -1,29 +1,26 @@
-import { loadDataset } from '../../src/load';
-import { AttributeType, Attribute, Dataset, ValueType } from '../../src/dataset';
-import { IsolationForestRelationshipModel } from '../../src/relationship/IsolationForestRelationshipModel';
-
+import * as pyxis from '../../src/index';
 
 // This example uses the palmerpenguins dataset, originally from here:
 // https://allisonhorst.github.io/palmerpenguins/
 // We can load the penguins dataset from the /datasets folder as follows:
-const penguins: Dataset = loadDataset("penguins.json","penguins");
+const penguins: pyxis.Dataset = pyxis.loadDataset("penguins.json","penguins");
 console.log("first row of penguins dataset:",penguins.records[0]);
 
 // Now, we want to specify a new relationship model. Specifically, an isolation
 // forest relationship, which we can use to detect outliers.  To do this, we
 // just need to create a new isolation forest relationship model object, and
 // specify which data attributes are involved in the relationship:
-const attributes: Attribute[] = [ // input attributes, the attributes used to predict a certain outcome
+const attributes: pyxis.Attribute[] = [ // input attributes, the attributes used to predict a certain outcome
   {
     name: "Flipper Length (mm)", // Attribute name from the penguins dataset
-    attributeType: AttributeType.quantitative // the type of attribute (quantitative, ordinal, or nominal)
+    attributeType: pyxis.AttributeType.quantitative // the type of attribute (quantitative, ordinal, or nominal)
   },
   {
     name: "Culmen Length (mm)", // also known as bill length
-    attributeType: AttributeType.quantitative
+    attributeType: pyxis.AttributeType.quantitative
   }
 ];
-let ifrm: IsolationForestRelationshipModel = new IsolationForestRelationshipModel(
+let ifrm: pyxis.IsolationForestRelationshipModel = new pyxis.IsolationForestRelationshipModel(
   "pengiuns - predict outliers",
   attributes
 );
@@ -37,7 +34,7 @@ ifrm.train(penguins.records);
 // With trained relationship models, we can actually use the model to predict
 // output values. Here's an example of predicting the output value for one
 // record of the penguins dataset:
-const prediction_result: ValueType = ifrm.predict(penguins.records[185]);
+const prediction_result: pyxis.ValueType = ifrm.predict(penguins.records[185]);
 // If instances return a score very close to 1, then they are definitely anomalies.
 // If instances have a score much smaller than 0.5, then they are quite safe to be regarded as normal instances.
 // If all the instances return a score ≈ 0.5, then the entire sample does not really have any distinct anomaly.
@@ -52,7 +49,7 @@ console.log("Isolation forest prediction (values close to 1.0 are likely outlier
 penguins.records[0].values["Culmen Length (mm)"] = -10;
 penguins.records[0].values["Flipper Length (mm)"] = -200;
 
-ifrm = new IsolationForestRelationshipModel(
+ifrm = new pyxis.IsolationForestRelationshipModel(
   "pengiuns - predict deliberate outliers",
   attributes
 );

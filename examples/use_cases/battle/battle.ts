@@ -1,8 +1,5 @@
 import { desc, op } from 'arquero';
-import { loadDataset, exportDatasetJson } from '../../../src/load';
-import { AttributeType, BaseDataset } from '../../../src/dataset';
-import { ArqueroDataTransformation, executeDataTransformation } from '../../../src/transformation/Arquero';
-import { AnalyticKnowledgeNode } from '../../../src/Knowledge/AnalyticKnowledge';
+import * as pyxis from '../../../src/index';
 
 // In this example, we will be recreating participants' answers to tasks
 // involving the birdstrikes dataset, studied by Battle & Heer:
@@ -13,12 +10,12 @@ import { AnalyticKnowledgeNode } from '../../../src/Knowledge/AnalyticKnowledge'
 // Please see the README in this folder for more details.
 
 // loading the dataset
-const birdstrikes: BaseDataset = loadDataset(
+const birdstrikes: pyxis.BaseDataset = pyxis.loadDataset(
   "birdstrikes.json",
   "Birdstrikes",
   {
-    "incident_date": AttributeType.temporal,
-    "reported_date": AttributeType.temporal
+    "incident_date": pyxis.AttributeType.temporal,
+    "reported_date": pyxis.AttributeType.temporal
   }
 );
 console.log(birdstrikes.records[0]);
@@ -33,7 +30,7 @@ console.log(birdstrikes.records[0]);
 // The most common answer was: "Wing/rotor damaged the most". Here, we
 // calculate the results that led many participants to this finding.
 console.log("\n\ncalculate total incidents of all damage per component.");
-const aggregateTransformation: ArqueroDataTransformation = {
+const aggregateTransformation: pyxis.transformation.ArqueroDataTransformation = {
   sources: [birdstrikes],
   ops: ["rollup"], // list all verbs for our records
   transforms: [
@@ -67,12 +64,12 @@ const aggregateTransformation: ArqueroDataTransformation = {
 */
   ]
 };
-const ev1: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(
+const ev1: pyxis.AnalyticKnowledgeNode = new pyxis.AnalyticKnowledgeNode(
   "battle2019-1", // name
   Date.now(), // timestamp
   aggregateTransformation, // transformation
   null, // relationshipModel
-  () => executeDataTransformation(aggregateTransformation), // results
+  () => pyxis.transformation.arquero.executeDataTransformation(aggregateTransformation), // results
   "The wing/rotor get damaged the most" // description
 );
 // In printing the results, we see the largest count for "count_wing_rot",
@@ -87,7 +84,7 @@ console.log(ev1.results().records[0]);
 
 // The most common answer was: "Airplane has more occurrences of damage". Here, we
 // calculate the results that led many participants to this finding.
-const groupedAggregateTransformation: ArqueroDataTransformation = {
+const groupedAggregateTransformation: pyxis.transformation.ArqueroDataTransformation = {
   sources: [birdstrikes],
   ops: ["filter","groupby","rollup","orderby"], // list all verbs for our records
   transforms: [
@@ -111,19 +108,19 @@ const groupedAggregateTransformation: ArqueroDataTransformation = {
     }
   ]
 };
-const ev2: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(
+const ev2: pyxis.AnalyticKnowledgeNode = new pyxis.AnalyticKnowledgeNode(
   "battle2019-2", // name
   Date.now(), // timestamp
   groupedAggregateTransformation, // transformation
   null, // relationshipModel
-  () => executeDataTransformation(groupedAggregateTransformation), // results
+  () => pyxis.transformation.arquero.executeDataTransformation(groupedAggregateTransformation), // results
   "Airplane has more occurrences of damage" // description
 );
 
 // In printing the results, we see the largest count for ac_class='A' (i.e., airplanes),
 // consistent with participants' answers
 console.log("Calculate instances of damage observe per aircraft type (ac_class).");
-const aircraftDamageData: BaseDataset = ev2.results();
+const aircraftDamageData: pyxis.BaseDataset = ev2.results();
 for(let i = 0; i < aircraftDamageData.records.length; i++) {
   console.log(aircraftDamageData.records[i]);
 }
@@ -135,7 +132,7 @@ for(let i = 0; i < aircraftDamageData.records.length; i++) {
 // Date])?
 
 console.log("comparing precip and frequency");
-const grpPrecipTransformation: ArqueroDataTransformation = {
+const grpPrecipTransformation: pyxis.transformation.ArqueroDataTransformation = {
   sources: [birdstrikes],
   ops: ["filter","derive","groupby","rollup","orderby"], // list all verbs for our records
   transforms: [
@@ -166,21 +163,21 @@ const grpPrecipTransformation: ArqueroDataTransformation = {
     }
   ]
 };
-const ev3_1: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(
+const ev3_1: pyxis.AnalyticKnowledgeNode = new pyxis.AnalyticKnowledgeNode(
   "battle2019-3-1", // name
   Date.now(), // timestamp
   grpPrecipTransformation, // transformation
   null, // relationshipModel: 
-  () => executeDataTransformation(grpPrecipTransformation), // results
+  () => pyxis.transformation.arquero.executeDataTransformation(grpPrecipTransformation), // results
   "Airplane has more occurrences of damage" // description
 );
 // we see variation in the results. Looking at precip results (ev3_1), we would
 // think bad weather leads to more strikes. See the relevant Vega-Lite figure
 // for more details.
-exportDatasetJson(ev3_1.results(),"battle2019-3-1.json");
+pyxis.exportDatasetJson(ev3_1.results(),"battle2019-3-1.json");
 
 console.log("comparing sky and frequency");
-const grpSkyTransformation: ArqueroDataTransformation = {
+const grpSkyTransformation: pyxis.transformation.ArqueroDataTransformation = {
   sources: [birdstrikes],
   ops: ["filter","derive","groupby","rollup","orderby"], // list all verbs for our records
   transforms: [
@@ -211,18 +208,18 @@ const grpSkyTransformation: ArqueroDataTransformation = {
     }
   ]
 };
-const ev3_2: AnalyticKnowledgeNode = new AnalyticKnowledgeNode(
+const ev3_2: pyxis.AnalyticKnowledgeNode = new pyxis.AnalyticKnowledgeNode(
   "battle2019-3-2", // name
   Date.now(), // timestamp
   grpSkyTransformation, // transformation
   null, // relationshipModel
-  () => executeDataTransformation(grpSkyTransformation), // results
+  () => pyxis.transformation.arquero.executeDataTransformation(grpSkyTransformation), // results
   "Airplane has more occurrences of damage" // description
 );
 // However, when we look at sky (ev3_2), we see clear weather seems to lead to
 // more strikes. Also, we see that strikes increase with time for each sky
 // measure, but not for each precip measure (with the exception of "rain"). See
 // the Vega-Lite figure for more details.
-exportDatasetJson(ev3_2.results(),"battle2019-3-2.json");
+pyxis.exportDatasetJson(ev3_2.results(),"battle2019-3-2.json");
 
 
