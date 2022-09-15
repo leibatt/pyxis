@@ -5,3 +5,4 @@ build-test/*
 .DS_Store
 coverage
 umd
+observable_anonymized.zip
