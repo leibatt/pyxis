@@ -48,4 +48,16 @@ export class InsightNode extends GraphNode {
     }
     // TODO: instantiate complexity object
   }
+
+  addTarget<NodeType extends InsightNode>(node: NodeType): void {
+    super.addTarget(node);
+  }
+
+  addSource<NodeType extends InsightNode>(node: NodeType): void {
+    super.addSource(node);
+  }
+
+  addRelated<NodeType extends InsightNode>(node: NodeType): void {
+    super.addRelated(node);
+  }
 }

@@ -37,6 +37,18 @@ export class AnalyticKnowledgeNode extends GraphNode {
       this.description = description;
     }
   }
+
+  addTarget<NodeType extends AnalyticKnowledgeNode>(node: NodeType): void {
+    super.addTarget(node);
+  }
+
+  addSource<NodeType extends AnalyticKnowledgeNode>(node: NodeType): void {
+    super.addSource(node);
+  }
+
+  addRelated<NodeType extends AnalyticKnowledgeNode>(node: NodeType): void {
+    super.addRelated(node);
+  }
 }
 
 // used to track and evaluate the complexity of derived analytic knowledge
