@@ -48,5 +48,17 @@ export class DomainKnowledgeNode extends GraphNode {
     this.name = name;
     this.instance = instance;
   }
+
+  addTarget<NodeType extends DomainKnowledgeNode>(node: NodeType): void {
+    super.addTarget(node);
+  }
+
+  addSource<NodeType extends DomainKnowledgeNode>(node: NodeType): void {
+    super.addSource(node);
+  }
+
+  addRelated<NodeType extends DomainKnowledgeNode>(node: NodeType): void {
+    super.addRelated(node);
+  }
 }
 

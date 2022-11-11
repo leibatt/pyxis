@@ -14,4 +14,16 @@ export class SimpleTaskNode extends GraphNode {
       this.description = description;
     }
   }
+
+  addTarget<NodeType extends SimpleTaskNode>(node: NodeType): void {
+    super.addTarget(node);
+  }
+
+  addSource<NodeType extends SimpleTaskNode>(node: NodeType): void {
+    super.addSource(node);
+  }
+
+  addRelated<NodeType extends SimpleTaskNode>(node: NodeType): void {
+    super.addRelated(node);
+  }
 }
