@@ -1,4 +1,4 @@
-import { DomainKnowledgeNode, Concept, Instance } from './DomainKnowledge';
+import { DomainKnowledgeNode, Concept } from './DomainKnowledge';
 import { AnalyticKnowledgeNode } from './AnalyticKnowledge';
 
-export { DomainKnowledgeNode, Concept, Instance, AnalyticKnowledgeNode };
+export { DomainKnowledgeNode, Concept, AnalyticKnowledgeNode };

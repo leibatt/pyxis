@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { Concept, Instance, DomainKnowledgeNode } from '../src/knowledge/DomainKnowledge';
+import { Concept, DomainKnowledgeNode } from '../src/knowledge/DomainKnowledge';
 import { loadJsonFile } from '../src/load';
 import { AttributeType, ValueType, BaseDataset, jsonObjectToDataset } from '../src/dataset';
 import { AnalyticKnowledgeNode } from '../src/knowledge/AnalyticKnowledge';
@@ -27,8 +27,8 @@ describe('insight.ts tests', () => {
           id: "d"
         }
       );
-      const instance: Instance = new Instance(
-        "ti1",
+      const dk = new DomainKnowledgeNode(
+        "n1",
         concept,
         [],
         {
@@ -42,7 +42,6 @@ describe('insight.ts tests', () => {
           id: "0"
         }
       );
-      const dk = new DomainKnowledgeNode("n1",instance);
       const t: ArqueroDataTransformation = { // transformation for testing
         sources: [cars],
         ops: ["filter"],

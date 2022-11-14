@@ -73,7 +73,8 @@ const protest: pyxis.Concept = new pyxis.Concept(
   "Protest", // name
   [] // parentConcepts
 );
-const protestsInstance: pyxis.Instance = new pyxis.Instance(
+
+const protestsNode: pyxis.DomainKnowledgeNode = new pyxis.DomainKnowledgeNode(
   "WikipediaArticle-2015BaltimoreProtests", // name
   protest, // coreConcept
   [], // relevantConcepts
@@ -83,10 +84,7 @@ const protestsInstance: pyxis.Instance = new pyxis.Instance(
     id: "dr-2015-baltimore-protests"
   }
 );
-const protestsNode: pyxis.DomainKnowledgeNode = new pyxis.DomainKnowledgeNode(
-  "WikipediaArticle-2015BaltimoreProtests", // name
-  protestsInstance
-);
+
 // Now we can link our protests knowledge node with our evidence:
 const protestsInsight: pyxis.InsightNode = new pyxis.InsightNode(
   "mathisen2019insight1", // name
@@ -180,7 +178,7 @@ console.log(crimeDist.records[0]);
 
 // Since we find that Burglary was the most common crime, and unusually so, we
 // want to incorporate this information in our knowledge base.
-const burglaryInstance: pyxis.Instance =  new pyxis.Instance(
+const burglaryNode: pyxis.DomainKnowledgeNode = new pyxis.DomainKnowledgeNode(
   "WikipediaArticle-Burglary", // name
   crime, // coreConcept
   [], // relevantConcepts
@@ -189,10 +187,6 @@ const burglaryInstance: pyxis.Instance =  new pyxis.Instance(
     values: {"link": "https://en.wikipedia.org/wiki/Burglary"},
     id: "dr-burglary"
   }
-);
-const burglaryNode: pyxis.DomainKnowledgeNode = new pyxis.DomainKnowledgeNode(
-  "WikipediaArticle-Burglary", // name
-  burglaryInstance
 );
 burglaryNode.addSource(protestsNode);
 const burglaryInsight: pyxis.InsightNode = new pyxis.InsightNode(
