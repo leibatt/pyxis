@@ -20,7 +20,7 @@ const qualityConcept: pyxis.Concept = new pyxis.Concept(
 
 // We create a knowledge node representing our understanding of how film length
 // may affect quality or not.
-const biArticle: pyxis.Instance = new pyxis.Instance(
+const knowledgeNode: pyxis.DomainKnowledgeNode = new pyxis.DomainKnowledgeNode(
   "BusinessInsiderArticle", // name
   articleConcept, // coreConcept
   [qualityConcept], // relevantConcepts
@@ -29,10 +29,6 @@ const biArticle: pyxis.Instance = new pyxis.Instance(
     values: {"name": "https://www.businessinsider.com/are-movies-getting-longer-2016-6"},
     id: "dr-bi-mv-ln"
   }
-);
-const knowledgeNode: pyxis.DomainKnowledgeNode = new pyxis.DomainKnowledgeNode(
-  "BusinessInsiderArticle", // name
-  biArticle // instance
 );
 
 // To investigate evidence, we will use the movies dataset and oscars dataset
@@ -156,3 +152,5 @@ const movieInsight: pyxis.InsightNode = new pyxis.InsightNode(
   "connecting what was learned in an article with movies data" // description
 );
 console.log(movieInsight);
+
+//pyxis.writeJsonFile(winnersInfo.records.map((d: pyxis.BaseDataRecord) => pyxis.dataRecordToJson(d)),"winners_info.json");
