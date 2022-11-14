@@ -23,7 +23,7 @@
     "build": "yarn build-src && yarn build-examples && yarn build-datasets",
     "build-src": "tsc",
     "build-examples": "tsc -p examples/tsconfig.json",
-    "build-datasets": "unzip datasets/birdstrikes.json.zip ; cp -R datasets build-test",
+    "build-datasets": "unzip datasets/birdstrikes.json.zip ; mv birdstrikes.json datasets ; cp -R datasets build-test",
     "test": "jest --collectCoverage=true && yarn lint",
     "lint": "eslint .",
     "bundle": "rollup --config"
@@ -31,6 +31,7 @@
   "dependencies": {
     "arquero": "^4.8.8",
     "isolation-forest": "^0.0.9",
+    "minimatch": "^3.0.5",
     "ml-cart": "^2.1.1",
     "ml-knn": "^3.0.0",
     "ml-naivebayes": "^4.0.0",
