@@ -21,15 +21,16 @@ export class Concept {
   }
 }
 
-// instances are instantiations of concepts
-export class Instance {
-  name: string; // also acts as a unique identifier
+// Domain Knowledge Nodes are instantiations of concepts
+export class DomainKnowledgeNode extends GraphNode {
   coreConcept: Concept; // main Concept type associated with this instance
   relevantConcepts?: Concept[]; // other relevant concepts !== coreConcept
   metadata?: DataRecord; // associated metadata attributes for this instance and their values
 
   constructor(name: string, coreConcept: Concept, relevantConcepts?: Concept[], metadata?: DataRecord) {
+    super(name);
     this.name = name;
+
     this.coreConcept = coreConcept;
     if(typeof relevantConcepts !== 'undefined') {
       this.relevantConcepts = relevantConcepts;
@@ -37,16 +38,6 @@ export class Instance {
     if(typeof metadata !== 'undefined') {
       this.metadata = metadata
     }
-  }
-}
-
-export class DomainKnowledgeNode extends GraphNode {
-  instance: Instance; // the instance associated with this domain knowledge
-
-  constructor(name: string, instance: Instance) {
-    super(name);
-    this.name = name;
-    this.instance = instance;
   }
 
   addTarget<NodeType extends DomainKnowledgeNode>(node: NodeType): void {

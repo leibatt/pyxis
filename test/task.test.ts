@@ -1,6 +1,6 @@
 import * as path from 'path';
 import { SimpleTaskNode } from '../src/task';
-import { Concept, Instance, DomainKnowledgeNode } from '../src/knowledge/DomainKnowledge';
+import { Concept, DomainKnowledgeNode } from '../src/knowledge/DomainKnowledge';
 import { loadJsonFile } from '../src/load';
 import { AttributeType, ValueType, BaseDataset, jsonObjectToDataset } from '../src/dataset';
 import { AnalyticKnowledgeNode } from '../src/knowledge/AnalyticKnowledge';
@@ -28,22 +28,21 @@ describe('task.ts tests', () => {
           id: "d"
         }
       );
-      const instance: Instance = new Instance(
-        "ti1",
-        concept,
-        [],
-        {
-          attributes: [
-            {
-              name: "a",
-              attributeType: AttributeType.nominal
-            }
-          ],
-          values: {"a": "test1"},
-          id: "0"
-        }
+      const dk = new DomainKnowledgeNode(
+        "n1",
+          concept,
+          [],
+          {
+            attributes: [
+              {
+                name: "a",
+                attributeType: AttributeType.nominal
+              }
+            ],
+            values: {"a": "test1"},
+            id: "0"
+          }
       );
-      const dk = new DomainKnowledgeNode("n1",instance);
       const t: ArqueroDataTransformation = { // transformation for testing
         sources: [cars],
         ops: ["filter"],
