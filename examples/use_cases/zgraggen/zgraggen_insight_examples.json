@@ -1,0 +1,24 @@
+[
+{
+ "dimension": "hours_of_sleep",
+ "dist_alt": "75 < age >= 55",
+ "dist_null": "55 < age >= 15",
+ "comparison": "mean_smaller"
+},
+{
+ "dimension": "quality_of_sleep",
+ "dist_alt": "120 < work_per_week >=60 and 6 < stress_level >= 3",
+ "dist_null": "",
+ "comparison": "variance_smaller"
+},
+{
+ "dimension": "hours_of_sleep, fitness_level",
+ "comparison": "not_corr"
+},
+{
+ "dimension": "hours_of_sleep",
+ "filter": "",
+ "target_buckets": "8 < hours_of_sleep >= 7, 9 < hours_of_sleep >= 8, 10 < hours_of_sleep > 9",
+ "comparison": "rank_buckets_count"
+}
+]

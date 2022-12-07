@@ -31,7 +31,8 @@
     "use_cases/amar.ts",
     "use_cases/north.ts",
     "use_cases/mathisen.ts",
-    "use_cases/battle/battle.ts"
+    "use_cases/battle/battle.ts",
+    "use_cases/zgraggen/zgraggen.ts"
   ],
   "include": ["../src/**/*.ts", "../types/*.d.ts"]
 }
