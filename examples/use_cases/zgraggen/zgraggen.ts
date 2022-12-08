@@ -1,5 +1,5 @@
 import * as pyxis from '../../../src/index';
-import { compareGroups, linearCorrelation } from './mapping';
+import { compareGroups, linearCorrelation, rankHistogramBins } from './mapping';
 import ZgraggenInsightExamples from './zgraggen_insight_examples.json'
 
 // TODO: Insight 1 ~ Insight 2 --> data relationship, Insight 3 easy relationship, Insight 4 easy transformation.
@@ -97,7 +97,20 @@ console.log(hoursFitnessCorrKnowledge);
 /*********** END THIRD "INSIGHT" ***********/
 
 /*********** BEGIN FOURTH "INSIGHT" ***********/
-// The fourth insight example analyzes three bins within a histogram. We can calculate the histogram bins, filter for the relevant bins, and sort by count using a data transformation.
+// The fourth insight example analyzes three bins within a histogram. We can
+// calculate the histogram bins, filter for the relevant bins, and sort by
+// count using a data transformation.
+
+// get the insight object
+const hoursSleepHistogram = ZgraggenInsightExamples[3];
+console.log(hoursSleepHistogram);
+
+const hoursSleepKnowledge: pyxis.AnalyticKnowledgeNode = rankHistogramBins(sleep,hoursSleepHistogram,
+  "Zgraggen-2018-hoursSleepHistogramKnowledge", { "step": 1.0, "maxbins": 5 });
+
+console.log(hoursSleepKnowledge);
+console.log(hoursSleepKnowledge.results().records);
+
 
 /*********** END FOURTH "INSIGHT" ***********/
 

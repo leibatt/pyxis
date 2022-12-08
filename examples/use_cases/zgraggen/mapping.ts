@@ -1,3 +1,4 @@
+import { Transforms } from 'vega';
 import { v4 as uuid } from 'uuid';
 import * as pyxis from '../../../src/index';
 
@@ -35,6 +36,79 @@ function updatePredicate(attributes: pyxis.Attribute[], predicate: string) {
 /************* END HELPER FUNCTIONS *************/
 
 /************* BEGIN INSIGHT MAPPING FUNCTIONS *************/
+
+export function rankHistogramBins(dataset: pyxis.BaseDataset, zInsight: Record<string,string>, kname?: string,
+    binningOptions?: Record<string,string | string[] | number | number[] | boolean>): pyxis.AnalyticKnowledgeNode {
+
+  const dimension: pyxis.Attribute = matchAttributes([zInsight.dimension],dataset.records[0].attributes)[0];
+  const filterPredicate: string = zInsight.filter.length > 0 ? zInsight.filter : null;
+  const bucketFilters: string = zInsight.target_buckets.split(",").map(bf => "(" + bf + ")").join(" || ");
+
+  let transforms: Transforms[] = [];
+
+  // get the extent
+  transforms.push({"type": "extent", "field": dimension.name, "signal": dimension.name+"_extent"});
+
+  // apply initial filters, if needed
+  if(zInsight.filter.length > 0) {
+    transforms.push({
+      "type": "filter",
+      "expr": updatePredicate(dataset.records[0].attributes, zInsight.filter)
+    });
+  }
+
+  // bin the data
+  let binTransform: Transforms = {
+    "type": "bin",
+    "field": dimension.name,
+    "extent": { "signal": dimension.name +"_extent" }
+  };
+  if(binningOptions) {
+    Object.keys(binningOptions).forEach((k: string) => { binTransform[k] = binningOptions[k]} );
+  }
+  transforms.push(binTransform);
+
+  // filter the data to only the relevant bins
+  transforms.push({ "type": "filter", "expr": updatePredicate(dataset.records[0].attributes, bucketFilters) });
+
+  // group by bins and count
+  transforms.push({
+    "type": "aggregate",
+    "groupby": ["bin0", "bin1"], // start and end ranges for the bins
+    "fields": [dimension.name],
+    "ops": ["count"],
+    "as": [dimension.name+"_count"]
+  });
+
+  // sort by count in descending order
+  transforms.push({
+    "type": "collect",
+    "sort": {"field": dimension.name+"_count", "order": "descending"}
+  });
+
+  transforms.forEach(t => {
+    console.log(t);
+  });
+
+  // data transformation
+  const tdist: pyxis.transformation.VegaDataTransformation = {
+    sources: [dataset],
+    ops: transforms.map(t => t.type),
+    transforms: transforms
+  };
+
+  const kdist: pyxis.AnalyticKnowledgeNode = new pyxis.AnalyticKnowledgeNode(
+    kname, // name
+    Date.now(), // timestamp
+    tdist, // transformation
+    null, // relationshipModel
+    () => pyxis.transformation.vega.executeDataTransformation(tdist), // results
+    zInsight.comparison // optional notes
+  );
+
+  return kdist;
+}
+
 
 export function linearCorrelation(dataset: pyxis.BaseDataset,
   zInsight: Record<string,string>, suffix?: string): pyxis.AnalyticKnowledgeNode {
