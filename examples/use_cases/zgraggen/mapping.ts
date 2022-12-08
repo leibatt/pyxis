@@ -1,5 +1,4 @@
 import { Transforms } from 'vega';
-import { v4 as uuid } from 'uuid';
 import * as pyxis from '../../../src/index';
 
 /************* BEGIN HELPER FUNCTIONS *************/
@@ -30,7 +29,8 @@ export function getAggregateOperation(comparison: string): string | null {
 // update attribute names to match Vega transform syntax
 function updatePredicate(attributes: pyxis.Attribute[], predicate: string) {
   return attributes.reduce((p: string, a: pyxis.Attribute) =>
-    p.replaceAll(a.name, "datum."+a.name),predicate);
+    //p.replaceAll(a.name, "datum."+a.name),predicate);
+    p.replace(new RegExp(a.name, "g"), "datum."+a.name),predicate);
 }
 
 /************* END HELPER FUNCTIONS *************/
@@ -41,16 +41,15 @@ export function rankHistogramBins(dataset: pyxis.BaseDataset, zInsight: Record<s
     binningOptions?: Record<string,string | string[] | number | number[] | boolean>): pyxis.AnalyticKnowledgeNode {
 
   const dimension: pyxis.Attribute = matchAttributes([zInsight.dimension],dataset.records[0].attributes)[0];
-  const filterPredicate: string = zInsight.filter.length > 0 ? zInsight.filter : null;
   const bucketFilters: string = zInsight.target_buckets.split(",").map(bf => "(" + bf + ")").join(" || ");
 
-  let transforms: Transforms[] = [];
+  const transforms: Transforms[] = [];
 
   // get the extent
   transforms.push({"type": "extent", "field": dimension.name, "signal": dimension.name+"_extent"});
 
   // apply initial filters, if needed
-  if(zInsight.filter.length > 0) {
+  if(zInsight.filter && zInsight.filter.length > 0) {
     transforms.push({
       "type": "filter",
       "expr": updatePredicate(dataset.records[0].attributes, zInsight.filter)
@@ -58,7 +57,7 @@ export function rankHistogramBins(dataset: pyxis.BaseDataset, zInsight: Record<s
   }
 
   // bin the data
-  let binTransform: Transforms = {
+  const binTransform: Transforms = {
     "type": "bin",
     "field": dimension.name,
     "extent": { "signal": dimension.name +"_extent" }
@@ -147,7 +146,7 @@ export function compareGroups(dataset: pyxis.BaseDataset,
   //console.log(["op",op,"dalt",dalt,"dnull",dnull]);
 
   // calculate the aggregate statistics for the target records for the alternative hypothesis
-  let tdalt: pyxis.transformation.VegaDataTransformation = {
+  const tdalt: pyxis.transformation.VegaDataTransformation = {
     sources: [dataset],
     ops: ["filter", "aggregate"],
     transforms: [
@@ -173,7 +172,7 @@ export function compareGroups(dataset: pyxis.BaseDataset,
   );
 
   // calculate the aggregate statistics for the target records for the null hypothesis
-  let tdnull: pyxis.transformation.VegaDataTransformation = {
+  const tdnull: pyxis.transformation.VegaDataTransformation = {
     sources: [dataset],
     ops: ["filter", "aggregate"],
     transforms: [
