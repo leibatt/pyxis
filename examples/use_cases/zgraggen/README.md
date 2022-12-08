@@ -6,6 +6,12 @@ This folder contains recreations of insights from the Zgraggen multiple comparis
  analysis. In Proceedings of the 2018 chi conference on human factors in
  computing systems (pp. 1-12).
 
+The insight objects are represented in the (near) original JSON format in
+`zgraggen_insight_examples.json`. The file `mapping.ts` contains our code for
+mapping the specification into corresponding Pyxis objects. The file
+`zgraggen.ts` shows the results of mapping the examples from the original JSON
+format to Pyxis objects.
+
 We had to create our own sleep dataset to recreate these insights. Our data is
 available in `sleep_sample.csv`. We used the code referenced in Zgraggen et al.
 (the Macau project, see `data_generator.py` from
