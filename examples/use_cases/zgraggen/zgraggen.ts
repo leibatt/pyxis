@@ -1,5 +1,5 @@
 import * as pyxis from '../../../src/index';
-import { compareGroups } from './mapping';
+import { compareGroups, linearCorrelation } from './mapping';
 import ZgraggenInsightExamples from './zgraggen_insight_examples.json'
 
 // TODO: Insight 1 ~ Insight 2 --> data relationship, Insight 3 easy relationship, Insight 4 easy transformation.
@@ -26,21 +26,21 @@ console.log(sleep.records[0]);
 // these results using analytic knowledge involving data transformations only.
 
 // get the insight object
-const meanSleepDiff = ZgraggenInsightExamples[0];
-console.log(meanSleepDiff);
+const meanHoursSleep = ZgraggenInsightExamples[0];
+console.log(meanHoursSleep);
 
 // Extract the corresponding analytic knowledge nodes in Pyxis, one for the
 // alternative hypothesis and one for the null hypothesis.
-const msdAltKnowledge: pyxis.AnalyticKnowledgeNode = compareGroups(sleep,meanSleepDiff);
+const msdAltKnowledge: pyxis.AnalyticKnowledgeNode = compareGroups(sleep,meanHoursSleep,"meanHoursSleep");
 const msdNullKnowledge: pyxis.AnalyticKnowledgeNode = msdAltKnowledge.source[0];
 
 // Get the results from the analytic knowledge nodes
-const datasetAlt: pyxis.BaseDataset = msdAltKnowledge.results();
-const datasetNull: pyxis.BaseDataset = msdAltKnowledge.results();
+let datasetAlt: pyxis.BaseDataset = msdAltKnowledge.results();
+let datasetNull: pyxis.BaseDataset = msdNullKnowledge.results();
 
 // Compute the answer: is the alternative hypothesis true compared to the null
 // hypothesis?
-const answers = datasetAlt.records[0].attributes.map(a =>
+let answers = datasetAlt.records[0].attributes.map(a =>
   datasetAlt.records[0].values[a.name] < datasetNull.records[0].values[a.name]);
 // print the answer
 answers.forEach((answer,i) => {
@@ -50,7 +50,54 @@ answers.forEach((answer,i) => {
 /*********** END FIRST "INSIGHT" ***********/
 
 
-// TODO: Train a data relationship to predict hours_of_sleep using the new attribute as input
+/*********** BEGIN SECOND "INSIGHT" ***********/
+// The second insight example from the Zgraggen et al. work suggests that a
+// certain group has less variance in their quality of sleep compared to the
+// entire sample population. This is again a comparison between an alternative
+// hypothesis and null hypothesis.
 
-// TODO: show how insight could be tested. Maybe use calculation from the paper?
+// get the insight object
+const varianceSleepQuality = ZgraggenInsightExamples[1];
+console.log(varianceSleepQuality);
+
+// Extract the corresponding analytic knowledge nodes in Pyxis, one for the
+// alternative hypothesis and one for the null hypothesis.
+const vsqAltKnowledge: pyxis.AnalyticKnowledgeNode = compareGroups(sleep,varianceSleepQuality,"varianceSleepQuality");
+const vsqNullKnowledge: pyxis.AnalyticKnowledgeNode = vsqAltKnowledge.source[0];
+
+// Get the results from the analytic knowledge nodes
+datasetAlt = vsqAltKnowledge.results();
+datasetNull = vsqNullKnowledge.results();
+
+// Compute the answer: is the alternative hypothesis true compared to the null
+// hypothesis?
+answers = datasetAlt.records[0].attributes.map(a =>
+  datasetAlt.records[0].values[a.name] < datasetNull.records[0].values[a.name]);
+// print the answer
+answers.forEach((answer,i) => {
+  console.log("alt",datasetAlt.records[0].attributes[i].name,
+    "<","null",datasetAlt.records[0].attributes[i].name,"?",answer);
+});
+
+/*********** END SECOND "INSIGHT" ***********/
+
+/*********** BEGIN THIRD "INSIGHT" ***********/
+// The third insight example is assessing a linear correlation between two
+// data attributes, which we can represent using a data relationship. Here, we
+// use a linear regression model.
+
+// get the insight object
+const hoursFitnessCorrelation = ZgraggenInsightExamples[2];
+console.log(hoursFitnessCorrelation);
+
+// compute the linear regression model
+const hoursFitnessCorrKnowledge: pyxis.AnalyticKnowledgeNode = linearCorrelation(sleep,hoursFitnessCorrelation,"hoursFitnessCorr");
+console.log(hoursFitnessCorrKnowledge);
+
+/*********** END THIRD "INSIGHT" ***********/
+
+/*********** BEGIN FOURTH "INSIGHT" ***********/
+// The fourth insight example analyzes three bins within a histogram. We can calculate the histogram bins, filter for the relevant bins, and sort by count using a data transformation.
+
+/*********** END FOURTH "INSIGHT" ***********/
 

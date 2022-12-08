@@ -11,7 +11,7 @@ console.log("first row of cars dataset:",cars.records[0]);
 // linear regression relationship model object, and specify which data
 // attributes are involved in the relationship:
 const dtrm: pyxis.LinearRegressionRelationshipModel = new pyxis.LinearRegressionRelationshipModel(
-  "cars", // give the dataset a name, we can just call it cars
+  "cars_lrrm", // give the model a name
   [ // input attributes, the attributes used to predict a certain outcome
     {
       name: "Weight_in_lbs", // Attribute name from the cars dataset

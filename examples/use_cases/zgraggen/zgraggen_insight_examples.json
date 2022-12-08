@@ -7,7 +7,7 @@
 },
 {
  "dimension": "quality_of_sleep",
- "dist_alt": "120 > work_per_week && work_per_week >=60 and 6 > stress_level && stress_level >= 3",
+ "dist_alt": "120 > work_per_week && work_per_week >=60 && 6 > stress_level && stress_level >= 3",
  "dist_null": "",
  "comparison": "variance_smaller"
 },

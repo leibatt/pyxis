@@ -36,6 +36,31 @@ function updatePredicate(attributes: pyxis.Attribute[], predicate: string) {
 
 /************* BEGIN INSIGHT MAPPING FUNCTIONS *************/
 
+export function linearCorrelation(dataset: pyxis.BaseDataset,
+  zInsight: Record<string,string>, suffix?: string): pyxis.AnalyticKnowledgeNode {
+  const dimAttributes = matchAttributes(zInsight.dimension.split(","),dataset.records[0].attributes);
+  const inputs = dimAttributes.slice(0,Math.max(1,dimAttributes.length - 1));
+  const output = dimAttributes[dimAttributes.length - 1];
+
+  const lrrm: pyxis.LinearRegressionRelationshipModel =
+    new pyxis.LinearRegressionRelationshipModel(
+    dataset.name +"_lrrm", inputs, output 
+  );
+
+  lrrm.train(dataset.records);
+  const krel: pyxis.AnalyticKnowledgeNode = new pyxis.AnalyticKnowledgeNode(
+    "Zgraggen2018-corr_" + suffix, // name
+    Date.now(), // timestamp
+    null, // transformation
+    lrrm, // relationshipModel
+    () => null, // results
+    zInsight.comparison // optional notes
+  );
+
+  return krel;
+}
+
+
 // Filter the data to identify the alternative and null hypothesis groups.
 // Then, calculate the specified aggregate measures for each group.
 export function compareGroups(dataset: pyxis.BaseDataset,
@@ -49,11 +74,11 @@ export function compareGroups(dataset: pyxis.BaseDataset,
     dataset.records[0].attributes);
   const outputs = matchAttributes([zInsight.dimension],
     dataset.records[0].attributes);
-  console.log([inputs,outputs]);
+  //console.log(["inputs",inputs,"outputs",outputs]);
   const op = getAggregateOperation(zInsight.comparison);
   const dalt = updatePredicate(inputs, zInsight.dist_alt);
   const dnull = updatePredicate(inputs, zInsight.dist_null);
-  console.log([op,dalt,dnull]);
+  //console.log(["op",op,"dalt",dalt,"dnull",dnull]);
 
   // calculate the aggregate statistics for the target records for the alternative hypothesis
   let tdalt: pyxis.transformation.VegaDataTransformation = {
@@ -77,7 +102,8 @@ export function compareGroups(dataset: pyxis.BaseDataset,
     Date.now(), // timestamp
     tdalt, // transformation
     null, // relationshipModel
-    () => pyxis.transformation.vega.executeDataTransformation(tdalt) // results
+    () => pyxis.transformation.vega.executeDataTransformation(tdalt), // results
+    zInsight.comparison // optional notes
   );
 
   // calculate the aggregate statistics for the target records for the null hypothesis
@@ -96,13 +122,17 @@ export function compareGroups(dataset: pyxis.BaseDataset,
       }
     ]
   };
+  if(dnull.length === 0) { // no filter
+    tdnull.transforms.shift(); // get rid of the filter
+  }
 
   const knull: pyxis.AnalyticKnowledgeNode = new pyxis.AnalyticKnowledgeNode(
     "Zgraggen2018-null_" + suffix, // name
     Date.now(), // timestamp
     tdnull, // transformation
     null, // relationshipModel
-    () => pyxis.transformation.vega.executeDataTransformation(tdnull) // results
+    () => pyxis.transformation.vega.executeDataTransformation(tdnull), // results
+    zInsight.comparison // optional notes
   );
   knull.addSource(kalt); // link the analytic knowledge
 
