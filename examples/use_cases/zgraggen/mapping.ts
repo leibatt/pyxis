@@ -86,10 +86,6 @@ export function rankHistogramBins(dataset: pyxis.BaseDataset, zInsight: Record<s
     "sort": {"field": dimension.name+"_count", "order": "descending"}
   });
 
-  transforms.forEach(t => {
-    console.log(t);
-  });
-
   // data transformation
   const tdist: pyxis.transformation.VegaDataTransformation = {
     sources: [dataset],
@@ -111,7 +107,7 @@ export function rankHistogramBins(dataset: pyxis.BaseDataset, zInsight: Record<s
 
 
 export function linearCorrelation(dataset: pyxis.BaseDataset,
-  zInsight: Record<string,string>, suffix?: string): pyxis.AnalyticKnowledgeNode {
+  zInsight: Record<string,string>, kname?: string): pyxis.AnalyticKnowledgeNode {
   const dimAttributes = matchAttributes(zInsight.dimension.split(","),dataset.records[0].attributes);
   const inputs = dimAttributes.slice(0,Math.max(1,dimAttributes.length - 1));
   const output = dimAttributes[dimAttributes.length - 1];
@@ -123,7 +119,7 @@ export function linearCorrelation(dataset: pyxis.BaseDataset,
 
   lrrm.train(dataset.records);
   const krel: pyxis.AnalyticKnowledgeNode = new pyxis.AnalyticKnowledgeNode(
-    "Zgraggen2018-corr_" + suffix, // name
+    kname, // name
     Date.now(), // timestamp
     null, // transformation
     lrrm, // relationshipModel
@@ -138,11 +134,7 @@ export function linearCorrelation(dataset: pyxis.BaseDataset,
 // Filter the data to identify the alternative and null hypothesis groups.
 // Then, calculate the specified aggregate measures for each group.
 export function compareGroups(dataset: pyxis.BaseDataset,
-  zInsight: Record<string,string>, suffix?: string): pyxis.AnalyticKnowledgeNode {
-
-  if(suffix === undefined) {
-    suffix = uuid();
-  }
+  zInsight: Record<string,string>, kname: string): pyxis.AnalyticKnowledgeNode {
 
   const inputs = getInputs([zInsight.dist_alt,zInsight.dist_null],
     dataset.records[0].attributes);
@@ -172,7 +164,7 @@ export function compareGroups(dataset: pyxis.BaseDataset,
   };
 
   const kalt: pyxis.AnalyticKnowledgeNode = new pyxis.AnalyticKnowledgeNode(
-    "Zgraggen2018-alt_" + suffix, // name
+    kname+"_alt", // name
     Date.now(), // timestamp
     tdalt, // transformation
     null, // relationshipModel
@@ -201,7 +193,7 @@ export function compareGroups(dataset: pyxis.BaseDataset,
   }
 
   const knull: pyxis.AnalyticKnowledgeNode = new pyxis.AnalyticKnowledgeNode(
-    "Zgraggen2018-null_" + suffix, // name
+    kname+"_null", // name
     Date.now(), // timestamp
     tdnull, // transformation
     null, // relationshipModel

@@ -12,6 +12,8 @@ import ZgraggenInsightExamples from './zgraggen_insight_examples.json'
 // systems (pp. 1-12).
 // Please see the README in this folder for more details.
 
+console.log("********* LOAD DATASET *********");
+
 // loading the dataset
 const sleep: pyxis.BaseDataset = pyxis.loadDataset(
   "sleep_generated.json",
@@ -25,13 +27,15 @@ console.log(sleep.records[0]);
 // calculations and does not involve domain knowledge. Thus, we can represent
 // these results using analytic knowledge involving data transformations only.
 
+console.log("********* COMPARE GROUPS: MEAN *********");
+
 // get the insight object
 const meanHoursSleep = ZgraggenInsightExamples[0];
 console.log(meanHoursSleep);
 
 // Extract the corresponding analytic knowledge nodes in Pyxis, one for the
 // alternative hypothesis and one for the null hypothesis.
-const msdAltKnowledge: pyxis.AnalyticKnowledgeNode = compareGroups(sleep,meanHoursSleep,"meanHoursSleep");
+const msdAltKnowledge: pyxis.AnalyticKnowledgeNode = compareGroups(sleep,meanHoursSleep,"Zgraggen-2018-meanHoursSleep");
 const msdNullKnowledge: pyxis.AnalyticKnowledgeNode = msdAltKnowledge.source[0];
 
 // Get the results from the analytic knowledge nodes
@@ -56,13 +60,15 @@ answers.forEach((answer,i) => {
 // entire sample population. This is again a comparison between an alternative
 // hypothesis and null hypothesis.
 
+console.log("********* COMPARE GROUPS: VARIANCE *********");
+
 // get the insight object
 const varianceSleepQuality = ZgraggenInsightExamples[1];
 console.log(varianceSleepQuality);
 
 // Extract the corresponding analytic knowledge nodes in Pyxis, one for the
 // alternative hypothesis and one for the null hypothesis.
-const vsqAltKnowledge: pyxis.AnalyticKnowledgeNode = compareGroups(sleep,varianceSleepQuality,"varianceSleepQuality");
+const vsqAltKnowledge: pyxis.AnalyticKnowledgeNode = compareGroups(sleep,varianceSleepQuality,"Zgraggen-2018-varianceSleepQuality");
 const vsqNullKnowledge: pyxis.AnalyticKnowledgeNode = vsqAltKnowledge.source[0];
 
 // Get the results from the analytic knowledge nodes
@@ -86,12 +92,14 @@ answers.forEach((answer,i) => {
 // data attributes, which we can represent using a data relationship. Here, we
 // use a linear regression model.
 
+console.log("********* LINEAR REGRESSION *********");
+
 // get the insight object
 const hoursFitnessCorrelation = ZgraggenInsightExamples[2];
 console.log(hoursFitnessCorrelation);
 
 // compute the linear regression model
-const hoursFitnessCorrKnowledge: pyxis.AnalyticKnowledgeNode = linearCorrelation(sleep,hoursFitnessCorrelation,"hoursFitnessCorr");
+const hoursFitnessCorrKnowledge: pyxis.AnalyticKnowledgeNode = linearCorrelation(sleep,hoursFitnessCorrelation,"Zgraggen-2018-hoursFitnessCorr");
 console.log(hoursFitnessCorrKnowledge);
 
 /*********** END THIRD "INSIGHT" ***********/
@@ -100,6 +108,8 @@ console.log(hoursFitnessCorrKnowledge);
 // The fourth insight example analyzes three bins within a histogram. We can
 // calculate the histogram bins, filter for the relevant bins, and sort by
 // count using a data transformation.
+
+console.log("********* COMPUTE HISTOGRAM *********");
 
 // get the insight object
 const hoursSleepHistogram = ZgraggenInsightExamples[3];
