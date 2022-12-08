@@ -28,6 +28,9 @@ export abstract class InsightComplexity {
 // insight represents connecting analytic knowledge (evidence) with domain
 // knowledge (concept/instance), as well as building on prior insights.
 export class InsightNode extends GraphNode {
+  target: InsightNode[]; // does this instance lead to other instances?
+  source: InsightNode[]; // was this instance caused by other instances?
+  related: InsightNode[]; // is this instance related to other instances?
   description?: string;
   domainKnowledge: DomainKnowledgeNode[]; // only one node can be associated with this insight
   analyticKnowledge: AnalyticKnowledgeNode[]; // only one node can be associated with this insight

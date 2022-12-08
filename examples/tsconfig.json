@@ -16,6 +16,9 @@
     "typeRoots": [
       "./types",
       "./node_modules/@types"
+    ],
+    "lib": [
+      "ES2021.String"
     ]
   },
   "files": [
