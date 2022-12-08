@@ -23,6 +23,9 @@ export class Concept {
 
 // Domain Knowledge Nodes are instantiations of concepts
 export class DomainKnowledgeNode extends GraphNode {
+  target: DomainKnowledgeNode[]; // does this instance lead to other instances?
+  source: DomainKnowledgeNode[]; // was this instance caused by other instances?
+  related: DomainKnowledgeNode[]; // is this instance related to other instances?
   coreConcept: Concept; // main Concept type associated with this instance
   relevantConcepts?: Concept[]; // other relevant concepts !== coreConcept
   metadata?: DataRecord; // associated metadata attributes for this instance and their values

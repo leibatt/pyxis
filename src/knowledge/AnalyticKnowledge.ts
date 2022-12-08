@@ -7,6 +7,9 @@ import { GraphNode } from '../GraphNode';
 // However analytic knowledge may also depend on 
 // or can be defined as relationships between existing analytic knowledge.
 export class AnalyticKnowledgeNode extends GraphNode {
+  target: AnalyticKnowledgeNode[]; // does this instance lead to other instances?
+  source: AnalyticKnowledgeNode[]; // was this instance caused by other instances?
+  related: AnalyticKnowledgeNode[]; // is this instance related to other instances?
   timestamp: number; // to keep track of when the analytic knowledge was created;
   transformation: DataTransformation; // how to pre-process the data to uncover the desired analytic knowledge.
                                       // also includes references to the source datasets!
