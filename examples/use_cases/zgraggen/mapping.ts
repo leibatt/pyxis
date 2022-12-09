@@ -199,7 +199,7 @@ export function compareGroups(dataset: pyxis.BaseDataset,
     () => pyxis.transformation.vega.executeDataTransformation(tdnull), // results
     zInsight.comparison // optional notes
   );
-  knull.addSource(kalt); // link the analytic knowledge
+  knull.addRelated(kalt); // link the analytic knowledge
 
   return knull;
 }

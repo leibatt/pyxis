@@ -36,7 +36,7 @@ console.log(meanHoursSleep);
 // Extract the corresponding analytic knowledge nodes in Pyxis, one for the
 // alternative hypothesis and one for the null hypothesis.
 const msdAltKnowledge: pyxis.AnalyticKnowledgeNode = compareGroups(sleep,meanHoursSleep,"Zgraggen-2018-meanHoursSleep");
-const msdNullKnowledge: pyxis.AnalyticKnowledgeNode = msdAltKnowledge.source[0];
+const msdNullKnowledge: pyxis.AnalyticKnowledgeNode = msdAltKnowledge.related[0];
 
 // Get the results from the analytic knowledge nodes
 let datasetAlt: pyxis.BaseDataset = msdAltKnowledge.results();
@@ -69,7 +69,7 @@ console.log(varianceSleepQuality);
 // Extract the corresponding analytic knowledge nodes in Pyxis, one for the
 // alternative hypothesis and one for the null hypothesis.
 const vsqAltKnowledge: pyxis.AnalyticKnowledgeNode = compareGroups(sleep,varianceSleepQuality,"Zgraggen-2018-varianceSleepQuality");
-const vsqNullKnowledge: pyxis.AnalyticKnowledgeNode = vsqAltKnowledge.source[0];
+const vsqNullKnowledge: pyxis.AnalyticKnowledgeNode = vsqAltKnowledge.related[0];
 
 // Get the results from the analytic knowledge nodes
 datasetAlt = vsqAltKnowledge.results();
