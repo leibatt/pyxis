@@ -39,8 +39,7 @@ describe('DomainKnowledge.ts tests', () => {
     test('#constructor works', () => {
       const node1 = new DomainKnowledgeNode(
         "n1",
-        concept,
-        [],
+        [concept],
         {
           attributes: [
             {
@@ -54,8 +53,7 @@ describe('DomainKnowledge.ts tests', () => {
       );
       const node2 = new DomainKnowledgeNode(
         "n2",
-        concept,
-        [],
+        [concept],
         {
           attributes: [
             {
@@ -68,9 +66,9 @@ describe('DomainKnowledge.ts tests', () => {
         }
       );
       expect(node1.name).toBe("n1");
-      expect(node1.coreConcept.name).toBe("test concept");
+      expect(node1.concepts[0].name).toBe("test concept");
       expect(node2.name).toBe("n2");
-      expect(node2.coreConcept.name).toBe("test concept");
+      expect(node2.concepts[0].name).toBe("test concept");
     });
   });
 });

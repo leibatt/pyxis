@@ -30,8 +30,7 @@ describe('task.ts tests', () => {
       );
       const dk = new DomainKnowledgeNode(
         "n1",
-          concept,
-          [],
+          [concept],
           {
             attributes: [
               {

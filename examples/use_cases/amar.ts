@@ -22,8 +22,7 @@ const qualityConcept: pyxis.Concept = new pyxis.Concept(
 // may affect quality or not.
 const knowledgeNode: pyxis.DomainKnowledgeNode = new pyxis.DomainKnowledgeNode(
   "BusinessInsiderArticle", // name
-  articleConcept, // coreConcept
-  [qualityConcept], // relevantConcepts
+  [articleConcept, qualityConcept], // concepts
   { // metadata
     attributes: [{ name: "link", attributeType: pyxis.AttributeType.nominal }],
     values: {"name": "https://www.businessinsider.com/are-movies-getting-longer-2016-6"},

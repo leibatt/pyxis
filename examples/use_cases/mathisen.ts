@@ -76,8 +76,7 @@ const protest: pyxis.Concept = new pyxis.Concept(
 
 const protestsNode: pyxis.DomainKnowledgeNode = new pyxis.DomainKnowledgeNode(
   "WikipediaArticle-2015BaltimoreProtests", // name
-  protest, // coreConcept
-  [], // relevantConcepts
+  [protest], // concepts
   { // metadata
     attributes: [{ name: "link", attributeType: pyxis.AttributeType.nominal }],
     values: {"link": "https://en.wikipedia.org/wiki/2015_Baltimore_protests"},
@@ -180,8 +179,7 @@ console.log(crimeDist.records[0]);
 // want to incorporate this information in our knowledge base.
 const burglaryNode: pyxis.DomainKnowledgeNode = new pyxis.DomainKnowledgeNode(
   "WikipediaArticle-Burglary", // name
-  crime, // coreConcept
-  [], // relevantConcepts
+  [crime], // concepts
   { // metadata
     attributes: [{ name: "link", attributeType: pyxis.AttributeType.nominal }],
     values: {"link": "https://en.wikipedia.org/wiki/Burglary"},

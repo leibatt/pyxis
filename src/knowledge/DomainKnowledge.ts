@@ -26,18 +26,14 @@ export class DomainKnowledgeNode extends GraphNode {
   target: DomainKnowledgeNode[]; // does this instance lead to other instances?
   source: DomainKnowledgeNode[]; // was this instance caused by other instances?
   related: DomainKnowledgeNode[]; // is this instance related to other instances?
-  coreConcept: Concept; // main Concept type associated with this instance
-  relevantConcepts?: Concept[]; // other relevant concepts !== coreConcept
+  concepts: Concept[]; // concepts associated with this instance
   metadata?: DataRecord; // associated metadata attributes for this instance and their values
 
-  constructor(name: string, coreConcept: Concept, relevantConcepts?: Concept[], metadata?: DataRecord) {
+  constructor(name: string, concepts: Concept[], metadata?: DataRecord) {
     super(name);
     this.name = name;
 
-    this.coreConcept = coreConcept;
-    if(typeof relevantConcepts !== 'undefined') {
-      this.relevantConcepts = relevantConcepts;
-    }
+    this.concepts = concepts;
     if(typeof metadata !== 'undefined') {
       this.metadata = metadata
     }
