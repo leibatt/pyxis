@@ -1,14 +1,29 @@
 import { NamedItem, RegistryLike, Registry } from '../src/registry';
 
+// shortcut for wildcard
 export type WILDCARD_SHORTHAND = '*';
-
 export const WILDCARD_SHORTHAND: WILDCARD_SHORTHAND = '*';
 
-export interface Wildcard<T> {
+// TODO: merge with RegistryLike?
+export interface Wildcard<T extends NamedItem> {
   name: string;
-  enumerate: Generator<T>
+  enumerate(): Generator<T>;
 }
 
-export type WildcardProperty<T> = T | Wildcard<T> | WILDCARD_SHORTHAND;
+// for resolving wildcards
+export type WildcardProperty<T extends NamedItem> = T | Wildcard<T> | WILDCARD_SHORTHAND;
 
+// if we have a registry, we can just use it as a wildcard
+export class RegistryWildcard<T extends NamedItem> implements Wildcard<T> {
+  name: string;
+  registry: RegistryLike<T>;
+  
+  constructor(name: string, registry: RegistryLike<T>) {
+    this.name = name;
+    this.registry = registry;
+  }
 
+  *enumerate(): Generator<T> {
+    return this.registry.getItems();
+  }
+}

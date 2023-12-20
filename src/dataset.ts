@@ -1,5 +1,7 @@
 import * as uuid from 'uuid';
 import { smartStringify } from './util';
+import { RegistryWildcard } from './wildcard';
+import { Registry } from './registry';
 
 export enum AttributeType {
   nominal = "nominal",
@@ -121,6 +123,21 @@ export interface Dataset {
   // does this dataset overlap with the other dataset?
   compareCoverage?: (otherDataset: Dataset) => { overlap: Dataset, percentOverlap: Record<string, number> };
   subsumes?: (otherDataset: Dataset) => boolean; // does this dataset subsume the other dataset?
+}
+
+// given a list of datasets, make them enumerable for use with wildcards
+export class DatasetWildcard {
+  name: string;
+  datasetRegistry: RegistryWildcard<Dataset>;
+
+  constructor(name: string, datasets: Registry<Dataset>) {
+    this.name = name;
+    this.datasetRegistry = new RegistryWildcard<Dataset>(name, datasets);
+  }
+
+  *enumerate(): Generator<Dataset> {
+    return this.datasetRegistry.enumerate();
+  }
 }
 
 // holds a collection of records
