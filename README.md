@@ -6,13 +6,17 @@ This project is the work of [Prof. Leilani Battle](https://homes.cs.washington.e
 
 ## Citing Pyxis
 
-This paper is currently under preparation, however we have a technical report available on [arXiv](https://arxiv.org/abs/2206.04767). If you would like to cite this work, please use the following:
+This project was published as a full paper in the TVCG journal (presented at VIS 2024). Preliminary work was published as a short paper at VIS 2023. If you would like to cite this work, please use the following:
 ```
-@article{battle2022programmatic,
-  title={A Programmatic Definition of Visualization Tasks, Insights, and Objectives},
+@article{battle2024what,
   author={Battle, Leilani and Ottley, Alvitta},
-  journal={arXiv preprint arXiv:2206.04767},
-  year={2022}
+  journal={IEEE Transactions on Visualization and Computer Graphics}, 
+  title={What Do We Mean When We Say "Insight"? A Formal Synthesis of Existing Theory}, 
+  year={2024},
+  volume={30},
+  number={9},
+  pages={6075-6088},
+  doi={10.1109/TVCG.2023.3326698}
 }
 ```
 
