@@ -6,7 +6,10 @@
   "browser": "umd/index.umd.js",
   "module": "build/src/index",
   "types": "build/src/index.d.ts",
-  "repository": "git@github.com:leibatt/pyxis.git",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/leibatt/pyxis.git"
+  },
   "author": "Leilani Battle, Alvitta Ottley",
   "license": "MIT",
   "files": [
