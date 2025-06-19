@@ -24,6 +24,6 @@ export class RegistryWildcard<T extends NamedItem> implements Wildcard<T> {
   }
 
   *enumerate(): Generator<T> {
-    return this.registry.getItems();
+    yield* this.registry.getItems();
   }
 }

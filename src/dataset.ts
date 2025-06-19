@@ -136,7 +136,7 @@ export class DatasetWildcard {
   }
 
   *enumerate(): Generator<Dataset> {
-    return this.datasetRegistry.enumerate();
+    yield* this.datasetRegistry.enumerate();
   }
 }
 
