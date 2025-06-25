@@ -46,10 +46,15 @@ export class GaussianNaiveBayesRelationshipModel implements MultivariateRelation
 
     for(let i = 0; i < trainingSet.length; i++) {
       const r: DataRecord = trainingSet[i];
-      const xvec: number[] = this.inputAttributes.map((a) => r.getValueByName(a.name) as number);
-      const yvec: number = r.getValueByName(this.outputAttribute.name) as number;
-      x.push(xvec);
-      y.push(yvec);
+      let allnums: boolean = this.inputAttributes.map((a) => r.getValueByName(a.name))
+        .every((e) => typeof e === "number");
+      allnums = allnums && typeof r.getValueByName(this.outputAttribute.name) === "number";
+      if(allnums) { // ignore rows with null values
+        const xvec: number[] = this.inputAttributes.map((a) => r.getValueByName(a.name) as number);
+        const yvec: number = r.getValueByName(this.outputAttribute.name) as number;
+        x.push(xvec);
+        y.push(yvec);
+      }
     }
     const { mapped, mapping } = convertToIntegers(y); // map to class numbers
     this.mapping = mapping;

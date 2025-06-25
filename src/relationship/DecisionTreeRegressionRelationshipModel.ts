@@ -45,10 +45,15 @@ export class DecisionTreeRegressionRelationshipModel implements MultivariateRela
 
     for(let i = 0; i < trainingSet.length; i++) {
       const r: DataRecord = trainingSet[i];
-      const xvec = this.inputAttributes.map((a) => r.getValueByName(a.name) as number);
-      const yvec = r.getValueByName(this.outputAttribute.name) as number;
-      x.push(xvec);
-      y.push(yvec);
+      let allnums: boolean = this.inputAttributes.map((a) => r.getValueByName(a.name))
+        .every((e) => typeof e === "number");
+      allnums = allnums && typeof r.getValueByName(this.outputAttribute.name) === "number";
+      if(allnums) { // ignore rows with null values
+        const xvec = this.inputAttributes.map((a) => r.getValueByName(a.name) as number);
+        const yvec = r.getValueByName(this.outputAttribute.name) as number;
+        x.push(xvec);
+        y.push(yvec);
+      }
     }
     this.model.train(x, y);
   }
