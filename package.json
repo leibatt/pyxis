@@ -38,7 +38,8 @@
     "typescript": "^4.1.2",
     "uuid": "^9.0.0",
     "vega": "^5.22.1",
-    "vega-statistics": "^1.7.10"
+    "vega-statistics": "^1.7.10",
+    "ml-regression-multivariate-linear": "^2.0.3"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^22.0.1",
@@ -59,7 +60,6 @@
     "json-schema": "^0.4.0",
     "lodash": "^4.17.21",
     "minimist": "^1.2.6",
-    "ml-regression-multivariate-linear": "^2.0.3",
     "node-fetch": "^3.2.9",
     "node-notifier": "^10.0.1",
     "path-parse": "^1.0.7",
