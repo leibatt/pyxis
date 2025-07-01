@@ -1,6 +1,6 @@
 {
   "name": "@leibatt/pyxis",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "A language for specifying visual analysis insights, objectives and tasks.",
   "main": "build/index.js",
   "browser": "umd/index.umd.js",
