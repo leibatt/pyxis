@@ -13,12 +13,21 @@ export function writeJsonFile(jsonData: Record<string, ValueType | null>[], file
 }
 
 // export a BaseDataset object to the datasets folder
-export function exportDatasetJson(dataset: BaseDataset, dataset_filename: string): void {
-  writeJsonFile(dataset.records.map((r) => r.values), path.join(__dirname,"..","datasets",dataset_filename));
+export function exportDatasetJson(dataset: BaseDataset, dataset_filename: string, dirpath?: string): void {
+  if(dirpath === undefined) {
+    writeJsonFile(dataset.records.map((r) => r.values), path.join(__dirname,"..","datasets",dataset_filename));
+  } else {
+    writeJsonFile(dataset.records.map((r) => r.values), path.join(dirpath,dataset_filename));
+  }
 }
 
 // load a JSON file from the datasets folder and return a BaseDataset object
-export function loadDataset(dataset_filename: string, name: string = null, typeHints: Record<string, AttributeType> = {}): BaseDataset {
-  const jsonObj = loadJsonFile(path.join(__dirname,"..","datasets",dataset_filename));
+export function loadDataset(dataset_filename: string, name: string = null, typeHints: Record<string, AttributeType> = {}, dirpath?: string): BaseDataset {
+  let jsonObj: Record<string, ValueType | null>[] = null;
+  if(dirpath === undefined) {
+    jsonObj = loadJsonFile(path.join(__dirname,"..","datasets",dataset_filename));
+  } else {
+    jsonObj = loadJsonFile(path.join(dirpath,dataset_filename));
+  }
   return jsonObjectToDataset(jsonObj, name, typeHints);
 }
