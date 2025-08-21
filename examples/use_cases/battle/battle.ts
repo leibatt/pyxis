@@ -1,3 +1,4 @@
+import * as path from 'path';
 import { desc, op } from 'arquero';
 import * as pyxis from '../../../src/index';
 
@@ -16,7 +17,8 @@ const birdstrikes: pyxis.BaseDataset = pyxis.loadDataset(
   {
     "incident_date": pyxis.AttributeType.temporal,
     "reported_date": pyxis.AttributeType.temporal
-  }
+  },
+  path.join(__dirname,"..","..","..","datasets")
 );
 console.log(birdstrikes.records[0]);
 

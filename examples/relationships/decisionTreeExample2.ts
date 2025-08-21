@@ -1,8 +1,9 @@
+import * as path from 'path';
 import * as pyxis from '../../src/index';
 
 // This example uses the Baltimore crimes dataset.
-// We can load the Baltimore crimes dataset from the /datasets folder as follows:
-const baltimoreCrimes: pyxis.Dataset = pyxis.loadDataset("BPD_Part_1_Victim_Based_Crime_Data2.json","baltimoreCrimes");
+// We can load the Baltimore crimes dataset as follows:
+const baltimoreCrimes: pyxis.Dataset = pyxis.loadDataset("BPD_Part_1_Victim_Based_Crime_Data2.json","baltimoreCrimes",{},path.join(__dirname,"..","..","datasets"));
 console.log("first row of the baltimore crimes dataset:",baltimoreCrimes.records[0]);
 
 // Now, we want to specify a new relationship model. Specifically, a decision

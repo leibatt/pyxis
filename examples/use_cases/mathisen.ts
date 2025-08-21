@@ -1,3 +1,4 @@
+import * as path from 'path';
 import { op, desc } from 'arquero';
 import * as pyxis from '../../src/index';
 
@@ -17,8 +18,12 @@ const crime: pyxis.Concept = new pyxis.Concept(
 // We will use the (old) Baltimore Crime dataset in this example (see
 // README for source details).  Now load into our BaseDataset object,
 // specifying that CrimeDate is temporal
-const baltimoreCrime: pyxis.BaseDataset = pyxis.loadDataset("BPD_Part_1_Victim_Based_Crime_Data2.json",
-  "Baltimore Crime 2012 - 2017", { "CrimeDate": pyxis.AttributeType.temporal });
+const baltimoreCrime: pyxis.BaseDataset = pyxis.loadDataset(
+  "BPD_Part_1_Victim_Based_Crime_Data2.json",
+  "Baltimore Crime 2012 - 2017",
+  { "CrimeDate": pyxis.AttributeType.temporal },
+  path.join(__dirname,"..","..","datasets")
+);
 console.log("total records:",baltimoreCrime.records.length);
 console.log("first record:");
 console.log(baltimoreCrime.records[0]);

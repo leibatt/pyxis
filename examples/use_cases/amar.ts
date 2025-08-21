@@ -1,3 +1,4 @@
+import * as path from 'path';
 import { op } from 'arquero';
 import * as pyxis from '../../src/index';
 
@@ -33,8 +34,8 @@ const knowledgeNode: pyxis.DomainKnowledgeNode = new pyxis.DomainKnowledgeNode(
 
 // To investigate evidence, we will use the movies dataset and oscars dataset
 // in this example (see README for source details).
-const movies: pyxis.BaseDataset = pyxis.loadDataset("movies.json","movies");
-const oscars: pyxis.BaseDataset = pyxis.loadDataset("oscars.json","oscars");
+const movies: pyxis.Dataset = pyxis.loadDataset("movies.json","movies",{},path.join(__dirname,"..","..","datasets"));
+const oscars: pyxis.Dataset = pyxis.loadDataset("oscars.json","oscars",{},path.join(__dirname,"..","..","datasets"));
 
 // Our overall goal is to assess the relationship (if any) between movie length and
 // movie popularity for award-winning movies over a ten year period.  First, we

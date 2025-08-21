@@ -1,9 +1,10 @@
+import * as path from 'path';
 import * as pyxis from '../../src/index';
 
 // This example uses the palmerpenguins dataset, originally from here:
 // https://allisonhorst.github.io/palmerpenguins/
 // We can load the penguins dataset from the /datasets folder as follows:
-const penguins: pyxis.Dataset = pyxis.loadDataset("penguins.json","penguins");
+const penguins: pyxis.Dataset = pyxis.loadDataset("penguins.json","penguins",{},path.join(__dirname,"..","..","datasets"));
 console.log("first row of penguins dataset:",penguins.records[0]);
 
 // Now, we want to specify a new relationship model. Specifically, an isolation

@@ -1,3 +1,4 @@
+import * as path from 'path';
 import * as pyxis from '../../src/index';
 
 // This example demonstrates how to create data transformation objects using
@@ -9,9 +10,9 @@ import * as pyxis from '../../src/index';
 // We created JSON versions of the datasets used in the Observable Arquero
 // introduction (see imports above).  You can import any JSON file
 // automatically as a BaseDataset object from our framework using the
-// jsonObjectToDataset function from 'src/datasets'.
-const beers: pyxis.BaseDataset = pyxis.loadDataset("beers.json","beers");
-const breweries: pyxis.BaseDataset = pyxis.loadDataset("breweries.json","breweries");
+// loadDataset function from 'src/datasets'.
+const beers: pyxis.Dataset = pyxis.loadDataset("beers.json","beers",{},path.join(__dirname,"..","..","datasets"));
+const breweries: pyxis.Dataset = pyxis.loadDataset("breweries.json","breweries",{},path.join(__dirname,"..","..","datasets"));
 
 // This is an example of how we can apply a filter transformation using Vega.
 // t is a data transformation object. Data transformation objects can be linked

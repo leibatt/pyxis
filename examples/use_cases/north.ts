@@ -1,3 +1,4 @@
+import * as path from 'path';
 import { op, bin } from 'arquero';
 import * as pyxis from '../../src/index';
 
@@ -9,7 +10,7 @@ import * as pyxis from '../../src/index';
 
 // To investigate evidence, we will use the rents dataset in this example (see
 // README for source details).
-const hudRents: pyxis.BaseDataset = pyxis.loadDataset("HUD_FY2021_50_County.json","HUD Rents 2021");
+const hudRents: pyxis.BaseDataset = pyxis.loadDataset("HUD_FY2021_50_County.json","HUD Rents 2021",{},path.join(__dirname,"..","..","datasets"));
 
 console.log("calculate maximum and minimum rents for 2 bedroom homes");
 const aggregateTransformation: pyxis.transformation.ArqueroDataTransformation = {

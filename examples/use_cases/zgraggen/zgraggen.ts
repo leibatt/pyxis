@@ -1,3 +1,4 @@
+import * as path from 'path';
 import * as pyxis from '../../../src/index';
 import { compareGroups, linearCorrelation, rankHistogramBins } from './mapping';
 import ZgraggenInsightExamples from './zgraggen_insight_examples.json'
@@ -17,7 +18,9 @@ console.log("********* LOAD DATASET *********");
 // loading the dataset
 const sleep: pyxis.BaseDataset = pyxis.loadDataset(
   "sleep_generated.json",
-  "Sleep"
+  "Sleep",
+  {},
+  path.join(__dirname,"..","..","..","datasets")
 );
 console.log(sleep.records[0]);
 

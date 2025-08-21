@@ -1,3 +1,4 @@
+import * as path from 'path';
 import * as pyxis from '../../src/index';
 import { desc, op } from 'arquero';
 
@@ -7,10 +8,9 @@ import { desc, op } from 'arquero';
 
 // We created JSON versions of the datasets used in the Observable introduction
 // (see imports above).  You can import any JSON file automatically as a
-// BaseDataset object from our framework using the jsonObjectToDataset function
-// from 'src/datasets'.
-const beers: pyxis.BaseDataset = pyxis.loadDataset("beers.json","beers");
-const breweries: pyxis.BaseDataset = pyxis.loadDataset("breweries.json","breweries");
+// BaseDataset object from our framework using the loadDataset function
+const beers: pyxis.Dataset = pyxis.loadDataset("beers.json","beers",{},path.join(__dirname,"..","..","datasets"));
+const breweries: pyxis.BaseDataset = pyxis.loadDataset("breweries.json","breweries",{},path.join(__dirname,"..","..","datasets"));
 
 // This is an example of how we can apply a filter transformation using Arquero.
 // t is a data transformation object. Data transformation objects can be linked

@@ -1,9 +1,10 @@
+import * as path from 'path';
 import * as pyxis from '../../src/index';
 
 // This example uses the cars dataset, originally from the vega-datasets
 // repository: https://github.com/vega/vega-datasets/blob/next/data/cars.json
-// We can load the cars dataset from the /datasets folder as follows:
-const cars: pyxis.Dataset = pyxis.loadDataset("cars.json","cars");
+// We can load the cars dataset as follows:
+const cars: pyxis.Dataset = pyxis.loadDataset("cars.json","cars",{},path.join(__dirname,"..","..","datasets"));
 console.log("first row of cars dataset:",cars.records[0]);
 
 // Now, we want to specify a new relationship model. Specifically, a KNN
